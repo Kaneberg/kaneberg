@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<!-- Par défaut en thème clair -->
+<html lang="fr" class="">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaneberg - Tous les Articles</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+                    },
+                    colors: {
+                        // Palette strictement monochrome (sans bleu)
+                        gray: {
+                            50: '#fafafa',
+                            100: '#f5f5f5',
+                            200: '#e5e5e5',
+                            300: '#d4d4d4',
+                            400: '#a3a3a3',
+                            500: '#737373',
+                            600: '#525252',
+                            700: '#404040',
+                            800: '#262626',
+                            900: '#171717',
+                            950: '#0a0a0a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        /* Effet élégant de zoom sur les images */
+        .image-zoom-container {
+            overflow: hidden;
+        }
+        .img-placeholder {
+            transition: transform 0.4s ease;
+        }
+        .group:hover .img-placeholder {
+            transform: scale(1.03);
+        }
+
+        /* Liens de navigation avec soulignement élégant au survol */
+        .nav-link {
+            position: relative;
+            text-decoration: none;
+            padding-bottom: 2px;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: currentColor;
+            transition: width 0.2s ease;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* Style des boutons de filtre actifs */
+        .filter-btn-active {
+            background-color: #000000;
+            color: #ffffff;
+        }
+        .dark .filter-btn-active {
+            background-color: #ffffff;
+            color: #000000;
+        }
+    </style>
+</head>
+
+<body class="bg-white text-gray-950 dark:bg-black dark:text-gray-50 font-sans min-h-screen flex flex-col antialiased">
+
+    <div class="bg-black text-white text-xs py-2 hidden md:block">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+            <div class="flex space-x-6">
+                <a href="about.html" class="hover:text-gray-300 transition-colors">À propos</a>
+                <a href="contact.html" class="hover:text-gray-300 transition-colors">Contacts</a>
+                <a href="newsletter.html" class="hover:text-gray-300 transition-colors">Newsletter</a>
+            </div>
+            <div class="flex space-x-4 items-center">
+                <span class="text-gray-400" id="currentDate"></span>
+            </div>
+        </div>
+    </div>
+
+    <nav class="sticky top-0 z-50 bg-white/95 dark:bg-black/95 backdrop-blur border-b border-gray-200 dark:border-gray-800 transition-colors duration-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                
+                <!-- Logo & Liens de navigation -->
+                <div class="flex items-center space-x-8">
+                    <a href="index.html" class="text-2xl font-black tracking-tighter text-black dark:text-white leading-none">
+                        KANEBERG
+                    </a>
+                    <div class="hidden md:flex space-x-8">
+                        <a href="index.html" class="nav-link text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white">Accueil</a>
+                        <a href="articles.html" class="nav-link text-sm font-bold text-black dark:text-white">Articles</a>
+                        <a href="videos.html" class="nav-link text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white">Vidéos</a>
+                        <a href="ressources.html" class="nav-link text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white">Ressources</a>
+                    </div>
+                </div>
+
+                <!-- Outils du Header (Thème) -->
+                <div class="flex items-center space-x-4">
+                    <button id="themeToggle" class="text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors" aria-label="Basculer le thème">
+                        <!-- Soleil (Thème Clair actif) -->
+                        <svg id="sunIcon" class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                        <!-- Lune (Thème Sombre actif) -->
+                        <svg id="moonIcon" class="w-5 h-5 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
+        
+        <!-- En-tête de la page -->
+        <div class="mb-12">
+            <h1 class="text-4xl font-black tracking-tight uppercase mb-3">Archives & Décryptages</h1>
+            <p class="text-gray-600 dark:text-gray-400 max-w-2xl text-lg">
+                Explorez l'ensemble de nos analyses, dossiers historiques et actualités sur l'univers d'Arrakis.
+            </p>
+        </div>
+
+        <!-- Section Filtres & Barre de recherche -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-8 border-b border-gray-100 dark:border-gray-900 mb-10">
+            <!-- Boutons de filtres par catégorie -->
+            <div class="flex flex-wrap gap-2" id="filterContainer">
+                <button data-category="all" class="filter-btn filter-btn-active px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider border border-gray-200 dark:border-gray-800 transition-colors">
+                    Tout
+                </button>
+                <button data-category="Lore" class="filter-btn px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider border border-gray-200 dark:border-gray-800 hover:border-black dark:hover:border-white transition-colors">
+                    Lore
+                </button>
+                <button data-category="Actu" class="filter-btn px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider border border-gray-200 dark:border-gray-800 hover:border-black dark:hover:border-white transition-colors">
+                    Actu
+                </button>
+                <button data-category="Science" class="filter-btn px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider border border-gray-200 dark:border-gray-800 hover:border-black dark:hover:border-white transition-colors">
+                    Science
+                </button>
+                <button data-category="Philosophie" class="filter-btn px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider border border-gray-200 dark:border-gray-800 hover:border-black dark:hover:border-white transition-colors">
+                    Philosophie
+                </button>
+            </div>
+
+            <!-- Barre de recherche -->
+            <div class="relative w-full md:w-80">
+                <svg class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+                <input type="text" id="articleSearchInput" placeholder="Rechercher un article..." 
+                    class="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 text-sm rounded-full pl-9 pr-4 py-2 focus:ring-1 focus:ring-gray-300 dark:focus:ring-gray-700 outline-none w-full transition-all text-gray-900 dark:text-gray-100 placeholder-gray-500">
+            </div>
+        </div>
+
+        <!-- État de chargement / Erreurs -->
+        <div id="articlesStatus" class="text-center py-16">
+            <p class="text-gray-500 animate-pulse">Chargement de la bibliothèque de la Guilde...</p>
+        </div>
+
+        <!-- Grille principale d'articles -->
+        <div id="articlesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 hidden">
+            <!-- Injecté dynamiquement par JavaScript -->
+        </div>
+
+    </main>
+
+    <!-- Pied de page -->
+    <footer class="bg-black text-white mt-auto py-12 border-t border-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- Présentation -->
+                <div class="md:col-span-2">
+                    <h2 class="text-3xl font-black uppercase tracking-tighter mb-4">KANEBERG</h2>
+                    <p class="text-gray-400 text-sm max-w-sm leading-relaxed">
+                        Média francophone indépendant dédié à l'univers de Dune. Décryptages, actualités, et réflexions philosophiques autour de l'œuvre de Frank Herbert.
+                    </p>
+                </div>
+
+                <!-- Navigation alternative -->
+                <div>
+                    <h3 class="text-xs font-bold uppercase tracking-widest text-gray-500 mb-4">Média</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="articles.html" class="text-gray-300 hover:text-white transition-colors">Tous les articles</a></li>
+                        <li><a href="videos.html" class="text-gray-300 hover:text-white transition-colors">Vidéos</a></li>
+                        <li><a href="about.html" class="text-gray-300 hover:text-white transition-colors">À propos</a></li>
+                        <li><a href="contact.html" class="text-gray-300 hover:text-white transition-colors">Nous contacter</a></li>
+                    </ul>
+                </div>
+
+                <!-- Mentions légales -->
+                <div>
+                    <h3 class="text-xs font-bold uppercase tracking-widest text-gray-500 mb-4">Informations</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="legal.html" class="text-gray-300 hover:text-white transition-colors">Mentions légales</a></li>
+                        <li><a href="privacy.html" class="text-gray-300 hover:text-white transition-colors">Confidentialité</a></li>
+                        <li><a href="cookies.html" class="text-gray-300 hover:text-white transition-colors">Cookies</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Copyright & Liens -->
+            <div class="mt-12 pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center text-xs text-gray-500">
+                <p>&copy; <span id="currentYear"></span> KANEBERG MEDIA. Tous droits réservés.</p>
+                <div class="flex space-x-4 mt-4 md:mt-0">
+                    <a href="https://discord.gg/FY3WYmaNxd" target="_blank" class="hover:text-white transition-colors">Discord</a>
+                    <a href="https://www.instagram.com/kaneberg.dune/" target="_blank" class="hover:text-white transition-colors">Instagram</a>
+                    <a href="https://www.youtube.com/@KanebergYT" target="_blank" class="hover:text-white transition-colors">YouTube</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- Dates ---
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const today = new Date();
+            const dateStr = today.toLocaleDateString('fr-FR', options);
+            if (document.getElementById('currentDate')) {
+                document.getElementById('currentDate').textContent = dateStr.charAt(0).toUpperCase() + dateStr.slice(1);
+            }
+            document.getElementById('currentYear').textContent = today.getFullYear();
+
+            // --- Thème Sombre / Clair ---
+            const themeToggleBtn = document.getElementById('themeToggle');
+            const htmlElement = document.documentElement;
+            
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                htmlElement.classList.add('dark');
+            } else {
+                htmlElement.classList.remove('dark');
+            }
+
+            themeToggleBtn.addEventListener('click', () => {
+                htmlElement.classList.toggle('dark');
+                localStorage.setItem('theme', htmlElement.classList.contains('dark') ? 'dark' : 'light');
+            });
+
+            // --- Logique du Catalogue d'Articles ---
+            const articlesStatus = document.getElementById('articlesStatus');
+            const articlesGrid = document.getElementById('articlesGrid');
+            const searchInput = document.getElementById('articleSearchInput');
+            const filterButtons = document.querySelectorAll('.filter-btn');
+
+            let allArticles = [];
+            let currentFilter = 'all';
+            let searchQuery = '';
+
+            const fallbackArticles = [
+                {
+                    "id": "origine-epice",
+                    "title": "L'Épice Mélange : Analyse biologique et économique de la substance la plus rare",
+                    "category": "Lore",
+                    "readTime": "8 min",
+                    "author": "Rédaction Kaneberg",
+                    "date": "2026-06-30",
+                    "image": "image_db9103.jpg",
+                    "summary": "L'Épice, ou Mélange, est le pilier de l'Empire. Mais comment est-elle produite exactement sur Arrakis et pourquoi fixe-t-elle l'économie galactique ?",
+                    "content": "L'Épice est sans doute l'élément le plus central de tout l'univers créé par Frank Herbert. Au-delà de ses capacités gériatriques (qui prolongent la vie), elle est l'essence même de la navigation spatiale de la Guilde. Le cycle du Ver des sables : L'erreur commune est de penser que l'Épice est un minéral. Il s'agit en réalité d'un sous-produit organique du cycle de vie du Ver des sables (Shai-Hulud). Les truites des sables excrètent une masse fongique qui, en se mélangeant à l'eau des profondeurs d'Arrakis, crée une explosion pré-épice remontant à la surface sous l'effet de la chaleur. « Celui qui contrôle l'Épice, contrôle l'Univers. » - Baron Vladimir Harkonnen. Sur le plan économique, le CHOAM base sa monnaie sur la rareté absolue de cette substance, créant un monopole forcé qui maintient l'équilibre politique de l'Imperium."
+                },
+                {
+                    "id": "jihad-butlerien",
+                    "title": "Le Jihad Butlérien : Pourquoi l'univers a banni l'intelligence artificielle",
+                    "category": "Histoire",
+                    "readTime": "12 min",
+                    "author": "Kaneberg",
+                    "date": "2026-06-29",
+                    "image": "",
+                    "summary": "Retour sur la guerre dévastatrice entre les humains et les machines pensantes, l'événement fondateur de la société féodale de Dune.",
+                    "content": "Plus de 10 000 ans avant les événements impliquant Paul Atréides, l'humanité a failli être anéantie par sa propre création : les machines pensantes et l'Intelligence Artificielle. Le grand tabou : Le Jihad Butlérien n'était pas seulement une guerre militaire, mais une véritable croisade idéologique. À son issue, un commandement absolu a été gravé dans la Bible Catholique Orange : « Tu ne feras point de machine à l'esprit de l'homme semblable. » Cette interdiction stricte a forcé l'humanité à développer les capacités de son propre esprit à l'extrême, donnant naissance aux écoles d'entraînement mental comme le Bene Gesserit, les Mentats (les ordinateurs humains) et les Navigateurs de la Guilde Spatiale."
+                },
+                {
+                    "id": "sentier-dor",
+                    "title": "Le Sentier d'Or : Leto II était-il un tyran ou le sauveur de l'humanité ?",
+                    "category": "Philosophie",
+                    "readTime": "15 min",
+                    "author": "Rédaction Kaneberg",
+                    "date": "2026-06-28",
+                    "image": "",
+                    "summary": "Une plongée complexe dans les motivations de l'Empereur-Dieu. Pourquoi la stagnation était-elle la véritable menace, et comment la dispersion a forcé la survie.",
+                    "content": "Leto II, le fils de Paul Atréides, a régné pendant 3500 ans d'une main de fer absolue, imposant la Paix de Leto. Pour beaucoup de lecteurs de la saga, il est l'incarnation de la tyrannie. Pourtant, son but ultime était le Sentier d'Or. Forcer l'évolution : La prescience de Leto lui avait montré une vérité terrifiante : l'humanité, devenue dépendante de l'Épice et de l'Empire de Corrino, était sur le point de s'éteindre par simple stagnation. En confisquant toute l'Épice et en se transformant lui-même en Ver des sables, il a créé une pression si insoutenable sur l'humanité qu'à sa mort, celle-ci s'est éparpillée dans tout l'univers (la Grande Dispersion), assurant sa survie définitive."
+                },
+                {
+                    "id": "denis-villeneuve-messiah",
+                    "title": "Denis Villeneuve confirme l'avancement du script du troisième volet",
+                    "category": "Actu",
+                    "readTime": "3 min",
+                    "author": "Rédaction Kaneberg",
+                    "date": "2026-06-27",
+                    "image": "",
+                    "summary": "Le réalisateur a pris la parole ce matin concernant l'adaptation tant attendue de Dune : Messiah.",
+                    "content": "Bonne nouvelle pour les fans de l'adaptation cinématographique. Denis Villeneuve a récemment confirmé lors d'une interview que l'écriture du scénario de Dune : Messiah avançait à grands pas. Le réalisateur souhaite cependant prendre son temps pour s'assurer de capturer la complexité de ce roman, qui déconstruit l'archétype du héros mis en place dans le premier livre. Il a précisé : « Messiah est un avertissement, pas une célébration. C'est le message de Frank Herbert, et il doit transparaître à l'écran. »"
+                },
+                {
+                    "id": "distilles-fremen",
+                    "title": "Distilles Fremen : Une réalité scientifique possible ?",
+                    "category": "Science",
+                    "readTime": "7 min",
+                    "author": "Kaneberg",
+                    "date": "2026-06-25",
+                    "image": "",
+                    "summary": "Analyse du fonctionnement des combinaisons de survie Fremen et de leur viabilité avec nos technologies actuelles.",
+                    "content": "Le distille est le vêtement emblématique des Fremen. Conçu pour recycler la moindre goutte d'humidité corporelle (sueur, urine, humidité expirée), il permet de survivre dans le désert profond d'Arrakis sans perdre plus d'un dé à coudre d'eau par jour. L'ingénierie derrière la fiction : Aujourd'hui, des technologies similaires sont utilisées à bord de la Station Spatiale Internationale (ISS) pour recycler l'urine et la sueur des astronautes en eau potable. Bien que nous ne soyons pas encore capables de miniaturiser ce système dans un vêtement flexible et autonome (notamment à cause des pompes fonctionnant au mouvement des talons décrites par Herbert), les avancées en nano-filtration rendent le concept théoriquement très solide."
+                },
+                {
+                    "id": "bene-gesserit-failles",
+                    "title": "Bene Gesserit : Les failles du plan génétique",
+                    "category": "Factions",
+                    "readTime": "10 min",
+                    "author": "Rédaction Kaneberg",
+                    "date": "2026-06-20",
+                    "image": "",
+                    "summary": "Comment un programme de sélection millénaire a été mis en échec par le sentiment le plus humain : l'amour.",
+                    "content": "Le Bene Gesserit manipule les lignées politiques de l'Imperium depuis des millénaires dans un but précis : créer le Kwisatz Haderach, un mâle capable d'accéder à l'ensemble de la mémoire génétique masculine et féminine, et de voir tous les futurs possibles. L'erreur de Dame Jessica : Leur plan était presque parfait. Il ne manquait qu'une génération : une fille Atréides devait s'unir à l'héritier Harkonnen pour refermer la faille génétique. Mais Dame Jessica, par amour pour le Duc Leto, a choisi de lui donner un fils, Paul. Cet acte de désobéissance a non seulement produit le Kwisatz Haderach une génération trop tôt, mais il l'a également placé hors du contrôle de la Révérende Mère, déclenchant le chaos sur Arrakis."
+                }
+            ];
+
+            async function loadArticles() {
+                try {
+                    let fetchUrl = 'articles.json';
+                    
+                    // Si nous sommes dans un environnement de prévisualisation (blob:), on adapte l'URL
+                    if (window.location.protocol === 'blob:') {
+                        fetchUrl = window.location.origin + '/articles.json';
+                    }
+
+                    const response = await fetch(fetchUrl);
+                    if (!response.ok) {
+                        throw new Error(`Erreur réseau : ${response.status}`);
+                    }
+                    allArticles = await response.json();
+                    console.log("Articles synchronisés depuis articles.json");
+                } catch (error) {
+                    console.warn("Échec du chargement JSON, utilisation de la base de secours :", error);
+                    allArticles = fallbackArticles;
+                } finally {
+                    // Masquage de l'état de chargement et affichage de la grille
+                    articlesStatus.classList.add('hidden');
+                    articlesGrid.classList.remove('hidden');
+                    renderArticles();
+                }
+            }
+
+            // Lancement du chargement
+            loadArticles();
+
+            // 2. Rendu des cartes d'articles dans la grille
+            function renderArticles() {
+                // Filtrer les articles en fonction de la catégorie et de la recherche
+                const filtered = allArticles.filter(article => {
+                    const matchesCategory = currentFilter === 'all' || article.category.toLowerCase() === currentFilter.toLowerCase();
+                    const matchesSearch = article.title.toLowerCase().includes(searchQuery) || 
+                                          article.summary.toLowerCase().includes(searchQuery) ||
+                                          article.category.toLowerCase().includes(searchQuery);
+                    return matchesCategory && matchesSearch;
+                });
+
+                // Vider la grille
+                articlesGrid.innerHTML = '';
+
+                if (filtered.length === 0) {
+                    articlesGrid.innerHTML = `
+                        <div class="col-span-full py-12 text-center">
+                            <p class="text-gray-500 text-lg">Aucun article ne correspond à votre recherche.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                // Générer les cartes
+                filtered.forEach(article => {
+                    const card = document.createElement('article');
+                    card.className = "group border border-gray-100 dark:border-gray-900 rounded-md overflow-hidden bg-white dark:bg-black flex flex-col h-full cursor-pointer transition-colors hover:border-gray-300 dark:hover:border-gray-700";
+                    
+                    // Lien cliquable global
+                    card.addEventListener('click', () => {
+                        window.location.href = `article.html?id=${article.id}`;
+                    });
+
+                    // Modèle d'image ou fallback minimaliste
+                    let imageHTML = '';
+                    if (article.image) {
+                        imageHTML = `<img src="${article.image}" alt="${article.title}" class="img-placeholder w-full h-full object-cover">`;
+                    } else {
+                        // Placeholders monochromes textuels de grande qualité
+                        imageHTML = `
+                            <div class="img-placeholder w-full h-full bg-gray-100 dark:bg-gray-950 flex flex-col items-center justify-center p-6 border-b border-gray-100 dark:border-gray-900 select-none">
+                                <span class="text-gray-300 dark:text-gray-800 font-black text-2xl tracking-widest uppercase">KANEBERG</span>
+                                <span class="text-[9px] text-gray-400 dark:text-gray-600 tracking-widest uppercase mt-2">Dossier Spécial / Archive</span>
+                            </div>
+                        `;
+                    }
+
+                    card.innerHTML = `
+                        <div class="aspect-video w-full image-zoom-container bg-gray-50 dark:bg-gray-950 relative">
+                            ${imageHTML}
+                            <span class="absolute top-3 left-3 bg-white dark:bg-black text-black dark:text-white text-[10px] font-bold px-2 py-1 uppercase tracking-wider rounded-sm border border-gray-100 dark:border-gray-900">
+                                ${article.category}
+                            </span>
+                        </div>
+                        <div class="p-6 flex flex-col flex-grow">
+                            <h3 class="text-lg font-bold leading-snug text-black dark:text-white mb-2 group-hover:text-gray-500 dark:group-hover:text-gray-400 transition-colors">
+                                ${article.title}
+                            </h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-6 line-clamp-3">
+                                ${article.summary}
+                            </p>
+                            <div class="mt-auto flex items-center justify-between text-xs text-gray-500 border-t border-gray-100 dark:border-gray-900 pt-4">
+                                <span>${article.date}</span>
+                                <span>&bull;</span>
+                                <span>${article.readTime}</span>
+                            </div>
+                        </div>
+                    `;
+
+                    articlesGrid.appendChild(card);
+                });
+            }
+
+            // 3. Événement de filtrage par boutons
+            filterButtons.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    // Retirer la classe active de tous les boutons
+                    filterButtons.forEach(b => {
+                        b.classList.remove('filter-btn-active');
+                        b.classList.add('hover:border-black', 'dark:hover:border-white');
+                    });
+
+                    // Activer le bouton cliqué
+                    btn.classList.add('filter-btn-active');
+                    btn.classList.remove('hover:border-black', 'dark:hover:border-white');
+
+                    currentFilter = btn.getAttribute('data-category');
+                    renderArticles();
+                });
+            });
+
+            // 4. Événement de recherche
+            searchInput.addEventListener('input', (e) => {
+                searchQuery = e.target.value.toLowerCase().trim();
+                renderArticles();
+            });
+
+        });
+    </script>
+</body>
+</html>
