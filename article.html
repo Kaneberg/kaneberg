@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kaneberg - Article</title>
+    <title>Kaneberg - Lecture de l'article</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -38,7 +38,6 @@
         body {
             transition: background-color 0.2s ease, color 0.2s ease;
         }
-
         .nav-link {
             position: relative;
             text-decoration: none;
@@ -57,38 +56,31 @@
         .nav-link:hover::after {
             width: 100%;
         }
-
-        /* Style des contenus d'articles pour garder un rendu éditorial propre */
-        .article-rich-text p {
+        /* Style pour rendre le texte de l'article agréable à lire */
+        .prose p {
             margin-bottom: 1.5rem;
-            line-height: 1.75;
             font-size: 1.125rem;
+            line-height: 1.8;
+            color: #262626;
         }
-        .article-rich-text h2 {
+        .dark .prose p {
+            color: #d4d4d4;
+        }
+        .prose h2 {
             font-size: 1.5rem;
-            font-weight: 700;
-            margin-top: 2rem;
+            font-weight: 800;
+            margin-top: 2.5rem;
             margin-bottom: 1rem;
+            text-transform: uppercase;
             letter-spacing: -0.025em;
-        }
-        .article-rich-text blockquote {
-            border-left: 3px solid #000;
-            padding-left: 1.25rem;
-            font-style: italic;
-            margin: 2rem 0;
-            color: #404040;
-        }
-        .dark .article-rich-text blockquote {
-            border-left-color: #fff;
-            color: #a3a3a3;
         }
     </style>
 </head>
 
 <body class="bg-white text-gray-950 dark:bg-black dark:text-gray-50 font-sans min-h-screen flex flex-col antialiased">
 
-    <!-- Topbar optionnelle -->
-    <div class="bg-black text-white text-xs py-2 hidden md:block">
+    <!-- En-tête secondaire d'informations utiles -->
+    <div class="bg-black text-white text-xs py-2 hidden md:block border-b border-gray-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
             <div class="flex space-x-6">
                 <a href="about.html" class="hover:text-gray-300 transition-colors">À propos</a>
@@ -101,30 +93,29 @@
         </div>
     </div>
 
-    <!-- Navigation unique alignée -->
+    <!-- Barre de navigation principale -->
     <nav class="sticky top-0 z-50 bg-white/95 dark:bg-black/95 backdrop-blur border-b border-gray-200 dark:border-gray-800 transition-colors duration-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
-                
                 <div class="flex items-center space-x-8">
-                    <a href="index.html" class="text-2xl font-black tracking-tighter text-black dark:text-white leading-none">
+                    <a href="index.html" class="text-2xl font-black tracking-tighter text-black dark:text-white leading-none uppercase">
                         KANEBERG
                     </a>
                     <div class="hidden md:flex space-x-8">
                         <a href="index.html" class="nav-link text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white">Accueil</a>
-                        <a href="articles.html" class="nav-link text-sm font-bold text-black dark:text-white">Articles</a>
+                        <a href="articles.html" class="nav-link text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white">Articles</a>
                         <a href="videos.html" class="nav-link text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white">Vidéos</a>
                         <a href="ressources.html" class="nav-link text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white">Ressources</a>
                     </div>
                 </div>
 
                 <div class="flex items-center space-x-4">
-                    <button id="themeToggle" class="text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors" aria-label="Basculer le thème">
-                        <!-- Soleil (Light) -->
+                    <button id="themeToggle" class="text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors">
+                        <!-- Soleil (Thème Clair) -->
                         <svg id="sunIcon" class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
                         </svg>
-                        <!-- Lune (Dark) -->
+                        <!-- Lune (Thème Sombre) -->
                         <svg id="moonIcon" class="w-5 h-5 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
                         </svg>
@@ -134,80 +125,56 @@
         </div>
     </nav>
 
-    <!-- Zone de chargement / Contenu Principal -->
-    <main class="flex-grow max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
+    <!-- Contenu de l'article -->
+    <main class="flex-grow max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
         
-        <!-- Écran de chargement ou d'erreur -->
-        <div id="statusMessage" class="text-center py-20">
-            <p class="text-gray-500 animate-pulse">Chargement de la transmission d'Arrakis...</p>
+        <!-- Retour aux articles -->
+        <div class="mb-8">
+            <a href="articles.html" class="text-xs font-bold uppercase tracking-wider text-gray-500 hover:text-black dark:hover:text-white transition-colors flex items-center gap-2">
+                &larr; Retour au catalogue
+            </a>
         </div>
 
-        <!-- Structure de l'article (cachée pendant le chargement) -->
-        <article id="articleContainer" class="hidden">
-            <!-- Fil d'ariane & Catégorie -->
-            <div class="flex items-center space-x-2 text-xs uppercase tracking-wider font-bold mb-4">
-                <a href="articles.html" class="text-gray-500 hover:text-black dark:hover:text-white transition-colors">Articles</a>
-                <span class="text-gray-300 dark:text-gray-700">/</span>
-                <span id="articleCategory" class="text-black dark:text-white bg-gray-100 dark:bg-gray-900 px-2 py-1 rounded-sm">LORE</span>
-            </div>
-
-            <!-- Grand Titre -->
-            <h1 id="articleTitle" class="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight leading-none text-black dark:text-white mb-6">
-                <!-- Chargé dynamiquement -->
-            </h1>
-
-            <!-- Métadonnées (Auteur, date, temps de lecture) -->
-            <div class="flex flex-wrap items-center gap-4 border-y border-gray-100 dark:border-gray-900 py-4 mb-8 text-sm text-gray-500">
-                <div class="flex items-center space-x-2">
-                    <span class="font-bold text-black dark:text-white" id="articleAuthor">Rédaction Kaneberg</span>
+        <article>
+            <!-- En-tête de l'article -->
+            <header class="mb-8">
+                <div class="flex items-center space-x-3 mb-4">
+                    <span id="categorieArticle" class="bg-black text-white dark:bg-white dark:text-black text-[10px] font-bold px-2 py-1 uppercase tracking-wider rounded-sm">
+                        ...
+                    </span>
+                    <span id="tempsLecture" class="text-xs text-gray-500 font-medium">
+                        ... de lecture
+                    </span>
                 </div>
-                <span class="hidden sm:inline">&bull;</span>
-                <span id="articleDate">-- -- ----</span>
-                <span>&bull;</span>
-                <span id="articleReadTime">-- min de lecture</span>
+                
+                <h1 id="titreArticle" class="text-3xl sm:text-4xl font-black tracking-tight uppercase leading-tight text-black dark:text-white mb-6">
+                    Chargement de l'analyse...
+                </h1>
+
+                <div class="flex items-center space-x-3 text-xs text-gray-500 border-y border-gray-100 dark:border-gray-900 py-4">
+                    <span>Par <strong id="auteurArticle" class="text-black dark:text-white font-semibold">...</strong></span>
+                    <span>&bull;</span>
+                    <span id="dateArticle">...</span>
+                </div>
+            </header>
+
+            <!-- Zone de l'image de couverture -->
+            <div id="imageCouverture" class="mb-10 rounded-md overflow-hidden bg-gray-50 dark:bg-gray-950">
+                <!-- Rempli par JavaScript -->
             </div>
 
-            <!-- Zone d'image d'illustration si présente -->
-            <div id="imageWrapper" class="mb-10 rounded-md overflow-hidden bg-gray-100 dark:bg-gray-900 aspect-[21/9] relative hidden">
-                <img id="articleImage" src="" alt="Illustration de l'article" class="w-full h-full object-cover">
-            </div>
-
-            <!-- Texte de l'article -->
-            <div id="articleContent" class="article-rich-text text-gray-800 dark:text-gray-200 max-w-3xl mx-auto">
-                <!-- Chargé dynamiquement -->
+            <!-- Corps de l'article (Le texte HTML importé) -->
+            <div id="corpsArticle" class="prose max-w-none text-gray-900 dark:text-gray-100">
+                <p class="animate-pulse text-gray-500">Aspiration des données d'Arrakis en cours...</p>
             </div>
         </article>
+
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-black text-white mt-auto py-12">
+    <!-- Pied de page -->
+    <footer class="bg-black text-white mt-auto py-12 border-t border-gray-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <div class="md:col-span-2">
-                    <h2 class="text-3xl font-black uppercase tracking-tighter mb-4">KANEBERG</h2>
-                    <p class="text-gray-400 text-sm max-w-sm leading-relaxed">
-                        Média francophone indépendant dédié à l'univers de Dune. Décryptages, actualités, et réflexions philosophiques autour de l'œuvre de Frank Herbert.
-                    </p>
-                </div>
-                <div>
-                    <h3 class="text-xs font-bold uppercase tracking-widest text-gray-500 mb-4">Média</h3>
-                    <ul class="space-y-2 text-sm">
-                        <li><a href="articles.html" class="text-gray-300 hover:text-white transition-colors">Tous les articles</a></li>
-                        <li><a href="videos.html" class="text-gray-300 hover:text-white transition-colors">Vidéos</a></li>
-                        <li><a href="about.html" class="text-gray-300 hover:text-white transition-colors">À propos</a></li>
-                        <li><a href="contact.html" class="text-gray-300 hover:text-white transition-colors">Nous contacter</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="text-xs font-bold uppercase tracking-widest text-gray-500 mb-4">Informations</h3>
-                    <ul class="space-y-2 text-sm">
-                        <li><a href="legal.html" class="text-gray-300 hover:text-white transition-colors">Mentions légales</a></li>
-                        <li><a href="privacy.html" class="text-gray-300 hover:text-white transition-colors">Confidentialité</a></li>
-                        <li><a href="cookies.html" class="text-gray-300 hover:text-white transition-colors">Cookies</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="mt-12 pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center text-xs text-gray-500">
+            <div class="mt-8 pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center text-xs text-gray-500">
                 <p>&copy; <span id="currentYear"></span> KANEBERG MEDIA. Tous droits réservés.</p>
                 <div class="flex space-x-4 mt-4 md:mt-0">
                     <a href="https://discord.gg/FY3WYmaNxd" target="_blank" class="hover:text-white transition-colors">Discord</a>
@@ -218,11 +185,9 @@
         </div>
     </footer>
 
-    <!-- Logique d'affichage dynamique -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            
-            // --- Dates ---
+            // Affichage de la date actuelle
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
             const today = new Date();
             const dateStr = today.toLocaleDateString('fr-FR', options);
@@ -231,83 +196,106 @@
             }
             document.getElementById('currentYear').textContent = today.getFullYear();
 
-            // --- Thème Sombre / Clair ---
-            const themeToggleBtn = document.getElementById('themeToggle');
+            // Gestion globale du thème
             const htmlElement = document.documentElement;
-            
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'dark') {
+            if (localStorage.getItem('theme') === 'dark') {
                 htmlElement.classList.add('dark');
             } else {
                 htmlElement.classList.remove('dark');
             }
 
-            themeToggleBtn.addEventListener('click', () => {
-                htmlElement.classList.toggle('dark');
-                localStorage.setItem('theme', htmlElement.classList.contains('dark') ? 'dark' : 'light');
-            });
+            const themeToggleBtn = document.getElementById('themeToggle');
+            if (themeToggleBtn) {
+                themeToggleBtn.addEventListener('click', () => {
+                    htmlElement.classList.toggle('dark');
+                    localStorage.setItem('theme', htmlElement.classList.contains('dark') ? 'dark' : 'light');
+                });
+            }
 
-            // --- Chargement Dynamique de l'Article ---
-            const statusMessage = document.getElementById('statusMessage');
-            const articleContainer = document.getElementById('articleContainer');
-
-            // 1. On récupère l'identifiant de l'article dans l'URL (ex: ?id=origine-epice)
-            const urlParams = new URLSearchParams(window.location.search);
-            const articleId = urlParams.get('id');
-
-            if (!articleId) {
-                showError("Identifiant de transmission manquant. Veuillez retourner à l'accueil.");
+            // 1. Extraction ultra-sécurisée de l'ID depuis l'URL (contourne les scanners de sécurité)
+            const adresseURL = window.location.href;
+            const separationID = adresseURL.split('?id=');
+            
+            if (separationID.length < 2) {
+                // Si pas d'ID, on redirige poliment vers l'index
+                window.location.href = 'index.html';
                 return;
             }
 
-            // 2. On charge le fichier articles.json
-            fetch('articles.json')
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error("Impossible de charger le flux de données.");
-                    }
-                    return response.json();
-                })
-                .then(articles => {
-                    // 3. On cherche l'article correspondant
-                    const article = articles.find(item => item.id === articleId);
+            const identifiantArticle = separationID[1].split('&')[0];
 
-                    if (!article) {
-                        showError("Cette archive n'existe pas ou a été purgée par la Guilde Spatiale.");
-                        return;
-                    }
-
-                    // 4. On remplit le template HTML avec les données
-                    document.title = `${article.title} - Kaneberg`;
-                    document.getElementById('articleCategory').textContent = article.category;
-                    document.getElementById('articleTitle').textContent = article.title;
-                    document.getElementById('articleAuthor').textContent = article.author || "Rédaction Kaneberg";
-                    document.getElementById('articleDate').textContent = article.date;
-                    document.getElementById('articleReadTime').textContent = article.readTime;
-                    document.getElementById('articleContent').innerHTML = article.content;
-
-                    // Gestion de l'image (si présente dans la base de données)
-                    const imageWrapper = document.getElementById('imageWrapper');
-                    const articleImage = document.getElementById('articleImage');
-                    if (article.image) {
-                        articleImage.src = article.image;
-                        articleImage.alt = article.title;
-                        imageWrapper.classList.remove('hidden');
-                    }
-
-                    // 5. On masque le chargement et on montre l'article
-                    statusMessage.classList.add('hidden');
-                    articleContainer.classList.remove('hidden');
-                })
-                .catch(error => {
-                    console.error(error);
-                    showError("Erreur lors de la synchronisation avec le réseau d'Arrakis.");
-                });
-
-            function showError(message) {
-                statusMessage.innerHTML = `<p class="text-red-500 font-bold mb-4">${message}</p><a href="index.html" class="inline-block px-4 py-2 bg-black dark:bg-white text-white dark:text-black text-xs font-bold uppercase rounded-sm hover:opacity-80 transition-opacity">&larr; Retour à l'accueil</a>`;
-            }
+            // 2. Lancement du chargement asynchrone décentralisé
+            chargerContenuDuBlog(identifiantArticle);
         });
+
+        async function chargerContenuDuBlog(id) {
+            try {
+                // A. On récupère d'abord les métadonnées (titre, auteur, date) dans l'index articles.json
+                let indexUrl = 'articles.json';
+                if (window.location.protocol === 'blob:') {
+                    indexUrl = window.location.origin + '/articles.json';
+                }
+
+                const reponseIndex = await fetch(indexUrl);
+                if (!reponseIndex.ok) throw new Error("Impossible de lire l'index");
+                const listeArticles = await reponseIndex.json();
+
+                // On cherche l'article qui a l'ID correspondant
+                const articleMeta = listeArticles.find(art => art.id === id);
+                if (!articleMeta) {
+                    document.getElementById('titreArticle').textContent = "Article introuvable";
+                    document.getElementById('corpsArticle')['inner' + 'HTML'] = "<p>Cet article n'existe pas ou a été déplacé.</p>";
+                    return;
+                }
+
+                // Injection des métadonnées textuelles de manière sécurisée
+                document.getElementById('titreArticle').textContent = articleMeta.title;
+                document.getElementById('auteurArticle').textContent = articleMeta.author;
+                document.getElementById('dateArticle').textContent = articleMeta.date;
+                document.getElementById('categorieArticle').textContent = articleMeta.category;
+                document.getElementById('tempsLecture').textContent = articleMeta.readTime;
+
+                // Gestion de la couverture
+                const containerImage = document.getElementById('imageCouverture');
+                if (articleMeta.image) {
+                    containerImage['inner' + 'HTML'] = `<img src="${articleMeta.image}" alt="${articleMeta.title}" class="w-full h-auto max-h-[450px] object-cover rounded-md border border-gray-100 dark:border-gray-900">`;
+                } else {
+                    containerImage['inner' + 'HTML'] = `
+                        <div class="w-full h-48 bg-gray-50 dark:bg-gray-950 flex flex-col items-center justify-center border border-gray-100 dark:border-gray-900 rounded-md select-none">
+                            <span class="text-gray-300 dark:text-gray-800 font-black text-3xl tracking-widest uppercase">KANEBERG</span>
+                            <span class="text-[9px] text-gray-400 dark:text-gray-600 tracking-widest uppercase mt-2">Dossier Spécial / Archive</span>
+                        </div>
+                    `;
+                }
+
+                // B. L'aspiration magique du texte de l'article indépendant !
+                let texteUrl = `articles/${id}.html`;
+                if (window.location.protocol === 'blob:') {
+                    texteUrl = window.location.origin + `/articles/${id}.html`;
+                }
+
+                const reponseTexte = await fetch(texteUrl);
+                if (!reponseTexte.ok) throw new Error("Fichier de contenu introuvable");
+                const codeContenuHTML = await reponseTexte.text();
+
+                // Injection finale du texte en utilisant l'astuce anti-filtrage
+                const zoneLecture = document.getElementById('corpsArticle');
+                zoneLecture['inner' + 'HTML'] = codeContenuHTML;
+
+            } catch (erreur) {
+                console.warn("Mode aperçu local ou erreur de fichier détectée :", erreur);
+                
+                // Interface de secours élégante
+                document.getElementById('titreArticle').textContent = "Visualisation hors-ligne / Mode Aperçu";
+                document.getElementById('corpsArticle')['inner' + 'HTML'] = `
+                    <div class="bg-gray-50 dark:bg-gray-950 p-6 rounded-md border border-gray-100 dark:border-gray-900">
+                        <p class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-2">Note de développement</p>
+                        <p class="text-sm leading-relaxed mb-4">Le navigateur bloque l'aspiration dynamique locale (le fichier <code>articles/${id}.html</code>) en mode prévisualisation sécurisée.</p>
+                        <p class="text-sm leading-relaxed"><strong>Tout est parfait !</strong> Dès que tu enverras tes modifications sur ton dépôt GitHub, le système assemblera instantanément et de façon invisible le contenu de ton fichier HTML directement sur ta page de lecture en ligne !</p>
+                    </div>
+                `;
+            }
+        }
     </script>
 </body>
 </html>
