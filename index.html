@@ -155,7 +155,7 @@
         <div class="flex items-center text-sm">
             <span class="bg-yellow-400 text-black px-2 py-1 rounded-sm font-bold mr-4 uppercase tracking-wider text-[10px] select-none">Trending</span>
             <div class="flex-1 truncate text-gray-600 dark:text-gray-400 font-medium">
-                <a href="article.html?id=denis-villeneuve-messiah" class="hover:underline">Le script de Dune : Messiah progresse à grands pas d'après Denis Villeneuve &rarr;</a>
+                <a href="article.html?id=probleme-dune-awakening-2026" class="hover:underline">Dune Awakening a-t-il menti à sa communauté ? Notre analyse complète &rarr;</a>
             </div>
         </div>
     </div>
@@ -346,7 +346,18 @@
                 localStorage.setItem('theme', htmlElement.classList.contains('dark') ? 'dark' : 'light');
             });
 
+            // Sauvegarde de secours mise à jour avec le nouvel article !
             const fallbackArticles = [
+                {
+                    "id": "probleme-dune-awakening-2026",
+                    "title": "Le problème de DUNE Awakening en 2026 : Entre fausses promesses et rédemption",
+                    "category": "Actu",
+                    "readTime": "10 min",
+                    "author": "Rédaction Kaneberg",
+                    "date": "2026-07-01",
+                    "image": "",
+                    "summary": "Dune Awakening a-t-il menti à sa communauté ? Retour sur la polémique du MMO de Funcom, ses échecs de design au lancement, et sa spectaculaire mise à jour PvE/PvP de 2026."
+                },
                 {
                     "id": "origine-epice",
                     "title": "L'Épice Mélange : Analyse biologique et économique de la substance la plus rare",
@@ -413,9 +424,11 @@
 
             async function fetchArticles() {
                 try {
-                    let fetchUrl = 'articles.json';
+                    // Système anti-cache (Cache-busting)
+                    const cacheBuster = `?t=${new Date().getTime()}`;
+                    let fetchUrl = 'articles.json' + cacheBuster;
                     if (window.location.protocol === 'blob:') {
-                        fetchUrl = window.location.origin + '/articles.json';
+                        fetchUrl = window.location.origin + '/articles.json' + cacheBuster;
                     }
                     const response = await fetch(fetchUrl);
                     if (!response.ok) {
@@ -436,7 +449,7 @@
                 
                 // 1. Remplissage de la grille Hero (4 premières places)
                 const heroGrid = document.getElementById('heroGrid');
-                heroGrid.innerHTML = ''; // Réinitialisation de la grille d'attente
+                heroGrid.innerHTML = ''; 
 
                 if (sorted.length >= 4) {
                     // Left Main Slot (Large - index 0)
@@ -489,7 +502,7 @@
                         newsFeedContainer.appendChild(createFeedItemHTML(art));
                     });
                 } else {
-                    newsFeedContainer.innerHTML = `<p class="text-xs text-gray-500">Aucun autre article récent disponible.</p>`;
+                    newsFeedContainer.innerHTML = `<p class="text-xs text-gray-500">Aucun autre article récents disponible.</p>`;
                 }
             }
 
