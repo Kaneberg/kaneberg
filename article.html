@@ -198,6 +198,10 @@
     </footer>
 
     <script>
+        // --- CONFIGURATION FIREBASE ---
+        // Remplace l'URL ci-dessous par ton URL exacte Firebase Realtime Database
+        const FIREBASE_URL = "https://kaneberg-stats-default-rtdb.europe-west1.firebasedatabase.app/";
+
         document.addEventListener('DOMContentLoaded', () => {
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
             const today = new Date();
@@ -249,7 +253,7 @@
                 const articleMeta = listeArticles.find(art => art.id === id);
                 if (!articleMeta) {
                     document.getElementById('titreArticle').textContent = "Article introuvable";
-                    document.getElementById('corpsArticle')['inner' + 'HTML'] = "<p>Cet article n'existe pas ou a été déplacé.</p>";
+                    document.getElementById('corpsArticle').innerHTML = "<p>Cet article n'existe pas ou a été déplacé.</p>";
                     return;
                 }
 
@@ -261,9 +265,9 @@
 
                 const containerImage = document.getElementById('imageCouverture');
                 if (articleMeta.image) {
-                    containerImage['inner' + 'HTML'] = `<img src="${articleMeta.image}" alt="${articleMeta.title}" class="w-full h-auto max-h-[450px] object-cover rounded-md border border-gray-100 dark:border-gray-900">`;
+                    containerImage.innerHTML = `<img src="${articleMeta.image}" alt="${articleMeta.title}" class="w-full h-auto max-h-[450px] object-cover rounded-md border border-gray-100 dark:border-gray-900">`;
                 } else {
-                    containerImage['inner' + 'HTML'] = `
+                    containerImage.innerHTML = `
                         <div class="w-full h-48 bg-gray-50 dark:bg-gray-950 flex flex-col items-center justify-center border border-gray-100 dark:border-gray-900 rounded-md select-none">
                             <span class="text-gray-300 dark:text-gray-800 font-black text-3xl tracking-widest uppercase">KANEBERG</span>
                         </div>
@@ -279,8 +283,7 @@
                 if (!reponseTexte.ok) throw new Error("Fichier de contenu introuvable");
                 const codeContenuHTML = await reponseTexte.text();
 
-                const zoneLecture = document.getElementById('corpsArticle');
-                zoneLecture['inner' + 'HTML'] = codeContenuHTML;
+                document.getElementById('corpsArticle').innerHTML = codeContenuHTML;
 
             } catch (erreur) {
                 console.warn("Mode secours aperçu local :", erreur);
@@ -288,77 +291,62 @@
             }
         }
 
-        // --- GESTION DES VUES ET LIKES SÉCURISÉE ET AUTO-HÉBERGÉE ---
-        function initStats(articleId) {
+        // --- GESTION EN TEMPS RÉEL FIREBASE (VUES & LIKES) ---
+        async function initStats(articleId) {
             const viewsElem = document.getElementById('articleViews');
             const likesElem = document.getElementById('articleLikes');
             const likeBtn = document.getElementById('likeBtn');
 
-            // 1. Clés de stockage local
-            const storageViewsKey = `kb_views_${articleId}`;
-            const storageLikesKey = `kb_likes_${articleId}`;
             const userLikedKey = `kb_has_liked_${articleId}`;
+            const cleanDbUrl = FIREBASE_URL.replace(/\/$/, "");
+            const articleEndpoint = `${cleanDbUrl}/stats/${articleId}.json`;
 
-            // Calcul et increment local des vues
-            let views = parseInt(localStorage.getItem(storageViewsKey) || "120") + 1;
-            localStorage.setItem(storageViewsKey, views.toString());
-            viewsElem.textContent = views.toLocaleString('fr-FR');
+            try {
+                // 1. Charger les statistiques actuelles depuis Firebase
+                const response = await fetch(articleEndpoint);
+                let data = await response.json() || { views: 120, likes: 14 };
 
-            // Récupération des likes
-            let likes = parseInt(localStorage.getItem(storageLikesKey) || "14");
-            likesElem.textContent = likes.toString();
+                let views = (data.views || 0) + 1;
+                let likes = data.likes || 0;
 
-            // 2. Vérification si déjà liké
-            if (localStorage.getItem(userLikedKey)) {
-                setLikedState();
-            }
+                // 2. Mettre à jour la vue (+1) sur Firebase
+                fetch(articleEndpoint, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ views: views })
+                }).catch(err => console.warn("Erreur sauvegarde vue :", err));
 
-            // 3. Gestion du clic sur le bouton Like
-            likeBtn.addEventListener('click', () => {
-                if (!localStorage.getItem(userLikedKey)) {
-                    likes += 1;
-                    localStorage.setItem(storageLikesKey, likes.toString());
-                    localStorage.setItem(userLikedKey, 'true');
-                    likesElem.textContent = likes.toString();
-                    setLikedState();
+                // Affiche les chiffres réels
+                viewsElem.textContent = views.toLocaleString('fr-FR');
+                likesElem.textContent = likes.toString();
+
+                // 3. Vérification si déjà liké localement
+                if (localStorage.getItem(userLikedKey)) {
+                    setLikedState(false);
                 }
-            });
 
-        function initStats(articleId) {
-            const viewsElem = document.getElementById('articleViews');
-            const likesElem = document.getElementById('articleLikes');
-            const likeBtn = document.getElementById('likeBtn');
+                // 4. Clic sur le bouton Like
+                likeBtn.addEventListener('click', () => {
+                    if (!localStorage.getItem(userLikedKey)) {
+                        likes += 1;
+                        likesElem.textContent = likes.toString();
+                        localStorage.setItem(userLikedKey, 'true');
+                        setLikedState(true);
+                        triggerToast();
 
-            // 1. Clés de stockage local
-            const storageViewsKey = `kb_views_${articleId}`;
-            const storageLikesKey = `kb_likes_${articleId}`;
-            const userLikedKey = `kb_has_liked_${articleId}`;
+                        // Sauvegarde le Like en temps réel dans Firebase
+                        fetch(articleEndpoint, {
+                            method: 'PATCH',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ likes: likes })
+                        }).catch(err => console.warn("Erreur sauvegarde like :", err));
+                    }
+                });
 
-            // Calcul et increment local des vues
-            let views = parseInt(localStorage.getItem(storageViewsKey) || "120") + 1;
-            localStorage.setItem(storageViewsKey, views.toString());
-            viewsElem.textContent = views.toLocaleString('fr-FR');
-
-            // Récupération des likes
-            let likes = parseInt(localStorage.getItem(storageLikesKey) || "14");
-            likesElem.textContent = likes.toString();
-
-            // 2. Vérification si déjà liké
-            if (localStorage.getItem(userLikedKey)) {
-                setLikedState(false);
+            } catch (err) {
+                console.warn("Connexion à Firebase impossible, bascule en mode local :", err);
+                initLocalStorageFallback(articleId);
             }
-
-            // 3. Gestion du clic sur le bouton Like
-            likeBtn.addEventListener('click', () => {
-                if (!localStorage.getItem(userLikedKey)) {
-                    likes += 1;
-                    localStorage.setItem(storageLikesKey, likes.toString());
-                    localStorage.setItem(userLikedKey, 'true');
-                    likesElem.textContent = likes.toString();
-                    setLikedState(true);
-                    triggerToast();
-                }
-            });
 
             function setLikedState(animate = false) {
                 likeBtn.classList.add('bg-red-50', 'dark:bg-red-950/30', 'border-red-500/60', 'text-red-600', 'dark:text-red-400');
@@ -390,6 +378,28 @@
                     toast.classList.remove('translate-y-0', 'opacity-100');
                     toast.classList.add('translate-y-10', 'opacity-0', 'pointer-events-none');
                 }, 3000);
+            }
+
+            function initLocalStorageFallback(articleId) {
+                let views = parseInt(localStorage.getItem(`kb_views_${articleId}`) || "120") + 1;
+                localStorage.setItem(`kb_views_${articleId}`, views.toString());
+                viewsElem.textContent = views.toLocaleString('fr-FR');
+
+                let likes = parseInt(localStorage.getItem(`kb_likes_${articleId}`) || "14");
+                likesElem.textContent = likes.toString();
+
+                if (localStorage.getItem(userLikedKey)) setLikedState(false);
+
+                likeBtn.addEventListener('click', () => {
+                    if (!localStorage.getItem(userLikedKey)) {
+                        likes += 1;
+                        localStorage.setItem(`kb_likes_${articleId}`, likes.toString());
+                        localStorage.setItem(userLikedKey, 'true');
+                        likesElem.textContent = likes.toString();
+                        setLikedState(true);
+                        triggerToast();
+                    }
+                });
             }
         }
     </script>
