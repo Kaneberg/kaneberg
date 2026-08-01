@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<!-- Par défaut en thème clair (blanc) -->
 <html lang="fr" class="">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kaneberg - Dune</title>
+    <title>Kaneberg - Média d'actualité Dune</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -16,7 +15,6 @@
                         sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
                     },
                     colors: {
-                        // Échelle monochrome pure sans aucune nuance de bleu
                         gray: {
                             50: '#fafafa',
                             100: '#f5f5f5',
@@ -92,6 +90,7 @@
 
 <body class="bg-white text-gray-950 dark:bg-black dark:text-gray-50 font-sans min-h-screen flex flex-col antialiased">
 
+    <!-- Header info -->
     <div class="bg-black text-white text-xs py-2 hidden md:block border-b border-gray-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
             <div class="flex space-x-6">
@@ -105,11 +104,11 @@
         </div>
     </div>
 
+    <!-- Navigation -->
     <nav class="sticky top-0 z-50 bg-white/95 dark:bg-black/95 backdrop-blur border-b border-gray-200 dark:border-gray-800 transition-colors duration-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 
-                <!-- Logo & Menu Principal -->
                 <div class="flex items-center space-x-8">
                     <a href="index.html" class="text-2xl font-black tracking-tighter text-black dark:text-white leading-none uppercase">
                         KANEBERG
@@ -123,7 +122,6 @@
                     </div>
                 </div>
 
-                <!-- Outils de recherche et de thème à droite -->
                 <div class="flex items-center space-x-4">
                     <div class="relative flex items-center">
                         <svg class="w-4 h-4 absolute left-3 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -136,11 +134,9 @@
                     <div class="w-px h-5 bg-gray-300 dark:bg-gray-700"></div>
 
                     <button id="themeToggle" class="text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors" aria-label="Basculer le thème">
-                        <!-- Soleil (Thème Clair actif) -->
                         <svg id="sunIcon" class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
                         </svg>
-                        <!-- Lune (Thème Sombre actif) -->
                         <svg id="moonIcon" class="w-5 h-5 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
                         </svg>
@@ -150,33 +146,31 @@
         </div>
     </nav>
 
+    <!-- BANNIÈRE TRENDING DYNAMIQUE -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 border-b border-gray-100 dark:border-gray-900">
         <div class="flex items-center text-sm">
             <span class="bg-yellow-400 text-black px-2 py-1 rounded-sm font-bold mr-4 uppercase tracking-wider text-[10px] select-none">Trending</span>
-            <div class="flex-1 truncate text-gray-600 dark:text-gray-400 font-medium">
-                <a href="article.html?id=probleme-dune-awakening-2026" class="hover:underline">Dune Awakening a-t-il menti à sa communauté ? Notre analyse complète &rarr;</a>
+            <div class="flex-1 truncate text-gray-600 dark:text-gray-400 font-medium" id="trendingContainer">
+                <span class="animate-pulse">Chargement de la dernière actualité...</span>
             </div>
         </div>
     </div>
 
     <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
         
-        <!-- SECTION HERO (Mise en page asymétrique dynamique) -->
+        <!-- SECTION HERO (Injection 100% Dynamique) -->
         <section class="mb-16">
             <div class="grid grid-cols-1 lg:grid-cols-4 gap-4 h-auto lg:h-[500px]" id="heroGrid">
-                
-                <!-- Les slots d'injection dynamique seront remplacés par JavaScript -->
                 <div class="col-span-full py-16 text-center text-gray-400 animate-pulse">
-                    Mise en place de la bibliothèque...
+                    Mise en place de la bibliothèque impériale...
                 </div>
-
             </div>
         </section>
 
-        <!-- SECTION ANALYSE & FIL D'ACTUALITÉ -->
+        <!-- SECTION ANALYSE & FIL D'ACTUALITÉ DYNAMIQUE -->
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-16 border-t border-gray-100 dark:border-gray-900 pt-8">
             
-            <!-- Colonne de Gauche (Focus sur un article de Philosophie) -->
+            <!-- Colonne de Gauche (Focus : Analyse / Philosophie) -->
             <div class="lg:col-span-4 flex flex-col">
                 <h3 class="text-sm font-bold uppercase tracking-wider border-b-2 border-black dark:border-white pb-2 mb-6 inline-block self-start">Focus : Analyse</h3>
                 <div id="philoHighlightContainer" class="flex-grow">
@@ -184,42 +178,41 @@
                 </div>
             </div>
 
-            <!-- Colonne Centrale (Fil d'actualité empilé de 4 articles) -->
+            <!-- Colonne Centrale (Fil des Dernières Publications Automatique) -->
             <div class="lg:col-span-5 flex flex-col">
-                <h3 class="text-sm font-bold uppercase tracking-wider border-b-2 border-transparent pb-2 mb-6 text-gray-400 self-start">Dernières publications</h3>
+                <div class="flex items-center justify-between border-b border-gray-200 dark:border-gray-800 pb-2 mb-6">
+                    <h3 class="text-sm font-bold uppercase tracking-wider text-black dark:text-white">Dernières publications</h3>
+                    <a href="articles.html" class="text-xs text-gray-500 hover:text-black dark:hover:text-white transition-colors">Voir tout &rarr;</a>
+                </div>
                 <div id="newsFeedContainer" class="flex flex-col space-y-6">
                     <!-- Injecté par JavaScript -->
                 </div>
             </div>
 
-            <!-- Colonne de Droite (Sidebar de support, Réseaux et Statistiques) -->
+            <!-- Colonne de Droite (Réseaux & Support) -->
             <aside class="lg:col-span-3 flex flex-col space-y-8">
                 <div>
                     <h3 class="text-sm font-bold uppercase tracking-wider border-b-2 border-black dark:border-white pb-2 mb-6 inline-block">Restez Connectés</h3>
                     <div class="grid grid-cols-2 gap-2">
-                        <!-- YouTube -->
                         <a href="https://www.youtube.com/@KanebergYT" target="_blank" class="border border-gray-100 dark:border-gray-900 rounded-md p-4 flex flex-col items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors">
-                            <span class="font-black text-lg text-black dark:text-white">+2000</span>
+                            <span class="font-black text-lg text-black dark:text-white">2.1k</span>
                             <span class="text-[10px] uppercase text-gray-500 font-medium tracking-wider">Abonnés YT</span>
                         </a>
-                        <!-- Discord -->
                         <a href="https://discord.gg/FY3WYmaNxd" target="_blank" class="border border-gray-100 dark:border-gray-900 rounded-md p-4 flex flex-col items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors">
-                            <span class="font-black text-lg text-black dark:text-white">+50</span>
-                            <span class="text-[10px] uppercase text-gray-500 font-medium tracking-wider">Membres</span>
+                            <span class="font-black text-lg text-black dark:text-white">Discord</span>
+                            <span class="text-[10px] uppercase text-gray-500 font-medium tracking-wider">Communauté</span>
                         </a>
-                        <!-- Instagram -->
                         <a href="https://www.instagram.com/kaneberg.dune/" target="_blank" class="col-span-2 border border-gray-100 dark:border-gray-900 rounded-md p-4 flex flex-col items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors">
-                            <span class="font-black text-lg text-black dark:text-white">+100</span>
-                            <span class="text-[10px] uppercase text-gray-500 font-medium tracking-wider">Followers Insta</span>
+                            <span class="font-black text-lg text-black dark:text-white">Instagram</span>
+                            <span class="text-[10px] uppercase text-gray-500 font-medium tracking-wider">Actus & Visuels</span>
                         </a>
                     </div>
                 </div>
 
-                <!-- Encart de Soutien dynamique vers YouTube -->
                 <div class="bg-gray-50 dark:bg-gray-950 border border-gray-100 dark:border-gray-900 rounded-md h-64 flex items-center justify-center text-center p-6">
                     <div>
-                        <div class="text-black dark:text-white font-bold text-xs uppercase tracking-wider mb-2">SOUTENEZ NOUS</div>
-                        <p class="text-xs text-gray-500 leading-relaxed max-w-[200px] mx-auto">Rejoignez la communauté et ne manquez aucune de nos futures analyses.</p>
+                        <div class="text-black dark:text-white font-bold text-xs uppercase tracking-wider mb-2">SOUTENEZ LE MÉDIA</div>
+                        <p class="text-xs text-gray-500 leading-relaxed max-w-[200px] mx-auto">Rejoignez notre chaîne YouTube pour ne manquer aucune de nos analyses vidéo.</p>
                         <a href="https://www.youtube.com/@KanebergYT" target="_blank" class="inline-block mt-4 px-4 py-2 bg-black dark:bg-white text-white dark:text-black text-xs font-bold uppercase rounded-sm hover:opacity-80 transition-opacity">
                             S'abonner sur YouTube
                         </a>
@@ -228,7 +221,7 @@
             </aside>
         </div>
 
-        <!-- SECTION DERNIÈRES VIDÉOS (Lecteurs intégrés) -->
+        <!-- SECTION DERNIÈRES VIDÉOS -->
         <section class="mb-12 border-t border-gray-100 dark:border-gray-900 pt-8">
             <div class="flex justify-between items-end mb-6">
                 <h3 class="text-sm font-bold uppercase tracking-wider border-b-2 border-black dark:border-white pb-2 inline-block">Dernières Vidéos</h3>
@@ -236,16 +229,13 @@
             </div>
             
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- Vidéo 1 -->
                 <div class="searchable-item flex flex-col gap-3 group">
                     <div class="aspect-video w-full rounded-md overflow-hidden bg-gray-50 dark:bg-gray-950 border border-gray-100 dark:border-gray-900 relative image-zoom-container">
                         <iframe class="w-full h-full absolute inset-0 z-10" src="https://www.youtube.com/embed/QXmjcJ2xWTc" title="Dune : L'épopée d'Arrakis" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                        <div class="absolute inset-0 img-placeholder bg-gray-100 dark:bg-gray-950"></div>
                     </div>
                     <h4 class="article-title font-bold text-sm leading-snug group-hover:text-gray-500 dark:group-hover:text-gray-400 transition-colors">Analyse du lore de Dune Partie 1</h4>
                 </div>
 
-                <!-- Vidéo 2 -->
                 <div class="searchable-item flex flex-col gap-3 group">
                     <div class="aspect-video w-full rounded-md overflow-hidden bg-gray-50 dark:bg-gray-950 border border-gray-100 dark:border-gray-900 relative image-zoom-container">
                         <iframe class="w-full h-full absolute inset-0 z-10" src="https://www.youtube.com/embed/OSNrhUhrTlE" title="Dune : Les secrets de tournage" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
@@ -253,7 +243,6 @@
                     <h4 class="article-title font-bold text-sm leading-snug group-hover:text-gray-500 dark:group-hover:text-gray-400 transition-colors">Explication de la fin du film</h4>
                 </div>
 
-                <!-- Vidéo 3 -->
                 <div class="searchable-item flex flex-col gap-3 group">
                     <div class="aspect-video w-full rounded-md overflow-hidden bg-gray-50 dark:bg-gray-950 border border-gray-100 dark:border-gray-900 relative image-zoom-container">
                         <iframe class="w-full h-full absolute inset-0 z-10" src="https://www.youtube.com/embed/BHIo0DMC3M4" title="Dune : Analyse de la bande son" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
@@ -261,7 +250,6 @@
                     <h4 class="article-title font-bold text-sm leading-snug group-hover:text-gray-500 dark:group-hover:text-gray-400 transition-colors">Les différences Livre vs Film</h4>
                 </div>
 
-                <!-- Vidéo 4 -->
                 <div class="searchable-item flex flex-col gap-3 group">
                     <div class="aspect-video w-full rounded-md overflow-hidden bg-gray-50 dark:bg-gray-950 border border-gray-100 dark:border-gray-900 relative image-zoom-container">
                         <iframe class="w-full h-full absolute inset-0 z-10" src="https://www.youtube.com/embed/hek9xjJBcvQ" title="Dune : L'avenir de la saga" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
@@ -276,15 +264,12 @@
     <footer class="bg-black text-white mt-auto py-12 border-t border-gray-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <!-- Branding -->
                 <div class="md:col-span-2">
                     <h2 class="text-3xl font-black uppercase tracking-tighter mb-4">KANEBERG</h2>
                     <p class="text-gray-400 text-sm max-w-sm leading-relaxed">
-                        Média francophone indépendant dédié à l'univers de Dune. Décryptages, actualités, et réflexions autour de l'œuvre de Frank Herbert.
+                        Média francophone indépendant dédié à l'univers de Dune. Décryptages, actualités, et réflexions philosophiques autour de l'œuvre de Frank Herbert.
                     </p>
                 </div>
-
-                <!-- Navigation alternative -->
                 <div>
                     <h3 class="text-xs font-bold uppercase tracking-widest text-gray-500 mb-4">Média</h3>
                     <ul class="space-y-2 text-sm">
@@ -294,8 +279,6 @@
                         <li><a href="contact.html" class="text-gray-300 hover:text-white transition-colors">Nous contacter</a></li>
                     </ul>
                 </div>
-
-                <!-- Informations légales -->
                 <div>
                     <h3 class="text-xs font-bold uppercase tracking-widest text-gray-500 mb-4">Informations</h3>
                     <ul class="space-y-2 text-sm">
@@ -305,10 +288,8 @@
                     </ul>
                 </div>
             </div>
-
-            <!-- Droits & Liens Sociaux -->
             <div class="mt-12 pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center text-xs text-gray-500">
-                <p>&copy; <span id="currentYear"></span> KANEBERG. Tous droits réservés.</p>
+                <p>&copy; <span id="currentYear"></span> KANEBERG MEDIA. Tous droits réservés.</p>
                 <div class="flex space-x-4 mt-4 md:mt-0">
                     <a href="https://discord.gg/FY3WYmaNxd" target="_blank" class="hover:text-white transition-colors">Discord</a>
                     <a href="https://www.instagram.com/kaneberg.dune/" target="_blank" class="hover:text-white transition-colors">Instagram</a>
@@ -320,8 +301,6 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            
-            // --- Dates ---
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
             const today = new Date();
             const dateStr = today.toLocaleDateString('fr-FR', options);
@@ -330,12 +309,10 @@
             }
             document.getElementById('currentYear').textContent = today.getFullYear();
 
-            // --- Thème Sombre / Clair ---
+            // Gestion Thème
             const themeToggleBtn = document.getElementById('themeToggle');
             const htmlElement = document.documentElement;
-            
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'dark') {
+            if (localStorage.getItem('theme') === 'dark') {
                 htmlElement.classList.add('dark');
             } else {
                 htmlElement.classList.remove('dark');
@@ -346,7 +323,7 @@
                 localStorage.setItem('theme', htmlElement.classList.contains('dark') ? 'dark' : 'light');
             });
 
-            // Backup de secours synchronisée avec le nouvel article de Dune Awakening !
+            // Base de données de secours si offline
             const fallbackArticles = [
                 {
                     "id": "probleme-dune-awakening-2026",
@@ -387,36 +364,6 @@
                     "date": "2026-06-28",
                     "image": "",
                     "summary": "Une plongée complexe dans les motivations de l'Empereur-Dieu. Pourquoi la stagnation était-elle la véritable menace, et comment la dispersion a forcé la survie."
-                },
-                {
-                    "id": "denis-villeneuve-messiah",
-                    "title": "Denis Villeneuve confirme l'avancement du script du troisième volet",
-                    "category": "Actu",
-                    "readTime": "3 min",
-                    "author": "Rédaction Kaneberg",
-                    "date": "2026-06-27",
-                    "image": "",
-                    "summary": "Le réalisateur a pris la parole ce matin concernant l'adaptation tant attendue de Dune : Messiah."
-                },
-                {
-                    "id": "distilles-fremen",
-                    "title": "Distilles Fremen : Une réalité scientifique possible ?",
-                    "category": "Science",
-                    "readTime": "7 min",
-                    "author": "Kaneberg",
-                    "date": "2026-06-25",
-                    "image": "",
-                    "summary": "Analyse du fonctionnement des combinaisons de survie Fremen et de leur viabilité avec nos technologies actuelles."
-                },
-                {
-                    "id": "bene-gesserit-failles",
-                    "title": "Bene Gesserit : Les failles du plan génétique",
-                    "category": "Factions",
-                    "readTime": "10 min",
-                    "author": "Rédaction Kaneberg",
-                    "date": "2026-06-20",
-                    "image": "",
-                    "summary": "Comment un programme de sélection millénaire a été mis en échec par le sentiment le plus humain : l'amour."
                 }
             ];
 
@@ -424,19 +371,16 @@
 
             async function fetchArticles() {
                 try {
-                    // Système anti-cache (Cache-busting)
                     const cacheBuster = `?t=${new Date().getTime()}`;
                     let fetchUrl = 'articles.json' + cacheBuster;
                     if (window.location.protocol === 'blob:') {
                         fetchUrl = window.location.origin + '/articles.json' + cacheBuster;
                     }
                     const response = await fetch(fetchUrl);
-                    if (!response.ok) {
-                        throw new Error(`Erreur réseau : ${response.status}`);
-                    }
+                    if (!response.ok) throw new Error("Erreur de chargement");
                     loadedArticles = await response.json();
-                } catch (error) {
-                    console.warn("Utilisation de la base de sauvegarde locale :", error);
+                } catch (err) {
+                    console.warn("Utilisation du mode secours :", err);
                     loadedArticles = fallbackArticles;
                 } finally {
                     buildDynamicGrid();
@@ -444,74 +388,50 @@
             }
 
             function buildDynamicGrid() {
-                // Trier par date décroissante
+                // Tri par date décroissante
                 const sorted = [...loadedArticles].sort((a, b) => new Date(b.date) - new Date(a.date));
-                
-                // 1. Remplissage de la grille Hero (4 premières places)
+
+                // 1. Bannière Trending
+                const trendingContainer = document.getElementById('trendingContainer');
+                if (sorted.length > 0) {
+                    trendingContainer.innerHTML = `<a href="article.html?id=${sorted[0].id}" class="hover:underline">${sorted[0].title} &rarr;</a>`;
+                }
+
+                // 2. Grille Hero
                 const heroGrid = document.getElementById('heroGrid');
-                heroGrid.innerHTML = ''; 
+                heroGrid.innerHTML = '';
 
                 if (sorted.length >= 4) {
-                    // Left Main Slot (Large - index 0)
-                    const item0 = sorted[0];
-                    const slot0 = createHeroLeftHTML(item0);
-                    heroGrid.appendChild(slot0);
-
-                    // Right Top 1 (index 1)
-                    const item1 = sorted[1];
-                    const slot1 = createHeroRightSmallHTML(item1, "Factions");
-                    heroGrid.appendChild(slot1);
-
-                    // Right Top 2 (index 2)
-                    const item2 = sorted[2];
-                    const slot2 = createHeroRightSmallHTML(item2, "Science");
-                    heroGrid.appendChild(slot2);
-
-                    // Right Bottom Double Slot (index 3)
-                    const item3 = sorted[3];
-                    const slot3 = createHeroBottomDoubleHTML(item3);
-                    heroGrid.appendChild(slot3);
-                } else {
-                    heroGrid.innerHTML = `<p class="col-span-full py-8 text-center text-gray-500">Pas assez d'articles à afficher.</p>`;
+                    heroGrid.appendChild(createHeroLeftHTML(sorted[0]));
+                    heroGrid.appendChild(createHeroRightSmallHTML(sorted[1]));
+                    heroGrid.appendChild(createHeroRightSmallHTML(sorted[2]));
+                    heroGrid.appendChild(createHeroBottomDoubleHTML(sorted[3]));
+                } else if (sorted.length > 0) {
+                    sorted.forEach(art => heroGrid.appendChild(createHeroLeftHTML(art)));
                 }
 
-                // 2. Remplissage du Focus Analyse (On cherche le premier article philosophie, ou à défaut l'index 4)
+                // 3. Focus Analyse (Philosophie)
                 const philoHighlightContainer = document.getElementById('philoHighlightContainer');
-                let philoArticle = sorted.find(art => art.category.toLowerCase() === 'philosophie');
-                if (!philoArticle && sorted.length > 4) {
-                    philoArticle = sorted[4];
-                }
-                
+                let philoArticle = sorted.find(art => art.category.toLowerCase() === 'philosophie') || sorted[4] || sorted[0];
                 if (philoArticle) {
                     philoHighlightContainer.innerHTML = createPhilosophyHighlightHTML(philoArticle);
                 }
 
-                // 3. Remplissage du fil d'actualités (On prend les autres éléments de la liste)
+                // 4. Fil "Dernières publications" (Tous les articles triés par récence)
                 const newsFeedContainer = document.getElementById('newsFeedContainer');
                 newsFeedContainer.innerHTML = '';
-                
-                // On exclut les index 0, 1, 2, 3 et l'article philo s'il y en a un
-                const feedArticles = sorted.filter((art, idx) => {
-                    if (idx < 4) return false;
-                    if (philoArticle && art.id === philoArticle.id) return false;
-                    return true;
-                });
 
-                if (feedArticles.length > 0) {
-                    feedArticles.forEach(art => {
-                        newsFeedContainer.appendChild(createFeedItemHTML(art));
-                    });
-                } else {
-                    newsFeedContainer.innerHTML = `<p class="text-xs text-gray-500">Aucun autre article récents disponible.</p>`;
-                }
+                // On affiche tous les articles récents (y compris les nouveaux)
+                sorted.forEach((article) => {
+                    newsFeedContainer.appendChild(createFeedItemHTML(article));
+                });
             }
 
-            // --- Fonctions utilitaires de génération de HTML ---
-
+            // Générateurs d'éléments HTML
             function createHeroLeftHTML(article) {
                 const el = document.createElement('article');
                 el.className = "searchable-item group relative lg:col-span-2 lg:row-span-2 rounded-md overflow-hidden bg-black text-white h-[400px] lg:h-full cursor-pointer border border-transparent dark:border-gray-900";
-                el.addEventListener('click', () => window.location.href = `article.html?id=${article.id}`);
+                el.onclick = () => window.location.href = `article.html?id=${article.id}`;
                 
                 const imgTag = article.image 
                     ? `<img src="${article.image}" alt="${article.title}" class="absolute inset-0 w-full h-full object-cover img-placeholder opacity-60">`
@@ -537,10 +457,10 @@
                 return el;
             }
 
-            function createHeroRightSmallHTML(article, categoryDefault) {
+            function createHeroRightSmallHTML(article) {
                 const el = document.createElement('article');
                 el.className = "searchable-item group relative rounded-md overflow-hidden bg-black text-white h-[200px] lg:h-auto cursor-pointer border border-transparent dark:border-gray-900";
-                el.addEventListener('click', () => window.location.href = `article.html?id=${article.id}`);
+                el.onclick = () => window.location.href = `article.html?id=${article.id}`;
 
                 const imgTag = article.image 
                     ? `<img src="${article.image}" alt="${article.title}" class="absolute inset-0 w-full h-full object-cover img-placeholder opacity-50">`
@@ -550,7 +470,7 @@
                     ${imgTag}
                     <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
                     <div class="absolute bottom-0 left-0 p-4 z-10 w-full">
-                        <span class="text-gray-300 text-[10px] font-bold uppercase tracking-wider mb-1 block">${article.category || categoryDefault}</span>
+                        <span class="text-gray-300 text-[10px] font-bold uppercase tracking-wider mb-1 block">${article.category}</span>
                         <h3 class="article-title text-base font-bold leading-tight group-hover:text-gray-300 transition-colors line-clamp-2">
                             ${article.title}
                         </h3>
@@ -562,7 +482,7 @@
             function createHeroBottomDoubleHTML(article) {
                 const el = document.createElement('article');
                 el.className = "searchable-item group relative lg:col-span-2 rounded-md overflow-hidden bg-black text-white h-[200px] lg:h-auto cursor-pointer border border-transparent dark:border-gray-900";
-                el.addEventListener('click', () => window.location.href = `article.html?id=${article.id}`);
+                el.onclick = () => window.location.href = `article.html?id=${article.id}`;
 
                 const imgTag = article.image 
                     ? `<img src="${article.image}" alt="${article.title}" class="absolute inset-0 w-full h-full object-cover img-placeholder opacity-50">`
@@ -574,7 +494,7 @@
                     <div class="absolute bottom-0 left-0 p-4 lg:p-6 z-10 w-full">
                         <div class="flex items-center space-x-2 mb-2">
                             <span class="bg-gray-200 text-black text-[10px] font-bold px-2 py-1 uppercase tracking-wider rounded-sm">${article.category}</span>
-                            <span class="text-xs text-gray-300">&bull; ${article.readTime} de lecture</span>
+                            <span class="text-xs text-gray-300">&bull; ${article.readTime}</span>
                         </div>
                         <h3 class="article-title text-lg lg:text-xl font-bold leading-tight group-hover:text-gray-300 transition-colors line-clamp-2">
                             ${article.title}
@@ -604,7 +524,7 @@
                             ${article.summary}
                         </p>
                         <div class="text-[10px] text-gray-400 font-medium mt-auto">
-                            ${article.date} &bull; ${article.readTime} de lecture
+                            ${article.date} &bull; ${article.readTime}
                         </div>
                     </article>
                 `;
@@ -612,27 +532,29 @@
 
             function createFeedItemHTML(article) {
                 const el = document.createElement('article');
-                el.className = "searchable-item group flex gap-4 cursor-pointer";
-                el.addEventListener('click', () => window.location.href = `article.html?id=${article.id}`);
+                el.className = "searchable-item group flex gap-4 cursor-pointer p-2 rounded hover:bg-gray-50 dark:hover:bg-gray-950 transition-colors";
+                el.onclick = () => window.location.href = `article.html?id=${article.id}`;
 
                 const imgPlaceholder = article.image 
                     ? `<img src="${article.image}" alt="${article.title}" class="img-placeholder w-full h-full object-cover">`
-                    : `<div class="absolute inset-0 img-placeholder bg-gray-100 dark:bg-gray-900"></div>`;
+                    : `<div class="absolute inset-0 img-placeholder bg-gray-100 dark:bg-gray-900 flex items-center justify-center text-[10px] font-bold text-gray-400">KANEBERG</div>`;
 
                 el.innerHTML = `
                     <div class="flex-shrink-0 w-28 h-20 rounded-md overflow-hidden bg-gray-50 dark:bg-gray-950 border border-gray-100 dark:border-gray-900 relative image-zoom-container">
                         ${imgPlaceholder}
                     </div>
                     <div class="flex flex-col justify-center">
+                        <span class="text-[9px] text-gray-400 font-bold uppercase tracking-wider mb-1">${article.category} &bull; ${article.date}</span>
                         <h4 class="article-title font-bold text-sm leading-tight group-hover:text-gray-500 dark:group-hover:text-gray-400 transition-colors mb-1">
                             ${article.title}
                         </h4>
-                        <span class="text-[10px] text-gray-500 font-semibold uppercase tracking-wider">${article.category} &bull; ${article.readTime} de lecture</span>
+                        <span class="text-[10px] text-gray-500 font-medium">${article.readTime} de lecture</span>
                     </div>
                 `;
                 return el;
             }
 
+            // Recherche dynamique
             const searchInput = document.getElementById('searchInput');
             searchInput.addEventListener('input', (e) => {
                 const searchTerm = e.target.value.toLowerCase().trim();
@@ -651,9 +573,7 @@
                 });
             });
 
-            // Lancement de la récupération dynamique
             fetchArticles();
-
         });
     </script>
 </body>
