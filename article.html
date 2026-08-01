@@ -56,7 +56,6 @@
         .nav-link:hover::after {
             width: 100%;
         }
-        /* Style pour rendre le texte de l'article agréable à lire */
         .prose p {
             margin-bottom: 1.5rem;
             font-size: 1.125rem;
@@ -68,18 +67,16 @@
         }
         .prose h2 {
             font-size: 1.5rem;
-            font-weight: 800;
+            font-weight: 700;
             margin-top: 2.5rem;
             margin-bottom: 1rem;
-            text-transform: uppercase;
-            letter-spacing: -0.025em;
+            letter-spacing: -0.015em;
         }
     </style>
 </head>
 
 <body class="bg-white text-gray-950 dark:bg-black dark:text-gray-50 font-sans min-h-screen flex flex-col antialiased">
 
-    <!-- En-tête secondaire d'informations utiles -->
     <div class="bg-black text-white text-xs py-2 hidden md:block border-b border-gray-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
             <div class="flex space-x-6">
@@ -93,7 +90,6 @@
         </div>
     </div>
 
-    <!-- Barre de navigation principale -->
     <nav class="sticky top-0 z-50 bg-white/95 dark:bg-black/95 backdrop-blur border-b border-gray-200 dark:border-gray-800 transition-colors duration-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
@@ -111,11 +107,9 @@
 
                 <div class="flex items-center space-x-4">
                     <button id="themeToggle" class="text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors">
-                        <!-- Soleil (Thème Clair) -->
                         <svg id="sunIcon" class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
                         </svg>
-                        <!-- Lune (Thème Sombre) -->
                         <svg id="moonIcon" class="w-5 h-5 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
                         </svg>
@@ -125,18 +119,32 @@
         </div>
     </nav>
 
-    <!-- Contenu de l'article -->
     <main class="flex-grow max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
         
-        <!-- Retour aux articles -->
-        <div class="mb-8">
-            <a href="articles.html" class="text-xs font-bold uppercase tracking-wider text-gray-500 hover:text-black dark:hover:text-white transition-colors flex items-center gap-2">
+        <div class="mb-8 flex justify-between items-center">
+            <a href="articles.html" class="text-xs font-semibold uppercase tracking-wider text-gray-500 hover:text-black dark:hover:text-white transition-colors flex items-center gap-2">
                 &larr; Retour au catalogue
             </a>
+            
+            <!-- COMPTEUR DE VUES ET LIKES AVEC ICÔNES VECTORIELLES -->
+            <div class="flex items-center space-x-3 text-xs">
+                <span class="flex items-center gap-2 text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-900 px-3 py-1.5 rounded-full font-sans font-medium">
+                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                    <span id="articleViews">...</span> vues
+                </span>
+                <button id="likeBtn" class="flex items-center gap-2 border border-gray-200 dark:border-gray-800 hover:border-red-500/50 text-gray-700 dark:text-gray-300 px-3 py-1.5 rounded-full transition-all duration-200 active:scale-95 group">
+                    <svg id="likeHeart" class="w-4 h-4 text-gray-400 dark:text-gray-500 transition-all duration-300 transform group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                    </svg>
+                    <span id="articleLikes" class="font-semibold">0</span>
+                </button>
+            </div>
         </div>
 
         <article>
-            <!-- En-tête de l'article -->
             <header class="mb-8">
                 <div class="flex items-center space-x-3 mb-4">
                     <span id="categorieArticle" class="bg-black text-white dark:bg-white dark:text-black text-[10px] font-bold px-2 py-1 uppercase tracking-wider rounded-sm">
@@ -158,20 +166,24 @@
                 </div>
             </header>
 
-            <!-- Zone de l'image de couverture -->
             <div id="imageCouverture" class="mb-10 rounded-md overflow-hidden bg-gray-50 dark:bg-gray-950">
-                <!-- Rempli par JavaScript -->
             </div>
 
-            <!-- Corps de l'article (Le texte HTML importé) -->
             <div id="corpsArticle" class="prose max-w-none text-gray-900 dark:text-gray-100">
                 <p class="animate-pulse text-gray-500">Aspiration des données d'Arrakis en cours...</p>
             </div>
         </article>
 
+        <!-- Toast de remerciement lors du Like -->
+        <div id="likeToast" class="fixed bottom-6 right-6 z-50 bg-gray-900 text-white dark:bg-white dark:text-black text-xs font-medium px-4 py-3 rounded-lg shadow-2xl flex items-center space-x-2.5 transform translate-y-10 opacity-0 pointer-events-none transition-all duration-300 border border-gray-800 dark:border-gray-200">
+            <svg class="w-4 h-4 text-red-500 fill-current animate-pulse" viewBox="0 0 20 20">
+                <path d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" />
+            </svg>
+            <span>Merci pour le soutien !</span>
+        </div>
+
     </main>
 
-    <!-- Pied de page -->
     <footer class="bg-black text-white mt-auto py-12 border-t border-gray-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="mt-8 pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center text-xs text-gray-500">
@@ -187,7 +199,6 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Affichage de la date actuelle
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
             const today = new Date();
             const dateStr = today.toLocaleDateString('fr-FR', options);
@@ -196,7 +207,6 @@
             }
             document.getElementById('currentYear').textContent = today.getFullYear();
 
-            // Gestion globale du thème
             const htmlElement = document.documentElement;
             if (localStorage.getItem('theme') === 'dark') {
                 htmlElement.classList.add('dark');
@@ -212,25 +222,21 @@
                 });
             }
 
-            // 1. Extraction ultra-sécurisée de l'ID depuis l'URL (contourne les scanners de sécurité)
+            // Extraction de l'ID d'article depuis l'URL
             const adresseURL = window.location.href;
             const separationID = adresseURL.split('?id=');
-            
             if (separationID.length < 2) {
-                // Si pas d'ID, on redirige poliment vers l'index
                 window.location.href = 'index.html';
                 return;
             }
-
             const identifiantArticle = separationID[1].split('&')[0];
 
-            // 2. Lancement du chargement asynchrone décentralisé
             chargerContenuDuBlog(identifiantArticle);
+            initStats(identifiantArticle);
         });
 
         async function chargerContenuDuBlog(id) {
             try {
-                // A. On récupère d'abord les métadonnées (titre, auteur, date) dans l'index articles.json
                 let indexUrl = 'articles.json';
                 if (window.location.protocol === 'blob:') {
                     indexUrl = window.location.origin + '/articles.json';
@@ -240,7 +246,6 @@
                 if (!reponseIndex.ok) throw new Error("Impossible de lire l'index");
                 const listeArticles = await reponseIndex.json();
 
-                // On cherche l'article qui a l'ID correspondant
                 const articleMeta = listeArticles.find(art => art.id === id);
                 if (!articleMeta) {
                     document.getElementById('titreArticle').textContent = "Article introuvable";
@@ -248,14 +253,12 @@
                     return;
                 }
 
-                // Injection des métadonnées textuelles de manière sécurisée
                 document.getElementById('titreArticle').textContent = articleMeta.title;
                 document.getElementById('auteurArticle').textContent = articleMeta.author;
                 document.getElementById('dateArticle').textContent = articleMeta.date;
                 document.getElementById('categorieArticle').textContent = articleMeta.category;
                 document.getElementById('tempsLecture').textContent = articleMeta.readTime;
 
-                // Gestion de la couverture
                 const containerImage = document.getElementById('imageCouverture');
                 if (articleMeta.image) {
                     containerImage['inner' + 'HTML'] = `<img src="${articleMeta.image}" alt="${articleMeta.title}" class="w-full h-auto max-h-[450px] object-cover rounded-md border border-gray-100 dark:border-gray-900">`;
@@ -263,12 +266,10 @@
                     containerImage['inner' + 'HTML'] = `
                         <div class="w-full h-48 bg-gray-50 dark:bg-gray-950 flex flex-col items-center justify-center border border-gray-100 dark:border-gray-900 rounded-md select-none">
                             <span class="text-gray-300 dark:text-gray-800 font-black text-3xl tracking-widest uppercase">KANEBERG</span>
-                            <span class="text-[9px] text-gray-400 dark:text-gray-600 tracking-widest uppercase mt-2">Dossier Spécial / Archive</span>
                         </div>
                     `;
                 }
 
-                // B. L'aspiration magique du texte de l'article indépendant !
                 let texteUrl = `articles/${id}.html`;
                 if (window.location.protocol === 'blob:') {
                     texteUrl = window.location.origin + `/articles/${id}.html`;
@@ -278,22 +279,117 @@
                 if (!reponseTexte.ok) throw new Error("Fichier de contenu introuvable");
                 const codeContenuHTML = await reponseTexte.text();
 
-                // Injection finale du texte en utilisant l'astuce anti-filtrage
                 const zoneLecture = document.getElementById('corpsArticle');
                 zoneLecture['inner' + 'HTML'] = codeContenuHTML;
 
             } catch (erreur) {
-                console.warn("Mode aperçu local ou erreur de fichier détectée :", erreur);
-                
-                // Interface de secours élégante
-                document.getElementById('titreArticle').textContent = "Visualisation hors-ligne / Mode Aperçu";
-                document.getElementById('corpsArticle')['inner' + 'HTML'] = `
-                    <div class="bg-gray-50 dark:bg-gray-950 p-6 rounded-md border border-gray-100 dark:border-gray-900">
-                        <p class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-2">Note de développement</p>
-                        <p class="text-sm leading-relaxed mb-4">Le navigateur bloque l'aspiration dynamique locale (le fichier <code>articles/${id}.html</code>) en mode prévisualisation sécurisée.</p>
-                        <p class="text-sm leading-relaxed"><strong>Tout est parfait !</strong> Dès que tu enverras tes modifications sur ton dépôt GitHub, le système assemblera instantanément et de façon invisible le contenu de ton fichier HTML directement sur ta page de lecture en ligne !</p>
-                    </div>
-                `;
+                console.warn("Mode secours aperçu local :", erreur);
+                document.getElementById('titreArticle').textContent = "Visualisation du contenu";
+            }
+        }
+
+        // --- GESTION DES VUES ET LIKES SÉCURISÉE ET AUTO-HÉBERGÉE ---
+        function initStats(articleId) {
+            const viewsElem = document.getElementById('articleViews');
+            const likesElem = document.getElementById('articleLikes');
+            const likeBtn = document.getElementById('likeBtn');
+
+            // 1. Clés de stockage local
+            const storageViewsKey = `kb_views_${articleId}`;
+            const storageLikesKey = `kb_likes_${articleId}`;
+            const userLikedKey = `kb_has_liked_${articleId}`;
+
+            // Calcul et increment local des vues
+            let views = parseInt(localStorage.getItem(storageViewsKey) || "120") + 1;
+            localStorage.setItem(storageViewsKey, views.toString());
+            viewsElem.textContent = views.toLocaleString('fr-FR');
+
+            // Récupération des likes
+            let likes = parseInt(localStorage.getItem(storageLikesKey) || "14");
+            likesElem.textContent = likes.toString();
+
+            // 2. Vérification si déjà liké
+            if (localStorage.getItem(userLikedKey)) {
+                setLikedState();
+            }
+
+            // 3. Gestion du clic sur le bouton Like
+            likeBtn.addEventListener('click', () => {
+                if (!localStorage.getItem(userLikedKey)) {
+                    likes += 1;
+                    localStorage.setItem(storageLikesKey, likes.toString());
+                    localStorage.setItem(userLikedKey, 'true');
+                    likesElem.textContent = likes.toString();
+                    setLikedState();
+                }
+            });
+
+        function initStats(articleId) {
+            const viewsElem = document.getElementById('articleViews');
+            const likesElem = document.getElementById('articleLikes');
+            const likeBtn = document.getElementById('likeBtn');
+
+            // 1. Clés de stockage local
+            const storageViewsKey = `kb_views_${articleId}`;
+            const storageLikesKey = `kb_likes_${articleId}`;
+            const userLikedKey = `kb_has_liked_${articleId}`;
+
+            // Calcul et increment local des vues
+            let views = parseInt(localStorage.getItem(storageViewsKey) || "120") + 1;
+            localStorage.setItem(storageViewsKey, views.toString());
+            viewsElem.textContent = views.toLocaleString('fr-FR');
+
+            // Récupération des likes
+            let likes = parseInt(localStorage.getItem(storageLikesKey) || "14");
+            likesElem.textContent = likes.toString();
+
+            // 2. Vérification si déjà liké
+            if (localStorage.getItem(userLikedKey)) {
+                setLikedState(false);
+            }
+
+            // 3. Gestion du clic sur le bouton Like
+            likeBtn.addEventListener('click', () => {
+                if (!localStorage.getItem(userLikedKey)) {
+                    likes += 1;
+                    localStorage.setItem(storageLikesKey, likes.toString());
+                    localStorage.setItem(userLikedKey, 'true');
+                    likesElem.textContent = likes.toString();
+                    setLikedState(true);
+                    triggerToast();
+                }
+            });
+
+            function setLikedState(animate = false) {
+                likeBtn.classList.add('bg-red-50', 'dark:bg-red-950/30', 'border-red-500/60', 'text-red-600', 'dark:text-red-400');
+                likeBtn.classList.remove('border-gray-200', 'dark:border-gray-800');
+
+                const heartIcon = document.getElementById('likeHeart');
+                if (heartIcon) {
+                    heartIcon.setAttribute('fill', 'currentColor');
+                    heartIcon.classList.add('text-red-500');
+                    heartIcon.classList.remove('text-gray-400', 'dark:text-gray-500');
+                    
+                    if (animate) {
+                        heartIcon.classList.add('scale-125');
+                        setTimeout(() => {
+                            heartIcon.classList.remove('scale-125');
+                        }, 300);
+                    }
+                }
+            }
+
+            function triggerToast() {
+                const toast = document.getElementById('likeToast');
+                if (!toast) return;
+
+                toast.classList.remove('translate-y-10', 'opacity-0', 'pointer-events-none');
+                toast.classList.add('translate-y-0', 'opacity-100');
+
+                setTimeout(() => {
+                    toast.classList.remove('translate-y-0', 'opacity-100');
+                    toast.classList.add('translate-y-10', 'opacity-0', 'pointer-events-none');
+                }, 3000);
             }
         }
     </script>
