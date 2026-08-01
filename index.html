@@ -417,12 +417,12 @@
                     philoHighlightContainer.innerHTML = createPhilosophyHighlightHTML(philoArticle);
                 }
 
-                // 4. Fil "Dernières publications" (Tous les articles triés par récence)
+                // 4. Fil "Dernières publications" (Limité strictement aux 4 articles les plus récents)
                 const newsFeedContainer = document.getElementById('newsFeedContainer');
                 newsFeedContainer.innerHTML = '';
 
-                // On affiche tous les articles récents (y compris les nouveaux)
-                sorted.forEach((article) => {
+                const recentArticles = sorted.slice(0, 4);
+                recentArticles.forEach((article) => {
                     newsFeedContainer.appendChild(createFeedItemHTML(article));
                 });
             }
