@@ -1,5 +1,15 @@
 [
   {
+    "id": "nouveau-test",
+    "title": "Nouveau test",
+    "category": "Actu",
+    "readTime": "8 min",
+    "author": "Rédaction Kaneberg",
+    "date": "2026-08-02",
+    "image": "images/image-odyssee-001.jpeg",
+    "summary": "dfgdsghshsh"
+  },
+  {
     "id": "fdwgdfwhwhtserggwg",
     "title": "fdwgdfwhwhtserggwg",
     "category": "Actu",
