@@ -121,6 +121,7 @@
 
     <main class="max-w-4xl mx-auto w-full px-4 py-8 flex-grow">
         
+        <!-- Carte de configuration GitHub -->
         <div id="configCard" class="mb-8 p-6 bg-gray-900 border border-gray-800 rounded-lg shadow-lg">
             <div class="flex items-center justify-between mb-2">
                 <h2 class="text-lg font-bold text-white flex items-center gap-2">
@@ -174,14 +175,25 @@
                         <select id="artCategory" class="w-full bg-gray-900 border border-gray-800 rounded px-3 py-2 text-sm text-white focus:ring-1 focus:ring-white outline-none">
                             <option value="Actu">Actu</option>
                             <option value="Lore">Lore</option>
-                            <option value="Philosophie">Philosophie</option>
+                            <option value="Analyse">Analyse</option>
+                            <option value="Gaming">Gaming</option>
                             <option value="Science">Science</option>
+                            <option value="Philosophie">Philosophie</option>
+                            <option value="Autres">Autres</option>
                         </select>
                     </div>
                     <div>
                         <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Temps de lecture</label>
                         <input type="text" id="artReadTime" value="8 min" required class="w-full bg-gray-900 border border-gray-800 rounded px-3 py-2 text-sm text-white outline-none">
                     </div>
+                </div>
+
+                <!-- Option Notre Sélection -->
+                <div class="p-4 bg-gray-900/80 border border-amber-500/30 rounded-md flex items-center gap-3">
+                    <input type="checkbox" id="artSelection" class="w-4 h-4 accent-amber-400 rounded cursor-pointer">
+                    <label for="artSelection" class="text-xs font-bold uppercase tracking-wider text-amber-300 cursor-pointer select-none flex items-center gap-1.5">
+                        <span>★</span> Mettre en avant dans "Notre Sélection" (Badge Jaune Premium)
+                    </label>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -236,6 +248,7 @@
                 });
             }
 
+            // Initialisation Editeur Quill
             const quill = new Quill('#editor', {
                 theme: 'snow',
                 placeholder: 'Rédigez votre analyse ou dossier ici...',
@@ -250,6 +263,7 @@
                 }
             });
 
+            // Chargement de la configuration GitHub
             const savedRepo = localStorage.getItem('kb_repo');
             const savedUser = localStorage.getItem('kb_user');
             const savedToken = localStorage.getItem('kb_token');
@@ -283,6 +297,7 @@
                 configStatus.className = "text-xs font-bold text-green-400";
             });
 
+            // Génération dynamique du slug à partir du titre
             const titleInput = document.getElementById('artTitle');
             const slugInput = document.getElementById('artSlug');
 
@@ -296,6 +311,7 @@
                 slugInput.value = slug;
             });
 
+            // Helpers encodage base64
             function utf8_to_b64(str) {
                 return window.btoa(unescape(encodeURIComponent(str)));
             }
@@ -304,6 +320,7 @@
                 return decodeURIComponent(escape(window.atob(str)));
             }
 
+            // Soumission du formulaire
             const form = document.getElementById('articleForm');
             const statusMsg = document.getElementById('statusMessage');
             const submitBtn = document.getElementById('submitBtn');
@@ -324,6 +341,7 @@
                 const title = titleInput.value.trim();
                 const slug = slugInput.value.trim();
                 const category = document.getElementById('artCategory').value;
+                const isSelection = document.getElementById('artSelection').checked;
                 const readTime = document.getElementById('artReadTime').value.trim();
                 const author = document.getElementById('artAuthor').value.trim();
                 let image = document.getElementById('artImage').value.trim();
@@ -348,6 +366,7 @@
                 statusMsg.textContent = "⏳ 1/2 Publication du fichier d'article HTML...";
 
                 try {
+                    // 1. Publication HTML
                     const htmlPath = `articles/${slug}.html`;
                     const contentEncoded = utf8_to_b64(htmlContent);
 
@@ -382,6 +401,7 @@
                         throw new Error(`Échec HTML : ${errData.message || htmlResponse.status}`);
                     }
 
+                    // 2. Mise à jour de articles.json
                     statusMsg.textContent = "⏳ 2/2 Mise à jour du fichier articles.json...";
 
                     const jsonGet = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/articles.json`, {
@@ -400,6 +420,7 @@
                         id: slug,
                         title: title,
                         category: category,
+                        selection: isSelection,
                         readTime: readTime,
                         author: author,
                         date: todayStr,
@@ -437,6 +458,7 @@
                     quill.setText('');
                     document.getElementById('artReadTime').value = "8 min";
                     document.getElementById('artAuthor').value = "Rédaction Kaneberg";
+                    document.getElementById('artSelection').checked = false;
 
                 } catch (error) {
                     console.error(error);
