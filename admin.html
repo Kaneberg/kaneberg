@@ -68,18 +68,56 @@
 </head>
 <body class="bg-black text-gray-100 font-sans min-h-screen flex flex-col antialiased">
 
-    <header class="border-b border-gray-800 bg-gray-950/80 backdrop-blur sticky top-0 z-50 py-4 px-6">
-        <div class="max-w-6xl mx-auto flex justify-between items-center">
-            <div class="flex items-center space-x-3">
-                <a href="index.html" class="text-xl font-black tracking-tighter uppercase text-white hover:text-gray-300 transition-colors">KANEBERG</a>
-                <span class="bg-white text-black text-[10px] font-bold px-2 py-0.5 rounded uppercase">Studio Rédaction</span>
+    <!-- Header info topbar -->
+    <div class="bg-black text-white text-xs py-2 hidden md:block border-b border-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+            <div class="flex space-x-6">
+                <span class="text-gray-400">Espace Rédaction Privé</span>
             </div>
-            <a href="index.html" target="_blank" class="text-xs text-gray-400 hover:text-white transition-colors flex items-center gap-1">
-                <span>Voir le site en ligne</span>
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
-            </a>
+            <div class="flex space-x-4 items-center">
+                <span class="text-gray-400" id="currentDate"></span>
+            </div>
         </div>
-    </header>
+    </div>
+
+    <!-- Navigation Header Admin -->
+    <nav class="sticky top-0 z-50 bg-gray-950/90 backdrop-blur border-b border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16 gap-2 md:gap-4">
+                
+                <div class="flex items-center space-x-4">
+                    <a href="index.html" class="text-xl font-black tracking-tighter uppercase text-white hover:text-gray-300 transition-colors">KANEBERG</a>
+                    <span class="bg-white text-black text-[10px] font-bold px-2 py-0.5 rounded uppercase">Studio Admin</span>
+                </div>
+
+                <div class="flex items-center space-x-2 sm:space-x-3">
+                    <!-- Recherche universelle -->
+                    <div class="relative flex items-center">
+                        <svg class="w-4 h-4 absolute left-3 text-gray-500 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                        <input type="text" id="globalSearchInput" placeholder="Rechercher..." 
+                            class="bg-gray-900 border border-gray-800 text-xs sm:text-sm rounded-full pl-9 pr-3 py-1.5 outline-none w-28 sm:w-36 md:w-48 transition-all text-white placeholder-gray-500 focus:border-gray-600">
+                    </div>
+
+                    <!-- Bouton YouTube -->
+                    <a href="https://www.youtube.com/@KanebergYT" target="_blank" rel="noopener noreferrer" 
+                       class="hidden sm:inline-flex items-center gap-1.5 bg-red-600 hover:bg-red-700 text-white text-xs font-bold uppercase tracking-wider px-3 py-1.5 rounded-full transition-colors flex-shrink-0">
+                        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                        </svg>
+                        <span>S'abonner</span>
+                    </a>
+
+                    <a href="index.html" target="_blank" class="text-xs text-gray-400 hover:text-white transition-colors flex items-center gap-1 border border-gray-800 px-3 py-1.5 rounded-full">
+                        <span>Voir le site</span>
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </nav>
 
     <main class="max-w-4xl mx-auto w-full px-4 py-8 flex-grow">
         
@@ -149,7 +187,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Image de couverture (Optionnel)</label>
-                        <input type="text" id="artImage" placeholder="ex: images/da.vid3.png ou URL" class="w-full bg-gray-900 border border-gray-800 rounded px-3 py-2 text-sm text-white outline-none">
+                        <input type="text" id="artImage" placeholder="ex: images/image-odyssee-001.jpeg" class="w-full bg-gray-900 border border-gray-800 rounded px-3 py-2 text-sm text-white outline-none">
                         <p class="text-[10px] text-gray-500 mt-1">Laissez vide pour afficher le visuel de secours automatique KANEBERG.</p>
                     </div>
                     <div>
@@ -181,7 +219,23 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Initialisation de l'éditeur Quill
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const today = new Date();
+            const dateStr = today.toLocaleDateString('fr-FR', options);
+            if (document.getElementById('currentDate')) {
+                document.getElementById('currentDate').textContent = dateStr.charAt(0).toUpperCase() + dateStr.slice(1);
+            }
+
+            // Recherche Universelle Admin -> Redirection vers catalogue
+            const globalSearchInput = document.getElementById('globalSearchInput');
+            if (globalSearchInput) {
+                globalSearchInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter' && globalSearchInput.value.trim() !== '') {
+                        window.location.href = `articles.html?q=${encodeURIComponent(globalSearchInput.value.trim())}`;
+                    }
+                });
+            }
+
             const quill = new Quill('#editor', {
                 theme: 'snow',
                 placeholder: 'Rédigez votre analyse ou dossier ici...',
@@ -196,7 +250,6 @@
                 }
             });
 
-            // Chargement de la configuration sauvegardée
             const savedRepo = localStorage.getItem('kb_repo');
             const savedUser = localStorage.getItem('kb_user');
             const savedToken = localStorage.getItem('kb_token');
@@ -211,7 +264,6 @@
                 configStatus.className = "text-xs font-bold text-green-400";
             }
 
-            // Sauvegarde de la configuration
             document.getElementById('saveConfigBtn').addEventListener('click', () => {
                 const repo = document.getElementById('ghRepo').value.trim();
                 const user = document.getElementById('ghUsername').value.trim();
@@ -231,7 +283,6 @@
                 configStatus.className = "text-xs font-bold text-green-400";
             });
 
-            // Génération dynamique du Slug
             const titleInput = document.getElementById('artTitle');
             const slugInput = document.getElementById('artSlug');
 
@@ -245,7 +296,6 @@
                 slugInput.value = slug;
             });
 
-            // Helper conversion UTF-8 vers Base64
             function utf8_to_b64(str) {
                 return window.btoa(unescape(encodeURIComponent(str)));
             }
@@ -254,7 +304,6 @@
                 return decodeURIComponent(escape(window.atob(str)));
             }
 
-            // Soumission du formulaire et publication GitHub API
             const form = document.getElementById('articleForm');
             const statusMsg = document.getElementById('statusMessage');
             const submitBtn = document.getElementById('submitBtn');
@@ -291,19 +340,17 @@
                     image = 'images/' + image;
                 }
 
-                const today = new Date().toISOString().split('T')[0];
+                const todayStr = new Date().toISOString().split('T')[0];
 
                 submitBtn.disabled = true;
                 submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
                 statusMsg.className = "text-xs font-bold text-yellow-400 animate-pulse";
-                statusMsg.textContent = "⏳ 1/2 Création du fichier d'article HTML...";
+                statusMsg.textContent = "⏳ 1/2 Publication du fichier d'article HTML...";
 
                 try {
-                    // 1. Publication du fichier articles/{slug}.html
                     const htmlPath = `articles/${slug}.html`;
                     const contentEncoded = utf8_to_b64(htmlContent);
 
-                    // Vérification préalable si le fichier existe déjà pour récupérer son SHA (mise à jour)
                     let fileSha = null;
                     try {
                         const checkRes = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/${htmlPath}`, {
@@ -313,9 +360,7 @@
                             const checkData = await checkRes.json();
                             fileSha = checkData.sha;
                         }
-                    } catch (err) {
-                        // Fichier inexistant, c'est normal pour un nouvel article
-                    }
+                    } catch (err) {}
 
                     const htmlPayload = {
                         message: `Publication de l'article : ${title}`,
@@ -337,9 +382,8 @@
                         throw new Error(`Échec HTML : ${errData.message || htmlResponse.status}`);
                     }
 
-                    statusMsg.textContent = "⏳ 2/2 Mise à jour de l'index JSON...";
+                    statusMsg.textContent = "⏳ 2/2 Mise à jour du fichier articles.json...";
 
-                    // 2. Récupération de articles.json
                     const jsonGet = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/articles.json`, {
                         headers: { 'Authorization': `token ${token}` }
                     });
@@ -352,14 +396,13 @@
                     const jsonSha = jsonGetData.sha;
                     const existingArticles = JSON.parse(b64_to_utf8(jsonGetData.content));
 
-                    // 3. Fusion / Mise à jour dans le tableau
                     const newArticleMeta = {
                         id: slug,
                         title: title,
                         category: category,
                         readTime: readTime,
                         author: author,
-                        date: today,
+                        date: todayStr,
                         image: image,
                         summary: summary
                     };
@@ -369,7 +412,6 @@
 
                     const updatedJsonEncoded = utf8_to_b64(JSON.stringify(filteredArticles, null, 2));
 
-                    // 4. Envoi de articles.json mis à jour
                     const jsonPut = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/articles.json`, {
                         method: 'PUT',
                         headers: {
@@ -391,7 +433,6 @@
                     statusMsg.className = "text-xs font-bold text-green-400";
                     statusMsg.textContent = "🎉 Article publié avec succès ! En ligne dans ~30 secondes.";
 
-                    // Réinitialisation du formulaire
                     form.reset();
                     quill.setText('');
                     document.getElementById('artReadTime').value = "8 min";
