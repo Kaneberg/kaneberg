@@ -33,6 +33,7 @@
             }
         }
     </script>
+
     <style>
         .ql-toolbar.ql-snow {
             background-color: #171717;
@@ -52,62 +53,84 @@
         .ql-stroke { stroke: #d4d4d4 !important; }
         .ql-fill { fill: #d4d4d4 !important; }
         .ql-picker { color: #d4d4d4 !important; }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #404040;
+            border-radius: 3px;
+        }
     </style>
 </head>
 <body class="bg-black text-gray-100 font-sans min-h-screen flex flex-col antialiased">
 
-    <!-- Header Admin -->
     <header class="border-b border-gray-800 bg-gray-950/80 backdrop-blur sticky top-0 z-50 py-4 px-6">
         <div class="max-w-6xl mx-auto flex justify-between items-center">
             <div class="flex items-center space-x-3">
-                <span class="text-xl font-black tracking-tighter uppercase text-white">KANEBERG</span>
+                <a href="index.html" class="text-xl font-black tracking-tighter uppercase text-white hover:text-gray-300 transition-colors">KANEBERG</a>
                 <span class="bg-white text-black text-[10px] font-bold px-2 py-0.5 rounded uppercase">Studio Rédaction</span>
             </div>
-            <a href="index.html" target="_blank" class="text-xs text-gray-400 hover:text-white transition-colors">Voir le site en ligne &rarr;</a>
+            <a href="index.html" target="_blank" class="text-xs text-gray-400 hover:text-white transition-colors flex items-center gap-1">
+                <span>Voir le site en ligne</span>
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+            </a>
         </div>
     </header>
 
     <main class="max-w-4xl mx-auto w-full px-4 py-8 flex-grow">
         
-        <!-- Configuration de la connexion GitHub -->
-        <div id="configCard" class="mb-8 p-6 bg-gray-900 border border-gray-800 rounded-lg">
-            <h2 class="text-lg font-bold text-white mb-2 flex items-center gap-2">
-                🔑 Clé d'Accès GitHub
-            </h2>
+        <div id="configCard" class="mb-8 p-6 bg-gray-900 border border-gray-800 rounded-lg shadow-lg">
+            <div class="flex items-center justify-between mb-2">
+                <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                    🔑 Configuration GitHub Pages
+                </h2>
+                <span id="configStatus" class="text-xs font-bold text-gray-400"></span>
+            </div>
             <p class="text-xs text-gray-400 mb-4 leading-relaxed">
-                Pour publier directement sur ton site, colle ton Token d'Accès GitHub (PAT). Il sera sauvegardé uniquement dans ton navigateur local.
+                Renseignez votre jeton d'accès GitHub (Token PAT avec droits <code>repo</code>) pour publier directement vos articles depuis cette interface. Vos accès sont stockés uniquement localement dans votre navigateur.
             </p>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <input type="text" id="ghRepo" placeholder="Nom du dépôt (ex: kaneberg)" class="bg-black border border-gray-700 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-white">
-                <input type="text" id="ghUsername" placeholder="Pseudo GitHub" class="bg-black border border-gray-700 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-white">
-                <input type="password" id="ghToken" placeholder="ghp_xxxxxxxxxxxx" class="bg-black border border-gray-700 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-white">
+                <div>
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1">Dépôt GitHub</label>
+                    <input type="text" id="ghRepo" placeholder="ex: kaneberg" class="w-full bg-black border border-gray-700 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-white">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1">Nom d'utilisateur</label>
+                    <input type="text" id="ghUsername" placeholder="ex: pseudo" class="w-full bg-black border border-gray-700 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-white">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1">Jeton d'accès (Token)</label>
+                    <input type="password" id="ghToken" placeholder="ghp_xxxxxxxxxxxx" class="w-full bg-black border border-gray-700 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-white">
+                </div>
             </div>
-            <button onclick="saveConfig()" class="mt-4 px-4 py-2 bg-white text-black font-bold text-xs uppercase rounded hover:bg-gray-200 transition-colors">
-                Enregistrer la clé
-            </button>
+            <div class="mt-4 flex items-center space-x-3">
+                <button type="button" id="saveConfigBtn" class="px-4 py-2 bg-white text-black font-bold text-xs uppercase rounded hover:bg-gray-200 transition-colors">
+                    Enregistrer la configuration
+                </button>
+            </div>
         </div>
 
-        <!-- Formulaire d'Écriture de l'Article -->
         <div class="bg-gray-950 border border-gray-900 rounded-lg p-6 shadow-xl">
-            <h1 class="text-2xl font-black uppercase tracking-tight mb-6 pb-4 border-b border-gray-800">
-                ✍️ Rédiger une nouvelle analyse
+            <h1 class="text-2xl font-black uppercase tracking-tight mb-6 pb-4 border-b border-gray-800 text-white">
+                ✍️ Rédiger un nouvel article
             </h1>
 
-            <form id="articleForm" onsubmit="publishArticle(event)" class="space-y-6">
+            <form id="articleForm" class="space-y-6">
                 
-                <!-- Titre & Slug -->
                 <div>
                     <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Titre de l'article</label>
-                    <input type="text" id="artTitle" oninput="generateSlug()" required placeholder="ex: Le Sentier d'Or : Analyse philosophique de Leto II" class="w-full bg-gray-900 border border-gray-800 rounded px-4 py-3 text-base text-white focus:ring-1 focus:ring-white outline-none">
+                    <input type="text" id="artTitle" required placeholder="ex: Le problème de DUNE Awakening en 2026 : Entre fausses promesses et rédemption" class="w-full bg-gray-900 border border-gray-800 rounded px-4 py-3 text-base text-white focus:ring-1 focus:ring-white outline-none">
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <!-- Identifiant / URL -->
                     <div>
                         <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Identifiant (URL)</label>
                         <input type="text" id="artSlug" required readonly class="w-full bg-gray-900/50 border border-gray-800 rounded px-3 py-2 text-xs font-mono text-gray-400 outline-none">
                     </div>
-                    <!-- Catégorie -->
                     <div>
                         <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Catégorie</label>
                         <select id="artCategory" class="w-full bg-gray-900 border border-gray-800 rounded px-3 py-2 text-sm text-white focus:ring-1 focus:ring-white outline-none">
@@ -115,22 +138,19 @@
                             <option value="Lore">Lore</option>
                             <option value="Philosophie">Philosophie</option>
                             <option value="Science">Science</option>
-                            <option value="Factions">Factions</option>
                         </select>
                     </div>
-                    <!-- Temps de lecture -->
                     <div>
                         <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Temps de lecture</label>
                         <input type="text" id="artReadTime" value="8 min" required class="w-full bg-gray-900 border border-gray-800 rounded px-3 py-2 text-sm text-white outline-none">
                     </div>
                 </div>
 
-                <!-- Image de couverture & Auteur -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Image de couverture</label>
-                        <input type="text" id="artImage" placeholder="ex: mon-image.jpg ou https://..." class="w-full bg-gray-900 border border-gray-800 rounded px-3 py-2 text-sm text-white outline-none">
-                        <p class="text-[10px] text-gray-500 mt-1">Écris le nom du fichier dans /images (ex: <code>da.vid3.png</code>) ou un lien URL direct.</p>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Image de couverture (Optionnel)</label>
+                        <input type="text" id="artImage" placeholder="ex: images/da.vid3.png ou URL" class="w-full bg-gray-900 border border-gray-800 rounded px-3 py-2 text-sm text-white outline-none">
+                        <p class="text-[10px] text-gray-500 mt-1">Laissez vide pour afficher le visuel de secours automatique KANEBERG.</p>
                     </div>
                     <div>
                         <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Auteur</label>
@@ -138,23 +158,20 @@
                     </div>
                 </div>
 
-                <!-- Résumé court -->
                 <div>
-                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Résumé court (Apparaît sur l'accueil)</label>
-                    <textarea id="artSummary" rows="2" required placeholder="Deux lignes pour donner envie de lire l'article..." class="w-full bg-gray-900 border border-gray-800 rounded px-3 py-2 text-sm text-white outline-none"></textarea>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Résumé court (Affiché sur les cartes)</label>
+                    <textarea id="artSummary" rows="2" required placeholder="Une à deux phrases accrocheuses pour donner envie de lire l'article..." class="w-full bg-gray-900 border border-gray-800 rounded px-3 py-2 text-sm text-white outline-none"></textarea>
                 </div>
 
-                <!-- Éditeur Visuel (Quill.js) -->
                 <div>
                     <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Corps de l'article</label>
                     <div id="editor"></div>
                 </div>
 
-                <!-- Bouton de Publication -->
-                <div class="pt-4 flex items-center justify-between border-t border-gray-800">
-                    <span id="statusMessage" class="text-xs font-bold"></span>
-                    <button type="submit" id="submitBtn" class="px-8 py-4 bg-white text-black font-black uppercase text-sm rounded hover:bg-gray-200 transition-transform active:scale-95 flex items-center gap-2">
-                        🚀 Publier sur Kaneberg
+                <div class="pt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-t border-gray-800">
+                    <div id="statusMessage" class="text-xs font-bold min-h-[1.25rem]"></div>
+                    <button type="submit" id="submitBtn" class="px-8 py-3.5 bg-white text-black font-black uppercase text-xs tracking-wider rounded hover:bg-gray-200 transition-transform active:scale-95 flex items-center justify-center gap-2">
+                        <span>🚀 Publier l'article</span>
                     </button>
                 </div>
 
@@ -163,21 +180,23 @@
     </main>
 
     <script>
-        const quill = new Quill('#editor', {
-            theme: 'snow',
-            placeholder: 'Rédigez votre article ici...',
-            modules: {
-                toolbar: [
-                    [{ 'header': [2, 3, false] }],
-                    ['bold', 'italic', 'underline', 'blockquote'],
-                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                    ['link', 'image'],
-                    ['clean']
-                ]
-            }
-        });
-
         document.addEventListener('DOMContentLoaded', () => {
+            // Initialisation de l'éditeur Quill
+            const quill = new Quill('#editor', {
+                theme: 'snow',
+                placeholder: 'Rédigez votre analyse ou dossier ici...',
+                modules: {
+                    toolbar: [
+                        [{ 'header': [2, 3, false] }],
+                        ['bold', 'italic', 'underline', 'blockquote'],
+                        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                        ['link', 'image'],
+                        ['clean']
+                    ]
+                }
+            });
+
+            // Chargement de la configuration sauvegardée
             const savedRepo = localStorage.getItem('kb_repo');
             const savedUser = localStorage.getItem('kb_user');
             const savedToken = localStorage.getItem('kb_token');
@@ -185,142 +204,209 @@
             if (savedRepo) document.getElementById('ghRepo').value = savedRepo;
             if (savedUser) document.getElementById('ghUsername').value = savedUser;
             if (savedToken) document.getElementById('ghToken').value = savedToken;
-        });
 
-        function saveConfig() {
-            localStorage.setItem('kb_repo', document.getElementById('ghRepo').value.trim());
-            localStorage.setItem('kb_user', document.getElementById('ghUsername').value.trim());
-            localStorage.setItem('kb_token', document.getElementById('ghToken').value.trim());
-            alert('Configuration GitHub enregistrée en local !');
-        }
+            const configStatus = document.getElementById('configStatus');
+            if (savedRepo && savedUser && savedToken) {
+                configStatus.textContent = "✅ Configuration chargée";
+                configStatus.className = "text-xs font-bold text-green-400";
+            }
 
-        function generateSlug() {
-            const title = document.getElementById('artTitle').value;
-            const slug = title.toLowerCase()
-                .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-                .replace(/[^a-z0-9 -]/g, "")
-                .trim()
-                .replace(/\s+/g, "-");
-            document.getElementById('artSlug').value = slug;
-        }
+            // Sauvegarde de la configuration
+            document.getElementById('saveConfigBtn').addEventListener('click', () => {
+                const repo = document.getElementById('ghRepo').value.trim();
+                const user = document.getElementById('ghUsername').value.trim();
+                const token = document.getElementById('ghToken').value.trim();
 
-        async function publishArticle(event) {
-            event.preventDefault();
-            
-            const repo = localStorage.getItem('kb_repo');
-            const user = localStorage.getItem('kb_user');
-            const token = localStorage.getItem('kb_token');
+                if (!repo || !user || !token) {
+                    configStatus.textContent = "⚠️ Veuillez remplir tous les champs";
+                    configStatus.className = "text-xs font-bold text-yellow-400";
+                    return;
+                }
+
+                localStorage.setItem('kb_repo', repo);
+                localStorage.setItem('kb_user', user);
+                localStorage.setItem('kb_token', token);
+
+                configStatus.textContent = "✅ Configuration enregistrée !";
+                configStatus.className = "text-xs font-bold text-green-400";
+            });
+
+            // Génération dynamique du Slug
+            const titleInput = document.getElementById('artTitle');
+            const slugInput = document.getElementById('artSlug');
+
+            titleInput.addEventListener('input', () => {
+                const title = titleInput.value;
+                const slug = title.toLowerCase()
+                    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+                    .replace(/[^a-z0-9 -]/g, "")
+                    .trim()
+                    .replace(/\s+/g, "-");
+                slugInput.value = slug;
+            });
+
+            // Helper conversion UTF-8 vers Base64
+            function utf8_to_b64(str) {
+                return window.btoa(unescape(encodeURIComponent(str)));
+            }
+
+            function b64_to_utf8(str) {
+                return decodeURIComponent(escape(window.atob(str)));
+            }
+
+            // Soumission du formulaire et publication GitHub API
+            const form = document.getElementById('articleForm');
             const statusMsg = document.getElementById('statusMessage');
             const submitBtn = document.getElementById('submitBtn');
 
-            if (!repo || !user || !token) {
-                alert('Veuillez remplir et enregistrer vos identifiants GitHub en haut de page.');
-                return;
-            }
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
 
-            const title = document.getElementById('artTitle').value.trim();
-            const slug = document.getElementById('artSlug').value.trim();
-            const category = document.getElementById('artCategory').value;
-            const readTime = document.getElementById('artReadTime').value.trim();
-            const author = document.getElementById('artAuthor').value.trim();
-            let image = document.getElementById('artImage').value.trim();
-            const summary = document.getElementById('artSummary').value.trim();
-            const htmlContent = quill.root.innerHTML;
+                const repo = localStorage.getItem('kb_repo');
+                const user = localStorage.getItem('kb_user');
+                const token = localStorage.getItem('kb_token');
 
-            // --- FORMATAGE AUTOMATIQUE DU CHEMIN D'IMAGE ---
-            if (image && !image.startsWith('http://') && !image.startsWith('https://') && !image.startsWith('/') && !image.startsWith('data:') && !image.startsWith('images/')) {
-                image = 'images/' + image;
-            }
+                if (!repo || !user || !token) {
+                    statusMsg.className = "text-xs font-bold text-red-400";
+                    statusMsg.textContent = "⚠️ Veuillez configurer vos identifiants GitHub en haut de page.";
+                    return;
+                }
 
-            const today = new Date().toISOString().split('T')[0];
+                const title = titleInput.value.trim();
+                const slug = slugInput.value.trim();
+                const category = document.getElementById('artCategory').value;
+                const readTime = document.getElementById('artReadTime').value.trim();
+                const author = document.getElementById('artAuthor').value.trim();
+                let image = document.getElementById('artImage').value.trim();
+                const summary = document.getElementById('artSummary').value.trim();
+                const htmlContent = quill.root.innerHTML;
 
-            submitBtn.disabled = true;
-            submitBtn.style.opacity = '0.5';
-            statusMsg.className = "text-xs font-bold text-yellow-400 animate-pulse";
-            statusMsg.textContent = "1/2 Création du fichier d'article...";
+                if (!slug) {
+                    statusMsg.className = "text-xs font-bold text-red-400";
+                    statusMsg.textContent = "⚠️ Le titre ne peut pas être vide.";
+                    return;
+                }
 
-            try {
-                // 1. Envoi du fichier HTML dans articles/{slug}.html
-                const htmlPath = `articles/${slug}.html`;
-                const contentEncoded = btoa(unescape(encodeURIComponent(htmlContent)));
+                if (image && !image.startsWith('http://') && !image.startsWith('https://') && !image.startsWith('/') && !image.startsWith('data:') && !image.startsWith('images/')) {
+                    image = 'images/' + image;
+                }
 
-                const htmlResponse = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/${htmlPath}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Authorization': `token ${token}`,
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
+                const today = new Date().toISOString().split('T')[0];
+
+                submitBtn.disabled = true;
+                submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                statusMsg.className = "text-xs font-bold text-yellow-400 animate-pulse";
+                statusMsg.textContent = "⏳ 1/2 Création du fichier d'article HTML...";
+
+                try {
+                    // 1. Publication du fichier articles/{slug}.html
+                    const htmlPath = `articles/${slug}.html`;
+                    const contentEncoded = utf8_to_b64(htmlContent);
+
+                    // Vérification préalable si le fichier existe déjà pour récupérer son SHA (mise à jour)
+                    let fileSha = null;
+                    try {
+                        const checkRes = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/${htmlPath}`, {
+                            headers: { 'Authorization': `token ${token}` }
+                        });
+                        if (checkRes.ok) {
+                            const checkData = await checkRes.json();
+                            fileSha = checkData.sha;
+                        }
+                    } catch (err) {
+                        // Fichier inexistant, c'est normal pour un nouvel article
+                    }
+
+                    const htmlPayload = {
                         message: `Publication de l'article : ${title}`,
                         content: contentEncoded
-                    })
-                });
+                    };
+                    if (fileSha) htmlPayload.sha = fileSha;
 
-                if (!htmlResponse.ok) throw new Error("Échec de la création du fichier HTML sur GitHub.");
+                    const htmlResponse = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/${htmlPath}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Authorization': `token ${token}`,
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(htmlPayload)
+                    });
 
-                statusMsg.textContent = "2/2 Mise à jour du catalogue JSON...";
+                    if (!htmlResponse.ok) {
+                        const errData = await htmlResponse.json();
+                        throw new Error(`Échec HTML : ${errData.message || htmlResponse.status}`);
+                    }
 
-                // 2. Récupération du fichier articles.json actuel
-                const jsonGet = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/articles.json`, {
-                    headers: { 'Authorization': `token ${token}` }
-                });
-                
-                if (!jsonGet.ok) throw new Error("Impossible de lire articles.json sur GitHub.");
-                
-                const jsonGetData = await jsonGet.json();
-                const jsonSha = jsonGetData.sha;
-                const existingArticles = JSON.parse(decodeURIComponent(escape(atob(jsonGetData.content))));
+                    statusMsg.textContent = "⏳ 2/2 Mise à jour de l'index JSON...";
 
-                // 3. Ajout du nouvel article en tête de liste
-                const newArticleMeta = {
-                    id: slug,
-                    title: title,
-                    category: category,
-                    readTime: readTime,
-                    author: author,
-                    date: today,
-                    image: image,
-                    summary: summary
-                };
+                    // 2. Récupération de articles.json
+                    const jsonGet = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/articles.json`, {
+                        headers: { 'Authorization': `token ${token}` }
+                    });
 
-                // Éviter les doublons si on republie le même slug
-                const filteredArticles = existingArticles.filter(art => art.id !== slug);
-                filteredArticles.unshift(newArticleMeta);
+                    if (!jsonGet.ok) {
+                        throw new Error("Impossible de lire articles.json sur GitHub.");
+                    }
 
-                const updatedJsonEncoded = btoa(unescape(encodeURIComponent(JSON.stringify(filteredArticles, null, 2))));
+                    const jsonGetData = await jsonGet.json();
+                    const jsonSha = jsonGetData.sha;
+                    const existingArticles = JSON.parse(b64_to_utf8(jsonGetData.content));
 
-                // 4. Mettre à jour articles.json sur GitHub
-                const jsonPut = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/articles.json`, {
-                    method: 'PUT',
-                    headers: {
-                        'Authorization': `token ${token}`,
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        message: `Indexation de : ${title}`,
-                        content: updatedJsonEncoded,
-                        sha: jsonSha
-                    })
-                });
+                    // 3. Fusion / Mise à jour dans le tableau
+                    const newArticleMeta = {
+                        id: slug,
+                        title: title,
+                        category: category,
+                        readTime: readTime,
+                        author: author,
+                        date: today,
+                        image: image,
+                        summary: summary
+                    };
 
-                if (!jsonPut.ok) throw new Error("Échec de la mise à jour de articles.json.");
+                    const filteredArticles = existingArticles.filter(art => art.id !== slug);
+                    filteredArticles.unshift(newArticleMeta);
 
-                statusMsg.className = "text-xs font-bold text-green-400";
-                statusMsg.textContent = "🎉 Publication réussie ! Le site sera à jour dans ~30 secondes.";
-                alert('Félicitations ! Ton article est publié et sera en ligne dans quelques secondes !');
-                
-                document.getElementById('articleForm').reset();
-                quill.setText('');
+                    const updatedJsonEncoded = utf8_to_b64(JSON.stringify(filteredArticles, null, 2));
 
-            } catch (error) {
-                console.error(error);
-                statusMsg.className = "text-xs font-bold text-red-500";
-                statusMsg.textContent = "Erreur : " + error.message;
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.style.opacity = '1';
-            }
-        }
+                    // 4. Envoi de articles.json mis à jour
+                    const jsonPut = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/articles.json`, {
+                        method: 'PUT',
+                        headers: {
+                            'Authorization': `token ${token}`,
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            message: `Indexation de : ${title}`,
+                            content: updatedJsonEncoded,
+                            sha: jsonSha
+                        })
+                    });
+
+                    if (!jsonPut.ok) {
+                        const errJson = await jsonPut.json();
+                        throw new Error(`Échec Index JSON : ${errJson.message || jsonPut.status}`);
+                    }
+
+                    statusMsg.className = "text-xs font-bold text-green-400";
+                    statusMsg.textContent = "🎉 Article publié avec succès ! En ligne dans ~30 secondes.";
+
+                    // Réinitialisation du formulaire
+                    form.reset();
+                    quill.setText('');
+                    document.getElementById('artReadTime').value = "8 min";
+                    document.getElementById('artAuthor').value = "Rédaction Kaneberg";
+
+                } catch (error) {
+                    console.error(error);
+                    statusMsg.className = "text-xs font-bold text-red-500";
+                    statusMsg.textContent = "❌ Erreur : " + error.message;
+                } finally {
+                    submitBtn.disabled = false;
+                    submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                }
+            });
+        });
     </script>
 </body>
 </html>
