@@ -81,7 +81,8 @@
 
 <body class="bg-white text-gray-950 dark:bg-black dark:text-gray-50 font-sans min-h-screen flex flex-col antialiased">
 
-    <div class="bg-black text-white text-xs py-2 hidden md:block">
+    <!-- Header info topbar -->
+    <div class="bg-black text-white text-xs py-2 hidden md:block border-b border-gray-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
             <div class="flex space-x-6">
                 <a href="about.html" class="hover:text-gray-300 transition-colors">À propos</a>
@@ -94,12 +95,13 @@
         </div>
     </div>
 
+    <!-- Navigation principal -->
     <nav class="sticky top-0 z-50 bg-white/95 dark:bg-black/95 backdrop-blur border-b border-gray-200 dark:border-gray-800 transition-colors duration-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 
                 <div class="flex items-center space-x-8">
-                    <a href="index.html" class="text-2xl font-black tracking-tighter text-black dark:text-white leading-none">
+                    <a href="index.html" class="text-2xl font-black tracking-tighter text-black dark:text-white leading-none uppercase">
                         KANEBERG
                     </a>
                     <div class="hidden md:flex space-x-8">
@@ -133,6 +135,7 @@
             </p>
         </div>
 
+        <!-- Filtres et Recherche -->
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-8 border-b border-gray-100 dark:border-gray-900 mb-10">
             <div class="flex flex-wrap gap-2" id="filterContainer">
                 <button data-category="all" class="filter-btn filter-btn-active px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider border border-gray-200 dark:border-gray-800 transition-colors">
@@ -161,16 +164,19 @@
             </div>
         </div>
 
+        <!-- Statut de chargement -->
         <div id="articlesStatus" class="text-center py-16">
             <p class="text-gray-500 animate-pulse">Chargement de la bibliothèque de la Guilde...</p>
         </div>
 
+        <!-- Grille des articles -->
         <div id="articlesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 hidden">
             <!-- Injecté dynamiquement par JavaScript -->
         </div>
 
     </main>
 
+    <!-- FOOTER -->
     <footer class="bg-black text-white mt-auto py-12 border-t border-gray-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -222,6 +228,7 @@
             }
             document.getElementById('currentYear').textContent = today.getFullYear();
 
+            // Gestion Thème Clair/Sombre
             const themeToggleBtn = document.getElementById('themeToggle');
             const htmlElement = document.documentElement;
             
@@ -246,6 +253,7 @@
             let currentFilter = 'all';
             let searchQuery = '';
 
+            // Base de données de secours
             const fallbackArticles = [
                 {
                     "id": "probleme-dune-awakening-2026",
