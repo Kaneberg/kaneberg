@@ -242,14 +242,35 @@
                 Chargement du titre...
             </h1>
 
-            <div class="flex items-center justify-between border-y border-gray-100 dark:border-gray-900 py-4 text-xs text-gray-500 dark:text-gray-400">
-                <div class="flex items-center space-x-2">
+            <!-- Métadonnées & Compteurs Vues / Likes -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between border-y border-gray-100 dark:border-gray-900 py-4 text-xs text-gray-500 dark:text-gray-400 gap-3">
+                <div class="flex items-center space-x-3">
                     <span>Par <strong id="auteurArticle" class="text-black dark:text-white font-semibold">Rédaction Kaneberg</strong></span>
-                </div>
-                <div>
+                    <span>&bull;</span>
                     <span>Publié le <time id="dateArticle">--/--/----</time></span>
                 </div>
+                
+                <!-- Zone Vues & Bouton Like -->
+                <div class="flex items-center space-x-4">
+                    <span class="inline-flex items-center gap-1.5 text-gray-500 dark:text-gray-400 font-medium">
+                        <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                        </svg>
+                        <span id="articleViews">--</span> vues
+                    </span>
+
+                    <button id="likeBtn" class="inline-flex items-center gap-1.5 px-3 py-1 bg-gray-100 dark:bg-gray-900 hover:bg-red-50 dark:hover:bg-red-950/40 text-gray-700 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 border border-gray-200 dark:border-gray-800 rounded-full transition-all font-semibold active:scale-95 cursor-pointer">
+                        <svg id="likeHeartIcon" class="w-3.5 h-3.5 fill-none stroke-current transition-transform duration-200" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                        </svg>
+                        <span id="articleLikes">0</span>
+                    </button>
+                </div>
             </div>
+
+            <!-- Message interactif de confirmation Like -->
+            <div id="likeNotice" class="hidden text-[11px] text-right font-medium mt-1.5 transition-all"></div>
         </header>
 
         <!-- Image de Couverture -->
@@ -395,6 +416,67 @@
 
             const urlParams = new URLSearchParams(window.location.search);
             const articleId = urlParams.get('id') || 'probleme-dune-awakening-2026';
+
+            // --- GESTION DU COMPTEUR DE VUES ET LIKES ---
+            function initArticleStats(id) {
+                const viewsKey = `kb_views_${id}`;
+                const likesKey = `kb_likes_${id}`;
+                const userLikedKey = `kb_has_liked_${id}`;
+
+                // Base initiale fictive réaliste selon l'article
+                let views = parseInt(localStorage.getItem(viewsKey)) || (id.includes('awakening') ? 1420 : 380);
+                let likes = parseInt(localStorage.getItem(likesKey)) || (id.includes('awakening') ? 89 : 24);
+
+                // Incrémenter les vues
+                views += 1;
+                localStorage.setItem(viewsKey, views);
+
+                const viewsElem = document.getElementById('articleViews');
+                const likesElem = document.getElementById('articleLikes');
+                const likeBtn = document.getElementById('likeBtn');
+                const likeNotice = document.getElementById('likeNotice');
+                const heartIcon = document.getElementById('likeHeartIcon');
+
+                if (viewsElem) viewsElem.textContent = views.toLocaleString('fr-FR');
+                if (likesElem) likesElem.textContent = likes.toLocaleString('fr-FR');
+
+                // Si l'utilisateur a déjà aimé
+                const hasLiked = localStorage.getItem(userLikedKey) === 'true';
+                if (hasLiked && likeBtn && heartIcon) {
+                    likeBtn.classList.add('bg-red-50', 'dark:bg-red-950/40', 'text-red-600', 'dark:text-red-400', 'border-red-200', 'dark:border-red-800');
+                    heartIcon.classList.add('fill-current', 'scale-110');
+                }
+
+                if (likeBtn) {
+                    likeBtn.addEventListener('click', () => {
+                        const alreadyLiked = localStorage.getItem(userLikedKey) === 'true';
+
+                        if (!alreadyLiked) {
+                            likes += 1;
+                            localStorage.setItem(likesKey, likes);
+                            localStorage.setItem(userLikedKey, 'true');
+
+                            if (likesElem) likesElem.textContent = likes.toLocaleString('fr-FR');
+                            likeBtn.classList.add('bg-red-50', 'dark:bg-red-950/40', 'text-red-600', 'dark:text-red-400', 'border-red-200', 'dark:border-red-800');
+                            if (heartIcon) heartIcon.classList.add('fill-current', 'scale-110');
+
+                            if (likeNotice) {
+                                likeNotice.textContent = "❤️ Merci pour votre soutien !";
+                                likeNotice.className = "text-[11px] text-right font-medium mt-1.5 transition-all text-green-500 dark:text-green-400 block";
+                                setTimeout(() => { likeNotice.className = "hidden"; }, 4000);
+                            }
+                        } else {
+                            if (likeNotice) {
+                                likeNotice.textContent = "✨ Vous avez déjà aimé cet article !";
+                                likeNotice.className = "text-[11px] text-right font-medium mt-1.5 transition-all text-amber-500 dark:text-amber-400 block";
+                                setTimeout(() => { likeNotice.className = "hidden"; }, 3000);
+                            }
+                        }
+                    });
+                }
+            }
+
+            initArticleStats(articleId);
 
             let articlesList = [];
             try {
