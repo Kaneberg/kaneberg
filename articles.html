@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!-- Par défaut en thème clair -->
 <html lang="fr" class="">
 <head>
     <meta charset="UTF-8">
@@ -16,7 +15,6 @@
                         sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
                     },
                     colors: {
-                        // Palette strictement monochrome (sans bleu)
                         gray: {
                             50: '#fafafa',
                             100: '#f5f5f5',
@@ -41,7 +39,6 @@
             transition: background-color 0.2s ease, color 0.2s ease;
         }
 
-        /* Effet élégant de zoom sur les images */
         .image-zoom-container {
             overflow: hidden;
         }
@@ -52,7 +49,6 @@
             transform: scale(1.03);
         }
 
-        /* Liens de navigation avec soulignement élégant au survol */
         .nav-link {
             position: relative;
             text-decoration: none;
@@ -72,7 +68,6 @@
             width: 100%;
         }
 
-        /* Style des boutons de filtre actifs */
         .filter-btn-active {
             background-color: #000000;
             color: #ffffff;
@@ -103,7 +98,6 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 
-                <!-- Logo & Liens de navigation -->
                 <div class="flex items-center space-x-8">
                     <a href="index.html" class="text-2xl font-black tracking-tighter text-black dark:text-white leading-none">
                         KANEBERG
@@ -116,14 +110,11 @@
                     </div>
                 </div>
 
-                <!-- Outils du Header (Thème) -->
                 <div class="flex items-center space-x-4">
                     <button id="themeToggle" class="text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors" aria-label="Basculer le thème">
-                        <!-- Soleil (Thème Clair actif) -->
                         <svg id="sunIcon" class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
                         </svg>
-                        <!-- Lune (Thème Sombre actif) -->
                         <svg id="moonIcon" class="w-5 h-5 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
                         </svg>
@@ -135,7 +126,6 @@
 
     <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
         
-        <!-- En-tête de la page -->
         <div class="mb-12">
             <h1 class="text-4xl font-black tracking-tight uppercase mb-3">Archives & Décryptages</h1>
             <p class="text-gray-600 dark:text-gray-400 max-w-2xl text-lg">
@@ -143,9 +133,7 @@
             </p>
         </div>
 
-        <!-- Section Filtres & Barre de recherche -->
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-8 border-b border-gray-100 dark:border-gray-900 mb-10">
-            <!-- Boutons de filtres par catégorie -->
             <div class="flex flex-wrap gap-2" id="filterContainer">
                 <button data-category="all" class="filter-btn filter-btn-active px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider border border-gray-200 dark:border-gray-800 transition-colors">
                     Tout
@@ -164,7 +152,6 @@
                 </button>
             </div>
 
-            <!-- Barre de recherche -->
             <div class="relative w-full md:w-80">
                 <svg class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
@@ -174,12 +161,10 @@
             </div>
         </div>
 
-        <!-- État de chargement / Erreurs -->
         <div id="articlesStatus" class="text-center py-16">
             <p class="text-gray-500 animate-pulse">Chargement de la bibliothèque de la Guilde...</p>
         </div>
 
-        <!-- Grille principale d'articles -->
         <div id="articlesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 hidden">
             <!-- Injecté dynamiquement par JavaScript -->
         </div>
@@ -189,7 +174,6 @@
     <footer class="bg-black text-white mt-auto py-12 border-t border-gray-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <!-- Présentation -->
                 <div class="md:col-span-2">
                     <h2 class="text-3xl font-black uppercase tracking-tighter mb-4">KANEBERG</h2>
                     <p class="text-gray-400 text-sm max-w-sm leading-relaxed">
@@ -197,7 +181,6 @@
                     </p>
                 </div>
 
-                <!-- Navigation alternative -->
                 <div>
                     <h3 class="text-xs font-bold uppercase tracking-widest text-gray-500 mb-4">Média</h3>
                     <ul class="space-y-2 text-sm">
@@ -208,7 +191,6 @@
                     </ul>
                 </div>
 
-                <!-- Mentions légales -->
                 <div>
                     <h3 class="text-xs font-bold uppercase tracking-widest text-gray-500 mb-4">Informations</h3>
                     <ul class="space-y-2 text-sm">
@@ -219,7 +201,6 @@
                 </div>
             </div>
 
-            <!-- Copyright & Liens -->
             <div class="mt-12 pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center text-xs text-gray-500">
                 <p>&copy; <span id="currentYear"></span> KANEBERG MEDIA. Tous droits réservés.</p>
                 <div class="flex space-x-4 mt-4 md:mt-0">
@@ -233,8 +214,6 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            
-            // --- Dates ---
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
             const today = new Date();
             const dateStr = today.toLocaleDateString('fr-FR', options);
@@ -243,7 +222,6 @@
             }
             document.getElementById('currentYear').textContent = today.getFullYear();
 
-            // --- Thème Sombre / Clair ---
             const themeToggleBtn = document.getElementById('themeToggle');
             const htmlElement = document.documentElement;
             
@@ -259,7 +237,6 @@
                 localStorage.setItem('theme', htmlElement.classList.contains('dark') ? 'dark' : 'light');
             });
 
-            // --- Logique du Catalogue d'Articles ---
             const articlesStatus = document.getElementById('articlesStatus');
             const articlesGrid = document.getElementById('articlesGrid');
             const searchInput = document.getElementById('articleSearchInput');
@@ -269,7 +246,6 @@
             let currentFilter = 'all';
             let searchQuery = '';
 
-            // Backup de secours synchronisée avec le nouvel article de Dune Awakening !
             const fallbackArticles = [
                 {
                     "id": "probleme-dune-awakening-2026",
@@ -278,7 +254,7 @@
                     "readTime": "10 min",
                     "author": "Rédaction Kaneberg",
                     "date": "2026-07-01",
-                    "image": "",
+                    "image": "images/da.vid3.png",
                     "summary": "Dune Awakening a-t-il menti à sa communauté ? Retour sur la polémique du MMO de Funcom, ses échecs de design au lancement, et sa spectaculaire mise à jour PvE/PvP de 2026."
                 },
                 {
@@ -288,64 +264,13 @@
                     "readTime": "8 min",
                     "author": "Rédaction Kaneberg",
                     "date": "2026-06-30",
-                    "image": "image_db9103.jpg",
+                    "image": "",
                     "summary": "L'Épice, ou Mélange, est le pilier de l'Empire. Mais comment est-elle produite exactement sur Arrakis et pourquoi fixe-t-elle l'économie galactique ?"
-                },
-                {
-                    "id": "jihad-butlerien",
-                    "title": "Le Jihad Butlérien : Pourquoi l'univers a banni l'intelligence artificielle",
-                    "category": "Histoire",
-                    "readTime": "12 min",
-                    "author": "Kaneberg",
-                    "date": "2026-06-29",
-                    "image": "",
-                    "summary": "Retour sur la guerre dévastatrice entre les humains et les machines pensantes, l'événement fondateur de la société féodale de Dune."
-                },
-                {
-                    "id": "sentier-dor",
-                    "title": "Le Sentier d'Or : Leto II était-il un tyran ou le sauveur de l'humanité ?",
-                    "category": "Philosophie",
-                    "readTime": "15 min",
-                    "author": "Rédaction Kaneberg",
-                    "date": "2026-06-28",
-                    "image": "",
-                    "summary": "Une plongée complexe dans les motivations de l'Empereur-Dieu. Pourquoi la stagnation était-elle la véritable menace, et comment la dispersion a forcé la survie."
-                },
-                {
-                    "id": "denis-villeneuve-messiah",
-                    "title": "Denis Villeneuve confirme l'avancement du script du troisième volet",
-                    "category": "Actu",
-                    "readTime": "3 min",
-                    "author": "Rédaction Kaneberg",
-                    "date": "2026-06-27",
-                    "image": "",
-                    "summary": "Le réalisateur a pris la parole ce matin concernant l'adaptation tant attendue de Dune : Messiah."
-                },
-                {
-                    "id": "distilles-fremen",
-                    "title": "Distilles Fremen : Une réalité scientifique possible ?",
-                    "category": "Science",
-                    "readTime": "7 min",
-                    "author": "Kaneberg",
-                    "date": "2026-06-25",
-                    "image": "",
-                    "summary": "Analyse du fonctionnement des combinaisons de survie Fremen et de leur viabilité avec nos technologies actuelles."
-                },
-                {
-                    "id": "bene-gesserit-failles",
-                    "title": "Bene Gesserit : Les failles du plan génétique",
-                    "category": "Factions",
-                    "readTime": "10 min",
-                    "author": "Rédaction Kaneberg",
-                    "date": "2026-06-20",
-                    "image": "",
-                    "summary": "Comment un programme de sélection millénaire a été mis en échec par le sentiment le plus humain : l'amour."
                 }
             ];
 
             async function loadArticles() {
                 try {
-                    // Système anti-cache (Cache-busting)
                     const cacheBuster = `?t=${new Date().getTime()}`;
                     let fetchUrl = 'articles.json' + cacheBuster;
                     
@@ -368,12 +293,9 @@
                 }
             }
 
-            // Lancement du chargement
             loadArticles();
 
-            // 2. Rendu des cartes d'articles dans la grille
             function renderArticles() {
-                // Filtrer les articles en fonction de la catégorie et de la recherche
                 const filtered = allArticles.filter(article => {
                     const matchesCategory = currentFilter === 'all' || article.category.toLowerCase() === currentFilter.toLowerCase();
                     const matchesSearch = article.title.toLowerCase().includes(searchQuery) || 
@@ -382,7 +304,6 @@
                     return matchesCategory && matchesSearch;
                 });
 
-                // Vider la grille
                 articlesGrid.innerHTML = '';
 
                 if (filtered.length === 0) {
@@ -394,7 +315,6 @@
                     return;
                 }
 
-                // Générer les cartes
                 filtered.forEach(article => {
                     const card = document.createElement('article');
                     card.className = "group border border-gray-100 dark:border-gray-900 rounded-md overflow-hidden bg-white dark:bg-black flex flex-col h-full cursor-pointer transition-colors hover:border-gray-300 dark:hover:border-gray-700";
@@ -403,17 +323,16 @@
                         window.location.href = `article.html?id=${article.id}`;
                     });
 
-                    let imageHTML = '';
-                    if (article.image) {
-                        imageHTML = `<img src="${article.image}" alt="${article.title}" class="img-placeholder w-full h-full object-cover">`;
-                    } else {
-                        imageHTML = `
-                            <div class="img-placeholder w-full h-full bg-gray-100 dark:bg-gray-950 flex flex-col items-center justify-center p-6 border-b border-gray-100 dark:border-gray-900 select-none">
-                                <span class="text-gray-300 dark:text-gray-800 font-black text-2xl tracking-widest uppercase">KANEBERG</span>
-                                <span class="text-[9px] text-gray-400 dark:text-gray-600 tracking-widest uppercase mt-2">Dossier Spécial / Archive</span>
-                            </div>
-                        `;
-                    }
+                    const fallbackBlock = `
+                        <div class="img-placeholder w-full h-full bg-gray-100 dark:bg-gray-950 flex flex-col items-center justify-center p-6 border-b border-gray-100 dark:border-gray-900 select-none">
+                            <span class="text-gray-300 dark:text-gray-800 font-black text-2xl tracking-widest uppercase">KANEBERG</span>
+                            <span class="text-[9px] text-gray-400 dark:text-gray-600 tracking-widest uppercase mt-2">Dossier Spécial / Archive</span>
+                        </div>
+                    `;
+
+                    let imageHTML = article.image 
+                        ? `<img src="${article.image}" alt="${article.title}" class="img-placeholder w-full h-full object-cover" onerror="this.onerror=null; this.parentElement.innerHTML='${fallbackBlock.replace(/'/g, "\\'").replace(/\n/g, "")}';">`
+                        : fallbackBlock;
 
                     card.innerHTML = `
                         <div class="aspect-video w-full image-zoom-container bg-gray-50 dark:bg-gray-950 relative">
@@ -441,7 +360,6 @@
                 });
             }
 
-            // 3. Événement de filtrage par boutons
             filterButtons.forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     filterButtons.forEach(b => {
@@ -457,7 +375,6 @@
                 });
             });
 
-            // 4. Événement de recherche
             searchInput.addEventListener('input', (e) => {
                 searchQuery = e.target.value.toLowerCase().trim();
                 renderArticles();
