@@ -1,5 +1,16 @@
 [
   {
+    "id": "lhistoire-de-la-patate",
+    "title": "L'histoire de la patate",
+    "category": "Autres",
+    "selection": true,
+    "readTime": "50 min",
+    "author": "Kaneberg",
+    "date": "2026-08-02",
+    "image": "images/Copie de Copie de VS (40).png",
+    "summary": "ceci est l'histoire de la patete"
+  },
+  {
     "id": "nouveau-test03",
     "title": "Nouveau test03",
     "category": "Actu",
