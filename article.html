@@ -126,7 +126,6 @@
                 &larr; Retour au catalogue
             </a>
             
-            <!-- COMPTEUR DE VUES ET LIKES AVEC ICÔNES VECTORIELLES -->
             <div class="flex items-center space-x-3 text-xs">
                 <span class="flex items-center gap-2 text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-900 px-3 py-1.5 rounded-full font-sans font-medium">
                     <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -198,8 +197,6 @@
     </footer>
 
     <script>
-        // --- CONFIGURATION FIREBASE ---
-        // Remplace l'URL ci-dessous par ton URL exacte Firebase Realtime Database
         const FIREBASE_URL = "https://kaneberg-stats-default-rtdb.europe-west1.firebasedatabase.app/";
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -226,7 +223,6 @@
                 });
             }
 
-            // Extraction de l'ID d'article depuis l'URL
             const adresseURL = window.location.href;
             const separationID = adresseURL.split('?id=');
             if (separationID.length < 2) {
@@ -264,14 +260,16 @@
                 document.getElementById('tempsLecture').textContent = articleMeta.readTime;
 
                 const containerImage = document.getElementById('imageCouverture');
+                const fallbackBlock = `
+                    <div class="w-full h-48 bg-gray-50 dark:bg-gray-950 flex flex-col items-center justify-center border border-gray-100 dark:border-gray-900 rounded-md select-none">
+                        <span class="text-gray-300 dark:text-gray-800 font-black text-3xl tracking-widest uppercase">KANEBERG</span>
+                    </div>
+                `;
+
                 if (articleMeta.image) {
-                    containerImage.innerHTML = `<img src="${articleMeta.image}" alt="${articleMeta.title}" class="w-full h-auto max-h-[450px] object-cover rounded-md border border-gray-100 dark:border-gray-900">`;
+                    containerImage.innerHTML = `<img src="${articleMeta.image}" alt="${articleMeta.title}" class="w-full h-auto max-h-[450px] object-cover rounded-md border border-gray-100 dark:border-gray-900" onerror="this.onerror=null; this.parentElement.innerHTML='${fallbackBlock.replace(/'/g, "\\'").replace(/\n/g, "")}';">`;
                 } else {
-                    containerImage.innerHTML = `
-                        <div class="w-full h-48 bg-gray-50 dark:bg-gray-950 flex flex-col items-center justify-center border border-gray-100 dark:border-gray-900 rounded-md select-none">
-                            <span class="text-gray-300 dark:text-gray-800 font-black text-3xl tracking-widest uppercase">KANEBERG</span>
-                        </div>
-                    `;
+                    containerImage.innerHTML = fallbackBlock;
                 }
 
                 let texteUrl = `articles/${id}.html`;
@@ -291,7 +289,6 @@
             }
         }
 
-        // --- GESTION EN TEMPS RÉEL FIREBASE (VUES & LIKES) ---
         async function initStats(articleId) {
             const viewsElem = document.getElementById('articleViews');
             const likesElem = document.getElementById('articleLikes');
@@ -302,30 +299,25 @@
             const articleEndpoint = `${cleanDbUrl}/stats/${articleId}.json`;
 
             try {
-                // 1. Charger les statistiques actuelles depuis Firebase
                 const response = await fetch(articleEndpoint);
-                let data = await response.json() || { views: 120, likes: 14 };
+                let data = await response.json() || { views: 0, likes: 0 };
 
                 let views = (data.views || 0) + 1;
                 let likes = data.likes || 0;
 
-                // 2. Mettre à jour la vue (+1) sur Firebase
                 fetch(articleEndpoint, {
                     method: 'PATCH',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ views: views })
                 }).catch(err => console.warn("Erreur sauvegarde vue :", err));
 
-                // Affiche les chiffres réels
                 viewsElem.textContent = views.toLocaleString('fr-FR');
                 likesElem.textContent = likes.toString();
 
-                // 3. Vérification si déjà liké localement
                 if (localStorage.getItem(userLikedKey)) {
                     setLikedState(false);
                 }
 
-                // 4. Clic sur le bouton Like
                 likeBtn.addEventListener('click', () => {
                     if (!localStorage.getItem(userLikedKey)) {
                         likes += 1;
@@ -334,7 +326,6 @@
                         setLikedState(true);
                         triggerToast();
 
-                        // Sauvegarde le Like en temps réel dans Firebase
                         fetch(articleEndpoint, {
                             method: 'PATCH',
                             headers: { 'Content-Type': 'application/json' },
@@ -381,11 +372,11 @@
             }
 
             function initLocalStorageFallback(articleId) {
-                let views = parseInt(localStorage.getItem(`kb_views_${articleId}`) || "120") + 1;
+                let views = parseInt(localStorage.getItem(`kb_views_${articleId}`) || "0") + 1;
                 localStorage.setItem(`kb_views_${articleId}`, views.toString());
                 viewsElem.textContent = views.toLocaleString('fr-FR');
 
-                let likes = parseInt(localStorage.getItem(`kb_likes_${articleId}`) || "14");
+                let likes = parseInt(localStorage.getItem(`kb_likes_${articleId}`) || "0");
                 likesElem.textContent = likes.toString();
 
                 if (localStorage.getItem(userLikedKey)) setLikedState(false);
