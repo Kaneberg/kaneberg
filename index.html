@@ -261,6 +261,7 @@
 
     </main>
 
+    <!-- FOOTER -->
     <footer class="bg-black text-white mt-auto py-12 border-t border-gray-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -299,6 +300,7 @@
         </div>
     </footer>
 
+    <!-- SCRIPT DE GESTION DYNAMIQUE ET SECOURS -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -323,7 +325,7 @@
                 localStorage.setItem('theme', htmlElement.classList.contains('dark') ? 'dark' : 'light');
             });
 
-            // Base de données de secours si offline
+            // Base de données de secours si offline ou chargement JSON échoué
             const fallbackArticles = [
                 {
                     "id": "probleme-dune-awakening-2026",
@@ -414,7 +416,7 @@
                 
                 const fallbackBlock = `<div class="absolute inset-0 bg-neutral-900 img-placeholder flex items-center justify-center"><span class="text-gray-700 font-black text-2xl uppercase tracking-widest select-none">KANEBERG</span></div>`;
                 const imgTag = article.image 
-                    ? `<img src="${article.image}" alt="${article.title}" class="absolute inset-0 w-full h-full object-cover img-placeholder opacity-60" onerror="this.onerror=null; this.parentElement.innerHTML='${fallbackBlock.replace(/'/g, "\\'")}';">`
+                    ? `<div class="absolute inset-0">${fallbackBlock}<img src="${article.image}" alt="${article.title}" class="absolute inset-0 w-full h-full object-cover img-placeholder opacity-60" onerror="this.remove();"></div>`
                     : fallbackBlock;
 
                 el.innerHTML = `
@@ -444,7 +446,7 @@
 
                 const fallbackBlock = `<div class="absolute inset-0 bg-neutral-800 img-placeholder flex items-center justify-center"><span class="text-gray-600 font-black text-xl uppercase tracking-widest select-none">KANEBERG</span></div>`;
                 const imgTag = article.image 
-                    ? `<img src="${article.image}" alt="${article.title}" class="absolute inset-0 w-full h-full object-cover img-placeholder opacity-50" onerror="this.onerror=null; this.parentElement.innerHTML='${fallbackBlock.replace(/'/g, "\\'")}';">`
+                    ? `<div class="absolute inset-0">${fallbackBlock}<img src="${article.image}" alt="${article.title}" class="absolute inset-0 w-full h-full object-cover img-placeholder opacity-50" onerror="this.remove();"></div>`
                     : fallbackBlock;
 
                 el.innerHTML = `
@@ -467,7 +469,7 @@
 
                 const fallbackBlock = `<div class="absolute inset-0 bg-neutral-900 img-placeholder flex items-center justify-center"><span class="text-gray-700 font-black text-xl uppercase tracking-widest select-none">KANEBERG</span></div>`;
                 const imgTag = article.image 
-                    ? `<img src="${article.image}" alt="${article.title}" class="absolute inset-0 w-full h-full object-cover img-placeholder opacity-50" onerror="this.onerror=null; this.parentElement.innerHTML='${fallbackBlock.replace(/'/g, "\\'")}';">`
+                    ? `<div class="absolute inset-0">${fallbackBlock}<img src="${article.image}" alt="${article.title}" class="absolute inset-0 w-full h-full object-cover img-placeholder opacity-50" onerror="this.remove();"></div>`
                     : fallbackBlock;
 
                 el.innerHTML = `
@@ -487,9 +489,9 @@
             }
 
             function createPhilosophyHighlightHTML(article) {
-                const fallbackBlock = `<div class="w-full h-full img-placeholder bg-gray-100 dark:bg-gray-900 flex flex-col items-center justify-center border border-gray-200 dark:border-gray-800"><span class="text-gray-300 dark:text-gray-700 font-black text-xl tracking-widest uppercase">KANEBERG</span></div>`;
+                const fallbackBlock = `<div class="w-full h-full img-placeholder bg-gray-100 dark:bg-gray-900 flex flex-col items-center justify-center border border-gray-200 dark:border-gray-800"><span class="text-gray-300 dark:text-gray-700 font-black text-xl tracking-widest uppercase select-none">KANEBERG</span></div>`;
                 const imgPlaceholder = article.image 
-                    ? `<img src="${article.image}" alt="${article.title}" class="img-placeholder w-full h-full object-cover" onerror="this.onerror=null; this.parentElement.innerHTML='${fallbackBlock.replace(/'/g, "\\'")}';">`
+                    ? `<div class="w-full h-full relative">${fallbackBlock}<img src="${article.image}" alt="${article.title}" class="img-placeholder absolute inset-0 w-full h-full object-cover" onerror="this.remove();"></div>`
                     : fallbackBlock;
 
                 return `
@@ -518,9 +520,9 @@
                 el.className = "searchable-item group flex gap-4 cursor-pointer p-2 rounded hover:bg-gray-50 dark:hover:bg-gray-950 transition-colors";
                 el.onclick = () => window.location.href = `article.html?id=${article.id}`;
 
-                const fallbackBlock = `<div class="w-full h-full img-placeholder bg-gray-100 dark:bg-gray-900 flex items-center justify-center text-[9px] font-bold text-gray-400">KANEBERG</div>`;
+                const fallbackBlock = `<div class="w-full h-full img-placeholder bg-gray-100 dark:bg-gray-900 flex items-center justify-center text-[9px] font-bold text-gray-400 select-none">KANEBERG</div>`;
                 const imgPlaceholder = article.image 
-                    ? `<img src="${article.image}" alt="${article.title}" class="img-placeholder w-full h-full object-cover" onerror="this.onerror=null; this.parentElement.innerHTML='${fallbackBlock.replace(/'/g, "\\'")}';">`
+                    ? `<div class="w-full h-full relative">${fallbackBlock}<img src="${article.image}" alt="${article.title}" class="img-placeholder absolute inset-0 w-full h-full object-cover" onerror="this.remove();"></div>`
                     : fallbackBlock;
 
                 el.innerHTML = `
