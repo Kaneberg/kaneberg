@@ -1,42 +1,52 @@
 [
-{
-"id": "probleme-dune-awakening-2026",
-"title": "Le problème de DUNE Awakening en 2026 : Entre fausses promesses et rédemption",
-"category": "Actu",
-"readTime": "10 min",
-"author": "Rédaction Kaneberg",
-"date": "2026-07-01",
-"image": "images/da.vid3.png",
-"summary": "Dune Awakening a-t-il menti à sa communauté ? Retour sur la polémique du MMO de Funcom, ses échecs de design au lancement, et sa spectaculaire mise à jour PvE/PvP de 2026."
-},
-{
-"id": "origine-epice",
-"title": "L'Épice Mélange : Analyse biologique et économique de la substance la plus rare",
-"category": "Lore",
-"readTime": "8 min",
-"author": "Rédaction Kaneberg",
-"date": "2026-06-30",
-"image": "",
-"summary": "L'Épice, ou Mélange, est le pilier de l'Empire. Mais comment est-elle produite exactement sur Arrakis et pourquoi fixe-t-elle l'économie galactique ?"
-},
-{
-"id": "jihad-butlerien",
-"title": "Le Jihad Butlérien : Pourquoi l'IA et les machines pensantes ont été bannie",
-"category": "Science",
-"readTime": "12 min",
-"author": "Rédaction Kaneberg",
-"date": "2026-06-25",
-"image": "",
-"summary": "Mille ans avant Paul Atréides, l'humanité a fait la guerre aux machines. Retour sur le conflit fondateur qui a banni les ordinateurs de l'univers connu."
-},
-{
-"id": "philosophie-muaddib",
-"title": "Le danger des figures messianiques : La leçon politique de Frank Herbert",
-"category": "Philosophie",
-"readTime": "7 min",
-"author": "Rédaction Kaneberg",
-"date": "2026-06-18",
-"image": "",
-"summary": "Pourquoi Frank Herbert a-t-il écrit Dune comme une mise en garde contre les héros charismatiques ? Décryptage de la philosophie de Paul Muad'Dib."
-}
+  {
+    "id": "nouveau-test02",
+    "title": "Nouveau test02",
+    "category": "Lore",
+    "readTime": "8 min",
+    "author": "Kaneberg",
+    "date": "2026-08-02",
+    "image": "images/image-odyssee-001.jpeg",
+    "summary": "dsgqghrqgqergq"
+  },
+  {
+    "id": "probleme-dune-awakening-2026",
+    "title": "Le problème de DUNE Awakening en 2026 : Entre fausses promesses et rédemption",
+    "category": "Actu",
+    "readTime": "10 min",
+    "author": "Rédaction Kaneberg",
+    "date": "2026-07-01",
+    "image": "images/da.vid3.png",
+    "summary": "Dune Awakening a-t-il menti à sa communauté ? Retour sur la polémique du MMO de Funcom, ses échecs de design au lancement, et sa spectaculaire mise à jour PvE/PvP de 2026."
+  },
+  {
+    "id": "origine-epice",
+    "title": "L'Épice Mélange : Analyse biologique et économique de la substance la plus rare",
+    "category": "Lore",
+    "readTime": "8 min",
+    "author": "Rédaction Kaneberg",
+    "date": "2026-06-30",
+    "image": "",
+    "summary": "L'Épice, ou Mélange, est le pilier de l'Empire. Mais comment est-elle produite exactement sur Arrakis et pourquoi fixe-t-elle l'économie galactique ?"
+  },
+  {
+    "id": "jihad-butlerien",
+    "title": "Le Jihad Butlérien : Pourquoi l'IA et les machines pensantes ont été bannie",
+    "category": "Science",
+    "readTime": "12 min",
+    "author": "Rédaction Kaneberg",
+    "date": "2026-06-25",
+    "image": "",
+    "summary": "Mille ans avant Paul Atréides, l'humanité a fait la guerre aux machines. Retour sur le conflit fondateur qui a banni les ordinateurs de l'univers connu."
+  },
+  {
+    "id": "philosophie-muaddib",
+    "title": "Le danger des figures messianiques : La leçon politique de Frank Herbert",
+    "category": "Philosophie",
+    "readTime": "7 min",
+    "author": "Rédaction Kaneberg",
+    "date": "2026-06-18",
+    "image": "",
+    "summary": "Pourquoi Frank Herbert a-t-il écrit Dune comme une mise en garde contre les héros charismatiques ? Décryptage de la philosophie de Paul Muad'Dib."
+  }
 ]
