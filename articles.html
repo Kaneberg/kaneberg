@@ -112,13 +112,13 @@
     <!-- Navigation principale -->
     <nav class="sticky top-0 z-50 bg-white/95 dark:bg-black/95 backdrop-blur border-b border-gray-200 dark:border-gray-800 transition-colors duration-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
+            <div class="flex justify-between items-center h-16 gap-2 md:gap-4">
                 
-                <div class="flex items-center space-x-8">
-                    <a href="index.html" class="text-2xl font-black tracking-tighter text-black dark:text-white leading-none uppercase">
+                <div class="flex items-center space-x-6 lg:space-x-8 flex-shrink-0">
+                    <a href="index.html" class="text-xl lg:text-2xl font-black tracking-tighter text-black dark:text-white leading-none uppercase">
                         KANEBERG
                     </a>
-                    <div class="hidden md:flex space-x-8">
+                    <div class="hidden lg:flex space-x-6 lg:space-x-8">
                         <a href="index.html" class="nav-link text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white">Accueil</a>
                         <a href="articles.html" class="nav-link text-sm font-bold text-black dark:text-white">Articles</a>
                         <a href="videos.html" class="nav-link text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white">Vidéos</a>
@@ -126,9 +126,19 @@
                     </div>
                 </div>
 
-                <div class="flex items-center space-x-3 sm:space-x-4">
+                <div class="flex items-center space-x-2 sm:space-x-3 lg:space-x-4">
+                    
+                    <!-- Barre de recherche universelle -->
+                    <div class="relative flex items-center">
+                        <svg class="w-4 h-4 absolute left-3 text-gray-400 dark:text-gray-500 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                        <input type="text" id="globalSearchInput" placeholder="Rechercher..." 
+                            class="bg-gray-100 dark:bg-gray-900 border border-transparent focus:border-gray-300 dark:focus:border-gray-700 text-xs sm:text-sm rounded-full pl-9 pr-3 py-1.5 outline-none w-28 sm:w-36 md:w-48 lg:w-56 transition-all text-gray-900 dark:text-gray-100 placeholder-gray-500">
+                    </div>
+
                     <!-- Bouton Thème -->
-                    <button id="themeToggle" class="p-2 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors" aria-label="Basculer le thème">
+                    <button id="themeToggle" class="p-1.5 sm:p-2 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors rounded-full hover:bg-gray-100 dark:hover:bg-gray-900" aria-label="Basculer le thème">
                         <svg id="sunIcon" class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
                         </svg>
@@ -137,8 +147,17 @@
                         </svg>
                     </button>
 
+                    <!-- Bouton YouTube "S'abonner" -->
+                    <a href="https://www.youtube.com/@KanebergYT" target="_blank" rel="noopener noreferrer" 
+                       class="hidden sm:inline-flex items-center gap-1.5 bg-red-600 hover:bg-red-700 text-white text-xs font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-full transition-colors shadow-sm flex-shrink-0">
+                        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                        </svg>
+                        <span>S'abonner</span>
+                    </a>
+
                     <!-- Bouton Menu Mobile -->
-                    <button id="mobileMenuBtn" class="md:hidden p-2 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white focus:outline-none" aria-label="Menu principal">
+                    <button id="mobileMenuBtn" class="lg:hidden p-1.5 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white focus:outline-none rounded-lg" aria-label="Menu principal">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                         </svg>
@@ -148,11 +167,22 @@
         </div>
 
         <!-- Menu Déroulant Mobile -->
-        <div id="mobileMenu" class="hidden md:hidden border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-black px-4 pt-2 pb-4 space-y-2">
-            <a href="index.html" class="block py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white">Accueil</a>
-            <a href="articles.html" class="block py-2 text-sm font-bold text-black dark:text-white">Articles</a>
-            <a href="videos.html" class="block py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white">Vidéos</a>
-            <a href="ressources.html" class="block py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white">Ressources</a>
+        <div id="mobileMenu" class="hidden lg:hidden border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-black px-4 pt-3 pb-5 space-y-3">
+            <div class="flex flex-col space-y-1">
+                <a href="index.html" class="block py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white border-b border-gray-100 dark:border-gray-900">Accueil</a>
+                <a href="articles.html" class="block py-2 text-sm font-bold text-black dark:text-white border-b border-gray-100 dark:border-gray-900">Articles</a>
+                <a href="videos.html" class="block py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white border-b border-gray-100 dark:border-gray-900">Vidéos</a>
+                <a href="ressources.html" class="block py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white border-b border-gray-100 dark:border-gray-900">Ressources</a>
+            </div>
+            <div class="pt-2">
+                <a href="https://www.youtube.com/@KanebergYT" target="_blank" rel="noopener noreferrer" 
+                   class="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white text-xs font-bold uppercase tracking-wider px-4 py-2.5 rounded-full transition-colors w-full justify-center shadow-sm">
+                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                        <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                    </svg>
+                    <span>S'abonner sur YouTube</span>
+                </a>
+            </div>
         </div>
     </nav>
 
@@ -165,7 +195,7 @@
             </p>
         </div>
 
-        <!-- Filtres et Barre de Recherche -->
+        <!-- Filtres par catégorie -->
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-8 border-b border-gray-100 dark:border-gray-900 mb-10">
             <div class="flex flex-wrap gap-2" id="filterContainer">
                 <button data-category="all" class="filter-btn filter-btn-active px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider border border-gray-200 dark:border-gray-800 transition-colors">
@@ -183,14 +213,6 @@
                 <button data-category="Philosophie" class="filter-btn px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider border border-gray-200 dark:border-gray-800 hover:border-black dark:hover:border-white transition-colors">
                     Philosophie
                 </button>
-            </div>
-
-            <div class="relative w-full md:w-80">
-                <svg class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                </svg>
-                <input type="text" id="articleSearchInput" placeholder="Rechercher un article..." 
-                    class="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 text-sm rounded-full pl-9 pr-4 py-2 focus:ring-1 focus:ring-gray-300 dark:focus:ring-gray-700 outline-none w-full transition-all text-gray-900 dark:text-gray-100 placeholder-gray-500">
             </div>
         </div>
 
@@ -250,7 +272,6 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Configuration de la Date
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
             const today = new Date();
             const dateStr = today.toLocaleDateString('fr-FR', options);
@@ -259,7 +280,7 @@
             }
             document.getElementById('currentYear').textContent = today.getFullYear();
 
-            // Gestion Thème Clair / Sombre
+            // Gestion Thème
             const themeToggleBtn = document.getElementById('themeToggle');
             const htmlElement = document.documentElement;
             
@@ -286,14 +307,21 @@
             // Elements du catalogue
             const articlesStatus = document.getElementById('articlesStatus');
             const articlesGrid = document.getElementById('articlesGrid');
-            const searchInput = document.getElementById('articleSearchInput');
+            const globalSearchInput = document.getElementById('globalSearchInput');
             const filterButtons = document.querySelectorAll('.filter-btn');
 
             let allArticles = [];
             let currentFilter = 'all';
             let searchQuery = '';
 
-            // Base de données de secours si offline ou fetch inaccessible
+            // Lecture de la recherche pré-remplie dans l'URL (?q=...)
+            const urlParams = new URLSearchParams(window.location.search);
+            const queryParam = urlParams.get('q');
+            if (queryParam) {
+                searchQuery = queryParam.toLowerCase().trim();
+                if (globalSearchInput) globalSearchInput.value = queryParam;
+            }
+
             const fallbackArticles = [
                 {
                     "id": "probleme-dune-awakening-2026",
@@ -332,7 +360,7 @@
                     }
                     allArticles = await response.json();
                 } catch (error) {
-                    console.warn("Chargement articles.json échoué, utilisation du secours :", error);
+                    console.warn("Chargement articles.json échoué, secours :", error);
                     allArticles = fallbackArticles;
                 } finally {
                     if (articlesStatus) articlesStatus.classList.add('hidden');
@@ -374,7 +402,6 @@
                         window.location.href = `article.html?id=${article.id}`;
                     });
 
-                    // Visuel de secours sous-jacent (en arrière-plan)
                     const fallbackHTML = `
                         <div class="absolute inset-0 bg-gray-100 dark:bg-gray-950 flex flex-col items-center justify-center p-6 border-b border-gray-100 dark:border-gray-900 select-none">
                             <span class="text-gray-300 dark:text-gray-800 font-black text-2xl tracking-widest uppercase">KANEBERG</span>
@@ -428,8 +455,8 @@
                 });
             });
 
-            if (searchInput) {
-                searchInput.addEventListener('input', (e) => {
+            if (globalSearchInput) {
+                globalSearchInput.addEventListener('input', (e) => {
                     searchQuery = e.target.value.toLowerCase().trim();
                     renderArticles();
                 });
