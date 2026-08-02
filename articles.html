@@ -76,6 +76,20 @@
             background-color: #ffffff;
             color: #000000;
         }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d4d4d4;
+            border-radius: 3px;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #404040;
+        }
     </style>
 </head>
 
@@ -95,7 +109,7 @@
         </div>
     </div>
 
-    <!-- Navigation principal -->
+    <!-- Navigation principale -->
     <nav class="sticky top-0 z-50 bg-white/95 dark:bg-black/95 backdrop-blur border-b border-gray-200 dark:border-gray-800 transition-colors duration-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
@@ -112,8 +126,9 @@
                     </div>
                 </div>
 
-                <div class="flex items-center space-x-4">
-                    <button id="themeToggle" class="text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors" aria-label="Basculer le thème">
+                <div class="flex items-center space-x-3 sm:space-x-4">
+                    <!-- Bouton Thème -->
+                    <button id="themeToggle" class="p-2 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors" aria-label="Basculer le thème">
                         <svg id="sunIcon" class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
                         </svg>
@@ -121,21 +136,36 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
                         </svg>
                     </button>
+
+                    <!-- Bouton Menu Mobile -->
+                    <button id="mobileMenuBtn" class="md:hidden p-2 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white focus:outline-none" aria-label="Menu principal">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
                 </div>
             </div>
+        </div>
+
+        <!-- Menu Déroulant Mobile -->
+        <div id="mobileMenu" class="hidden md:hidden border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-black px-4 pt-2 pb-4 space-y-2">
+            <a href="index.html" class="block py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white">Accueil</a>
+            <a href="articles.html" class="block py-2 text-sm font-bold text-black dark:text-white">Articles</a>
+            <a href="videos.html" class="block py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white">Vidéos</a>
+            <a href="ressources.html" class="block py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white">Ressources</a>
         </div>
     </nav>
 
     <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
         
-        <div class="mb-12">
-            <h1 class="text-4xl font-black tracking-tight uppercase mb-3">Archives & Décryptages</h1>
-            <p class="text-gray-600 dark:text-gray-400 max-w-2xl text-lg">
+        <div class="mb-10">
+            <h1 class="text-3xl sm:text-4xl font-black tracking-tight uppercase mb-3 text-black dark:text-white">Archives & Décryptages</h1>
+            <p class="text-gray-600 dark:text-gray-400 max-w-2xl text-base sm:text-lg">
                 Explorez l'ensemble de nos analyses, dossiers historiques et actualités sur l'univers d'Arrakis.
             </p>
         </div>
 
-        <!-- Filtres et Recherche -->
+        <!-- Filtres et Barre de Recherche -->
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-8 border-b border-gray-100 dark:border-gray-900 mb-10">
             <div class="flex flex-wrap gap-2" id="filterContainer">
                 <button data-category="all" class="filter-btn filter-btn-active px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider border border-gray-200 dark:border-gray-800 transition-colors">
@@ -166,12 +196,12 @@
 
         <!-- Statut de chargement -->
         <div id="articlesStatus" class="text-center py-16">
-            <p class="text-gray-500 animate-pulse">Chargement de la bibliothèque de la Guilde...</p>
+            <p class="text-gray-500 animate-pulse font-medium">Chargement de la bibliothèque de la Guilde...</p>
         </div>
 
         <!-- Grille des articles -->
         <div id="articlesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 hidden">
-            <!-- Injecté dynamiquement par JavaScript -->
+            <!-- Injecté dynamiquement par JS -->
         </div>
 
     </main>
@@ -220,6 +250,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // Configuration de la Date
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
             const today = new Date();
             const dateStr = today.toLocaleDateString('fr-FR', options);
@@ -228,12 +259,11 @@
             }
             document.getElementById('currentYear').textContent = today.getFullYear();
 
-            // Gestion Thème Clair/Sombre
+            // Gestion Thème Clair / Sombre
             const themeToggleBtn = document.getElementById('themeToggle');
             const htmlElement = document.documentElement;
             
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'dark') {
+            if (localStorage.getItem('theme') === 'dark') {
                 htmlElement.classList.add('dark');
             } else {
                 htmlElement.classList.remove('dark');
@@ -244,6 +274,16 @@
                 localStorage.setItem('theme', htmlElement.classList.contains('dark') ? 'dark' : 'light');
             });
 
+            // Toggle Menu Mobile
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+            if (mobileMenuBtn && mobileMenu) {
+                mobileMenuBtn.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+
+            // Elements du catalogue
             const articlesStatus = document.getElementById('articlesStatus');
             const articlesGrid = document.getElementById('articlesGrid');
             const searchInput = document.getElementById('articleSearchInput');
@@ -253,7 +293,7 @@
             let currentFilter = 'all';
             let searchQuery = '';
 
-            // Base de données de secours
+            // Base de données de secours si offline ou fetch inaccessible
             const fallbackArticles = [
                 {
                     "id": "probleme-dune-awakening-2026",
@@ -292,11 +332,11 @@
                     }
                     allArticles = await response.json();
                 } catch (error) {
-                    console.warn("Échec du chargement JSON, utilisation de la base de secours :", error);
+                    console.warn("Chargement articles.json échoué, utilisation du secours :", error);
                     allArticles = fallbackArticles;
                 } finally {
-                    articlesStatus.classList.add('hidden');
-                    articlesGrid.classList.remove('hidden');
+                    if (articlesStatus) articlesStatus.classList.add('hidden');
+                    if (articlesGrid) articlesGrid.classList.remove('hidden');
                     renderArticles();
                 }
             }
@@ -305,10 +345,13 @@
 
             function renderArticles() {
                 const filtered = allArticles.filter(article => {
-                    const matchesCategory = currentFilter === 'all' || article.category.toLowerCase() === currentFilter.toLowerCase();
-                    const matchesSearch = article.title.toLowerCase().includes(searchQuery) || 
-                                          article.summary.toLowerCase().includes(searchQuery) ||
-                                          article.category.toLowerCase().includes(searchQuery);
+                    const cat = (article.category || '').toLowerCase();
+                    const title = (article.title || '').toLowerCase();
+                    const summary = (article.summary || '').toLowerCase();
+
+                    const matchesCategory = currentFilter === 'all' || cat === currentFilter.toLowerCase();
+                    const matchesSearch = title.includes(searchQuery) || summary.includes(searchQuery) || cat.includes(searchQuery);
+                    
                     return matchesCategory && matchesSearch;
                 });
 
@@ -316,8 +359,8 @@
 
                 if (filtered.length === 0) {
                     articlesGrid.innerHTML = `
-                        <div class="col-span-full py-12 text-center">
-                            <p class="text-gray-500 text-lg">Aucun article ne correspond à votre recherche.</p>
+                        <div class="col-span-full py-16 text-center">
+                            <p class="text-gray-500 dark:text-gray-400 text-lg">Aucun article ne correspond à votre recherche.</p>
                         </div>
                     `;
                     return;
@@ -331,26 +374,28 @@
                         window.location.href = `article.html?id=${article.id}`;
                     });
 
-                    const fallbackBlock = `
-                        <div class="img-placeholder w-full h-full bg-gray-100 dark:bg-gray-950 flex flex-col items-center justify-center p-6 border-b border-gray-100 dark:border-gray-900 select-none">
+                    // Visuel de secours sous-jacent (en arrière-plan)
+                    const fallbackHTML = `
+                        <div class="absolute inset-0 bg-gray-100 dark:bg-gray-950 flex flex-col items-center justify-center p-6 border-b border-gray-100 dark:border-gray-900 select-none">
                             <span class="text-gray-300 dark:text-gray-800 font-black text-2xl tracking-widest uppercase">KANEBERG</span>
-                            <span class="text-[9px] text-gray-400 dark:text-gray-600 tracking-widest uppercase mt-2">Dossier Spécial / Archive</span>
+                            <span class="text-[9px] text-gray-400 dark:text-gray-600 tracking-widest uppercase mt-2 font-medium">Archive / Dossier</span>
                         </div>
                     `;
 
-                    let imageHTML = article.image 
-                        ? `<img src="${article.image}" alt="${article.title}" class="img-placeholder w-full h-full object-cover" onerror="this.onerror=null; this.parentElement.innerHTML='${fallbackBlock.replace(/'/g, "\\'").replace(/\n/g, "")}';">`
-                        : fallbackBlock;
+                    const imageHTML = article.image 
+                        ? `<img src="${article.image}" alt="${article.title}" class="img-placeholder absolute inset-0 w-full h-full object-cover z-10" onerror="this.remove();">`
+                        : '';
 
                     card.innerHTML = `
                         <div class="aspect-video w-full image-zoom-container bg-gray-50 dark:bg-gray-950 relative">
+                            ${fallbackHTML}
                             ${imageHTML}
-                            <span class="absolute top-3 left-3 bg-white dark:bg-black text-black dark:text-white text-[10px] font-bold px-2 py-1 uppercase tracking-wider rounded-sm border border-gray-100 dark:border-gray-900">
-                                ${article.category}
+                            <span class="absolute top-3 left-3 z-20 bg-white dark:bg-black text-black dark:text-white text-[10px] font-bold px-2 py-1 uppercase tracking-wider rounded-sm border border-gray-100 dark:border-gray-900">
+                                ${article.category || 'Article'}
                             </span>
                         </div>
                         <div class="p-6 flex flex-col flex-grow">
-                            <h3 class="text-lg font-bold leading-snug text-black dark:text-white mb-2 group-hover:text-gray-500 dark:hover:text-gray-400 transition-colors">
+                            <h3 class="text-lg font-bold leading-snug text-black dark:text-white mb-2 group-hover:text-gray-500 dark:group-hover:text-gray-400 transition-colors">
                                 ${article.title}
                             </h3>
                             <p class="text-sm text-gray-600 dark:text-gray-400 mb-6 line-clamp-3">
@@ -369,7 +414,7 @@
             }
 
             filterButtons.forEach(btn => {
-                btn.addEventListener('click', (e) => {
+                btn.addEventListener('click', () => {
                     filterButtons.forEach(b => {
                         b.classList.remove('filter-btn-active');
                         b.classList.add('hover:border-black', 'dark:hover:border-white');
@@ -383,10 +428,12 @@
                 });
             });
 
-            searchInput.addEventListener('input', (e) => {
-                searchQuery = e.target.value.toLowerCase().trim();
-                renderArticles();
-            });
+            if (searchInput) {
+                searchInput.addEventListener('input', (e) => {
+                    searchQuery = e.target.value.toLowerCase().trim();
+                    renderArticles();
+                });
+            }
 
         });
     </script>
