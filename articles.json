@@ -1,112 +1,42 @@
 [
-  {
-    "id": "nouveau-test",
-    "title": "Nouveau test",
-    "category": "Actu",
-    "readTime": "8 min",
-    "author": "Rédaction Kaneberg",
-    "date": "2026-08-02",
-    "image": "images/image-odyssee-001.jpeg",
-    "summary": "dfgdsghshsh"
-  },
-  {
-    "id": "fdwgdfwhwhtserggwg",
-    "title": "fdwgdfwhwhtserggwg",
-    "category": "Actu",
-    "readTime": "8 min",
-    "author": "Rédaction Kaneberg",
-    "date": "2026-08-01",
-    "image": "images/image-odyssee-001.jpeg",
-    "summary": "fdgdfgdfgdfg"
-  },
-  {
-    "id": "teeeeeeest",
-    "title": "teeeeeeest",
-    "category": "Lore",
-    "readTime": "8 min",
-    "author": "Rédaction Kaneberg",
-    "date": "2026-08-01",
-    "image": "images/image-odyssee-001",
-    "summary": "dgqgrqjhud"
-  },
-  {
-    "id": "test-numeroone",
-    "title": "Test NumeroOne",
-    "category": "Philosophie",
-    "readTime": "8 min",
-    "author": "Kaneberg",
-    "date": "2026-08-01",
-    "image": "images/da.vid3.png",
-    "summary": "blablablablablabalbalbalablabla"
-  },
-  {
-    "id": "probleme-dune-awakening-2026",
-    "title": "Le problème de DUNE Awakening en 2026",
-    "category": "Actu",
-    "readTime": "10 min",
-    "author": "Kaneberg",
-    "date": "2026-07-01",
-    "image": "da.vid3.png",
-    "summary": "Dune Awakening a-t-il menti à sa communauté ? Retour sur la polémique du MMO de Funcom, ses échecs de design au lancement, et sa mise à jour PvE/PvP de 2026."
-  },
-  {
-    "id": "origine-epice",
-    "title": "L'Épice Mélange : Analyse biologique et économique de la substance la plus rare",
-    "category": "Lore",
-    "readTime": "8 min",
-    "author": "Rédaction Kaneberg",
-    "date": "2026-06-30",
-    "image": "image_db9103.jpg",
-    "summary": "L'Épice, ou Mélange, est le pilier de l'Empire. Mais comment est-elle produite exactement sur Arrakis et pourquoi fixe-t-elle l'économie galactique ?"
-  },
-  {
-    "id": "jihad-butlerien",
-    "title": "Le Jihad Butlérien : Pourquoi l'univers a banni l'intelligence artificielle",
-    "category": "Histoire",
-    "readTime": "12 min",
-    "author": "Kaneberg",
-    "date": "2026-06-29",
-    "image": "",
-    "summary": "Retour sur la guerre dévastatrice entre les humains et les machines pensantes, l'événement fondateur de la société féodale de Dune."
-  },
-  {
-    "id": "sentier-dor",
-    "title": "Le Sentier d'Or : Leto II était-il un tyran ou le sauveur de l'humanité ?",
-    "category": "Philosophie",
-    "readTime": "15 min",
-    "author": "Rédaction Kaneberg",
-    "date": "2026-06-28",
-    "image": "",
-    "summary": "Une plongée complexe dans les motivations de l'Empereur-Dieu. Pourquoi la stagnation était-elle la véritable menace, et comment la dispersion a forcé la survie."
-  },
-  {
-    "id": "denis-villeneuve-messiah",
-    "title": "Denis Villeneuve confirme l'avancement du script du troisième volet",
-    "category": "Actu",
-    "readTime": "3 min",
-    "author": "Rédaction Kaneberg",
-    "date": "2026-06-27",
-    "image": "",
-    "summary": "Le réalisateur a pris la parole ce matin concernant l'adaptation tant attendue de Dune : Messiah."
-  },
-  {
-    "id": "distilles-fremen",
-    "title": "Distilles Fremen : Une réalité scientifique possible ?",
-    "category": "Science",
-    "readTime": "7 min",
-    "author": "Kaneberg",
-    "date": "2026-06-25",
-    "image": "",
-    "summary": "Analyse du fonctionnement des combinaisons de survie Fremen et de leur viabilité avec nos technologies actuelles."
-  },
-  {
-    "id": "bene-gesserit-failles",
-    "title": "Bene Gesserit : Les failles du plan génétique",
-    "category": "Factions",
-    "readTime": "10 min",
-    "author": "Rédaction Kaneberg",
-    "date": "2026-06-20",
-    "image": "",
-    "summary": "Comment un programme de sélection millénaire a été mis en échec par le sentiment le plus humain : l'amour."
-  }
+{
+"id": "probleme-dune-awakening-2026",
+"title": "Le problème de DUNE Awakening en 2026 : Entre fausses promesses et rédemption",
+"category": "Actu",
+"readTime": "10 min",
+"author": "Rédaction Kaneberg",
+"date": "2026-07-01",
+"image": "images/da.vid3.png",
+"summary": "Dune Awakening a-t-il menti à sa communauté ? Retour sur la polémique du MMO de Funcom, ses échecs de design au lancement, et sa spectaculaire mise à jour PvE/PvP de 2026."
+},
+{
+"id": "origine-epice",
+"title": "L'Épice Mélange : Analyse biologique et économique de la substance la plus rare",
+"category": "Lore",
+"readTime": "8 min",
+"author": "Rédaction Kaneberg",
+"date": "2026-06-30",
+"image": "",
+"summary": "L'Épice, ou Mélange, est le pilier de l'Empire. Mais comment est-elle produite exactement sur Arrakis et pourquoi fixe-t-elle l'économie galactique ?"
+},
+{
+"id": "jihad-butlerien",
+"title": "Le Jihad Butlérien : Pourquoi l'IA et les machines pensantes ont été bannie",
+"category": "Science",
+"readTime": "12 min",
+"author": "Rédaction Kaneberg",
+"date": "2026-06-25",
+"image": "",
+"summary": "Mille ans avant Paul Atréides, l'humanité a fait la guerre aux machines. Retour sur le conflit fondateur qui a banni les ordinateurs de l'univers connu."
+},
+{
+"id": "philosophie-muaddib",
+"title": "Le danger des figures messianiques : La leçon politique de Frank Herbert",
+"category": "Philosophie",
+"readTime": "7 min",
+"author": "Rédaction Kaneberg",
+"date": "2026-06-18",
+"image": "",
+"summary": "Pourquoi Frank Herbert a-t-il écrit Dune comme une mise en garde contre les héros charismatiques ? Décryptage de la philosophie de Paul Muad'Dib."
+}
 ]
