@@ -90,7 +90,6 @@
 
 <body class="bg-white text-gray-950 dark:bg-black dark:text-gray-50 font-sans min-h-screen flex flex-col antialiased">
 
-    <!-- Header info -->
     <div class="bg-black text-white text-xs py-2 hidden md:block border-b border-gray-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
             <div class="flex space-x-6">
@@ -104,17 +103,17 @@
         </div>
     </div>
 
-    <!-- Navigation -->
     <nav class="sticky top-0 z-50 bg-white/95 dark:bg-black/95 backdrop-blur border-b border-gray-200 dark:border-gray-800 transition-colors duration-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
+            <div class="flex justify-between items-center h-16 gap-2 md:gap-4">
                 
-                <div class="flex items-center space-x-8">
-                    <a href="index.html" class="text-2xl font-black tracking-tighter text-black dark:text-white leading-none uppercase">
+                <!-- Logo & Liens de navigation -->
+                <div class="flex items-center space-x-6 lg:space-x-8 flex-shrink-0">
+                    <a href="index.html" class="text-xl lg:text-2xl font-black tracking-tighter text-black dark:text-white leading-none uppercase">
                         KANEBERG
                     </a>
                     
-                    <div class="hidden md:flex space-x-8">
+                    <div class="hidden lg:flex space-x-6 lg:space-x-8">
                         <a href="index.html" class="nav-link text-sm font-bold text-black dark:text-white">Accueil</a>
                         <a href="articles.html" class="nav-link text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white">Articles</a>
                         <a href="videos.html" class="nav-link text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white">Vidéos</a>
@@ -122,18 +121,20 @@
                     </div>
                 </div>
 
-                <div class="flex items-center space-x-4">
+                <!-- Actions à droite: Recherche, Thème, S'abonner, Menu mobile -->
+                <div class="flex items-center space-x-2 sm:space-x-3 lg:space-x-4">
+                    
+                    <!-- Barre de Recherche Universelle -->
                     <div class="relative flex items-center">
-                        <svg class="w-4 h-4 absolute left-3 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-4 h-4 absolute left-3 text-gray-400 dark:text-gray-500 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                         </svg>
-                        <input type="text" id="searchInput" placeholder="Filtrer la page..." 
-                            class="bg-gray-100 dark:bg-gray-900 border-none text-sm rounded-full pl-9 pr-4 py-1.5 focus:ring-1 focus:ring-gray-300 dark:focus:ring-gray-700 outline-none w-40 lg:w-56 transition-all text-gray-900 dark:text-gray-100 placeholder-gray-500">
+                        <input type="text" id="globalSearchInput" placeholder="Rechercher..." 
+                            class="bg-gray-100 dark:bg-gray-900 border border-transparent focus:border-gray-300 dark:focus:border-gray-700 text-xs sm:text-sm rounded-full pl-9 pr-3 py-1.5 outline-none w-28 sm:w-36 md:w-48 lg:w-56 transition-all text-gray-900 dark:text-gray-100 placeholder-gray-500">
                     </div>
-                    
-                    <div class="w-px h-5 bg-gray-300 dark:bg-gray-700"></div>
 
-                    <button id="themeToggle" class="text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors" aria-label="Basculer le thème">
+                    <!-- Bouton Bascule Thème -->
+                    <button id="themeToggle" class="p-1.5 sm:p-2 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors rounded-full hover:bg-gray-100 dark:hover:bg-gray-900" aria-label="Basculer le thème">
                         <svg id="sunIcon" class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
                         </svg>
@@ -141,12 +142,45 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
                         </svg>
                     </button>
+
+                    <!-- Bouton YouTube "S'abonner" -->
+                    <a href="https://www.youtube.com/@KanebergYT" target="_blank" rel="noopener noreferrer" 
+                       class="hidden sm:inline-flex items-center gap-1.5 bg-red-600 hover:bg-red-700 text-white text-xs font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-full transition-colors shadow-sm flex-shrink-0">
+                        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                        </svg>
+                        <span>S'abonner</span>
+                    </a>
+
+                    <!-- Bouton Menu Mobile -->
+                    <button id="mobileMenuBtn" class="lg:hidden p-1.5 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white focus:outline-none rounded-lg" aria-label="Menu principal">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
                 </div>
+            </div>
+        </div>
+
+        <div id="mobileMenu" class="hidden lg:hidden border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-black px-4 pt-3 pb-5 space-y-3">
+            <div class="flex flex-col space-y-1">
+                <a href="index.html" class="block py-2 text-sm font-bold text-black dark:text-white border-b border-gray-100 dark:border-gray-900">Accueil</a>
+                <a href="articles.html" class="block py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white border-b border-gray-100 dark:border-gray-900">Articles</a>
+                <a href="videos.html" class="block py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white border-b border-gray-100 dark:border-gray-900">Vidéos</a>
+                <a href="ressources.html" class="block py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white border-b border-gray-100 dark:border-gray-900">Ressources</a>
+            </div>
+            <div class="pt-2">
+                <a href="https://www.youtube.com/@KanebergYT" target="_blank" rel="noopener noreferrer" 
+                   class="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white text-xs font-bold uppercase tracking-wider px-4 py-2.5 rounded-full transition-colors w-full justify-center shadow-sm">
+                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                        <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                    </svg>
+                    <span>S'abonner sur YouTube</span>
+                </a>
             </div>
         </div>
     </nav>
 
-    <!-- BANNIÈRE TRENDING DYNAMIQUE -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 border-b border-gray-100 dark:border-gray-900">
         <div class="flex items-center text-sm">
             <span class="bg-yellow-400 text-black px-2 py-1 rounded-sm font-bold mr-4 uppercase tracking-wider text-[10px] select-none">Trending</span>
@@ -261,7 +295,6 @@
 
     </main>
 
-    <!-- FOOTER -->
     <footer class="bg-black text-white mt-auto py-12 border-t border-gray-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -300,7 +333,6 @@
         </div>
     </footer>
 
-    <!-- SCRIPT DE GESTION DYNAMIQUE ET SECOURS -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -311,7 +343,7 @@
             }
             document.getElementById('currentYear').textContent = today.getFullYear();
 
-            // Gestion Thème
+            // Thème Sombre / Clair
             const themeToggleBtn = document.getElementById('themeToggle');
             const htmlElement = document.documentElement;
             if (localStorage.getItem('theme') === 'dark') {
@@ -325,7 +357,16 @@
                 localStorage.setItem('theme', htmlElement.classList.contains('dark') ? 'dark' : 'light');
             });
 
-            // Base de données de secours si offline ou chargement JSON échoué
+            // Menu Mobile Toggle
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+            if (mobileMenuBtn && mobileMenu) {
+                mobileMenuBtn.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+
+            // Articles de Secours
             const fallbackArticles = [
                 {
                     "id": "probleme-dune-awakening-2026",
@@ -372,13 +413,13 @@
             function buildDynamicGrid() {
                 const sorted = [...loadedArticles].sort((a, b) => new Date(b.date) - new Date(a.date));
 
-                // 1. Bannière Trending
+                // Trending
                 const trendingContainer = document.getElementById('trendingContainer');
                 if (sorted.length > 0) {
                     trendingContainer.innerHTML = `<a href="article.html?id=${sorted[0].id}" class="hover:underline">${sorted[0].title} &rarr;</a>`;
                 }
 
-                // 2. Grille Hero
+                // Hero Grid
                 const heroGrid = document.getElementById('heroGrid');
                 heroGrid.innerHTML = '';
 
@@ -391,14 +432,14 @@
                     sorted.forEach(art => heroGrid.appendChild(createHeroLeftHTML(art)));
                 }
 
-                // 3. Focus Analyse (Philosophie)
+                // Focus Analyse
                 const philoHighlightContainer = document.getElementById('philoHighlightContainer');
                 let philoArticle = sorted.find(art => art.category.toLowerCase() === 'philosophie') || sorted[1] || sorted[0];
                 if (philoArticle) {
                     philoHighlightContainer.innerHTML = createPhilosophyHighlightHTML(philoArticle);
                 }
 
-                // 4. Fil "Dernières publications" (Limité aux 4 plus récents)
+                // Fil Dernières Publications
                 const newsFeedContainer = document.getElementById('newsFeedContainer');
                 newsFeedContainer.innerHTML = '';
 
@@ -408,7 +449,6 @@
                 });
             }
 
-            // Générateurs d'éléments HTML avec Secours d'Image
             function createHeroLeftHTML(article) {
                 const el = document.createElement('article');
                 el.className = "searchable-item group relative lg:col-span-2 lg:row-span-2 rounded-md overflow-hidden bg-black text-white h-[400px] lg:h-full cursor-pointer border border-transparent dark:border-gray-900";
@@ -540,24 +580,32 @@
                 return el;
             }
 
-            // Recherche dynamique
-            const searchInput = document.getElementById('searchInput');
-            searchInput.addEventListener('input', (e) => {
-                const searchTerm = e.target.value.toLowerCase().trim();
-                const searchableItems = document.querySelectorAll('.searchable-item');
+            // Recherche Universelle
+            const globalSearchInput = document.getElementById('globalSearchInput');
+            if (globalSearchInput) {
+                globalSearchInput.addEventListener('input', (e) => {
+                    const searchTerm = e.target.value.toLowerCase().trim();
+                    const searchableItems = document.querySelectorAll('.searchable-item');
 
-                searchableItems.forEach(item => {
-                    const titleElement = item.querySelector('.article-title');
-                    if (titleElement) {
-                        const titleText = titleElement.textContent.toLowerCase();
-                        if (titleText.includes(searchTerm) || searchTerm === '') {
-                            item.classList.remove('hidden-by-search');
-                        } else {
-                            item.classList.add('hidden-by-search');
+                    searchableItems.forEach(item => {
+                        const titleElement = item.querySelector('.article-title');
+                        if (titleElement) {
+                            const titleText = titleElement.textContent.toLowerCase();
+                            if (titleText.includes(searchTerm) || searchTerm === '') {
+                                item.classList.remove('hidden-by-search');
+                            } else {
+                                item.classList.add('hidden-by-search');
+                            }
                         }
+                    });
+                });
+
+                globalSearchInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter' && globalSearchInput.value.trim() !== '') {
+                        window.location.href = `articles.html?q=${encodeURIComponent(globalSearchInput.value.trim())}`;
                     }
                 });
-            });
+            }
 
             fetchArticles();
         });
