@@ -77,6 +77,14 @@
             color: #000000;
         }
 
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
         ::-webkit-scrollbar {
             width: 6px;
         }
@@ -108,7 +116,7 @@
         </div>
     </div>
 
-    <nav class="sticky top-0 z-50 bg-white/95 dark:bg-black/95 backdrop-blur border-b border-gray-200 dark:border-gray-800 transition-colors duration-200">
+    <nav class="sticky top-0 z-50 bg-white/95 dark:bg-black/95 backdrop-blur border-b border-gray-200 dark:border-gray-800 transition-colors duration-200 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16 gap-2 md:gap-4">
                 
@@ -162,6 +170,43 @@
                     </button>
                 </div>
             </div>
+
+            <!-- Barre de Filtres Sticky intégrée à la navigation -->
+            <div class="py-2.5 border-t border-gray-100 dark:border-gray-900 overflow-x-auto no-scrollbar">
+                <div class="flex items-center space-x-2 whitespace-nowrap" id="filterContainer">
+                    
+                    <!-- Tag Spécial Jaune Premium -->
+                    <button data-category="selection" class="filter-btn px-3.5 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-amber-400 hover:bg-amber-300 text-black shadow-sm transition-all transform active:scale-95 flex items-center gap-1 flex-shrink-0">
+                        <span>★</span> Notre Sélection
+                    </button>
+
+                    <button data-category="all" class="filter-btn filter-btn-active px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border border-gray-200 dark:border-gray-800 transition-colors flex-shrink-0">
+                        Tout
+                    </button>
+                    <button data-category="Actu" class="filter-btn px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border border-gray-200 dark:border-gray-800 hover:border-black dark:hover:border-white transition-colors flex-shrink-0">
+                        Actu
+                    </button>
+                    <button data-category="Lore" class="filter-btn px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border border-gray-200 dark:border-gray-800 hover:border-black dark:hover:border-white transition-colors flex-shrink-0">
+                        Lore
+                    </button>
+                    <button data-category="Analyse" class="filter-btn px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border border-gray-200 dark:border-gray-800 hover:border-black dark:hover:border-white transition-colors flex-shrink-0">
+                        Analyse
+                    </button>
+                    <button data-category="Gaming" class="filter-btn px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border border-gray-200 dark:border-gray-800 hover:border-black dark:hover:border-white transition-colors flex-shrink-0">
+                        Gaming
+                    </button>
+                    <button data-category="Science" class="filter-btn px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border border-gray-200 dark:border-gray-800 hover:border-black dark:hover:border-white transition-colors flex-shrink-0">
+                        Science
+                    </button>
+                    <button data-category="Philosophie" class="filter-btn px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border border-gray-200 dark:border-gray-800 hover:border-black dark:hover:border-white transition-colors flex-shrink-0">
+                        Philosophie
+                    </button>
+                    <button data-category="Autres" class="filter-btn px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border border-gray-200 dark:border-gray-800 hover:border-black dark:hover:border-white transition-colors flex-shrink-0">
+                        Autres
+                    </button>
+                </div>
+            </div>
+
         </div>
 
         <!-- Menu Déroulant Mobile -->
@@ -184,39 +229,11 @@
         </div>
     </nav>
 
-    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
         
-        <div class="mb-10">
-            <h1 class="text-3xl sm:text-4xl font-black tracking-tight uppercase mb-3 text-black dark:text-white">Archives & Décryptages</h1>
-            <p class="text-gray-600 dark:text-gray-400 max-w-2xl text-base sm:text-lg">
-                Explorez l'ensemble de nos analyses, dossiers historiques et actualités sur l'univers d'Arrakis.
-            </p>
-        </div>
-
-        <!-- Filtres par catégorie -->
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-8 border-b border-gray-100 dark:border-gray-900 mb-10">
-            <div class="flex flex-wrap gap-2" id="filterContainer">
-                <button data-category="all" class="filter-btn filter-btn-active px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider border border-gray-200 dark:border-gray-800 transition-colors">
-                    Tout
-                </button>
-                <button data-category="Lore" class="filter-btn px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider border border-gray-200 dark:border-gray-800 hover:border-black dark:hover:border-white transition-colors">
-                    Lore
-                </button>
-                <button data-category="Actu" class="filter-btn px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider border border-gray-200 dark:border-gray-800 hover:border-black dark:hover:border-white transition-colors">
-                    Actu
-                </button>
-                <button data-category="Science" class="filter-btn px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider border border-gray-200 dark:border-gray-800 hover:border-black dark:hover:border-white transition-colors">
-                    Science
-                </button>
-                <button data-category="Philosophie" class="filter-btn px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider border border-gray-200 dark:border-gray-800 hover:border-black dark:hover:border-white transition-colors">
-                    Philosophie
-                </button>
-            </div>
-        </div>
-
         <!-- Statut de chargement -->
         <div id="articlesStatus" class="text-center py-16">
-            <p class="text-gray-500 animate-pulse font-medium">Chargement de la bibliothèque de la Guilde...</p>
+            <p class="text-gray-500 animate-pulse font-medium text-sm">Chargement des archives impériales...</p>
         </div>
 
         <!-- Grille des articles -->
@@ -324,6 +341,7 @@
                     "id": "probleme-dune-awakening-2026",
                     "title": "Le problème de DUNE Awakening en 2026 : Entre fausses promesses et rédemption",
                     "category": "Actu",
+                    "selection": true,
                     "readTime": "10 min",
                     "author": "Rédaction Kaneberg",
                     "date": "2026-07-01",
@@ -334,6 +352,7 @@
                     "id": "origine-epice",
                     "title": "L'Épice Mélange : Analyse biologique et économique de la substance la plus rare",
                     "category": "Lore",
+                    "selection": false,
                     "readTime": "8 min",
                     "author": "Rédaction Kaneberg",
                     "date": "2026-06-30",
@@ -374,7 +393,18 @@
                     const title = (article.title || '').toLowerCase();
                     const summary = (article.summary || '').toLowerCase();
 
-                    const matchesCategory = currentFilter === 'all' || cat === currentFilter.toLowerCase();
+                    let matchesCategory = false;
+                    if (currentFilter === 'all') {
+                        matchesCategory = true;
+                    } else if (currentFilter === 'selection') {
+                        matchesCategory = article.selection === true || article.featured === true || cat.includes('selection');
+                    } else if (currentFilter === 'Autres') {
+                        const standardCategories = ['lore', 'actu', 'science', 'philosophie', 'analyse', 'gaming'];
+                        matchesCategory = !standardCategories.includes(cat);
+                    } else {
+                        matchesCategory = cat === currentFilter.toLowerCase();
+                    }
+
                     const matchesSearch = title.includes(searchQuery) || summary.includes(searchQuery) || cat.includes(searchQuery);
                     
                     return matchesCategory && matchesSearch;
@@ -410,13 +440,20 @@
                         ? `<img src="${article.image}" alt="${article.title}" class="img-placeholder absolute inset-0 w-full h-full object-cover z-10" onerror="this.remove();">`
                         : '';
 
+                    const selectionBadge = (article.selection || article.featured)
+                        ? `<span class="bg-amber-400 text-black text-[10px] font-black px-2 py-0.5 uppercase tracking-wider rounded-sm shadow-sm">★ Sélection</span>`
+                        : '';
+
                     card.innerHTML = `
                         <div class="aspect-video w-full image-zoom-container bg-gray-50 dark:bg-gray-950 relative">
                             ${fallbackHTML}
                             ${imageHTML}
-                            <span class="absolute top-3 left-3 z-20 bg-white dark:bg-black text-black dark:text-white text-[10px] font-bold px-2 py-1 uppercase tracking-wider rounded-sm border border-gray-100 dark:border-gray-900">
-                                ${article.category || 'Article'}
-                            </span>
+                            <div class="absolute top-3 left-3 z-20 flex gap-1.5 flex-wrap">
+                                <span class="bg-white dark:bg-black text-black dark:text-white text-[10px] font-bold px-2 py-0.5 uppercase tracking-wider rounded-sm border border-gray-100 dark:border-gray-900 shadow-sm">
+                                    ${article.category || 'Article'}
+                                </span>
+                                ${selectionBadge}
+                            </div>
                         </div>
                         <div class="p-6 flex flex-col flex-grow">
                             <h3 class="text-lg font-bold leading-snug text-black dark:text-white mb-2 group-hover:text-gray-500 dark:group-hover:text-gray-400 transition-colors">
@@ -440,12 +477,20 @@
             filterButtons.forEach(btn => {
                 btn.addEventListener('click', () => {
                     filterButtons.forEach(b => {
-                        b.classList.remove('filter-btn-active');
-                        b.classList.add('hover:border-black', 'dark:hover:border-white');
+                        if (b.getAttribute('data-category') === 'selection') {
+                            b.className = "filter-btn px-3.5 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-amber-400 hover:bg-amber-300 text-black shadow-sm transition-all transform active:scale-95 flex items-center gap-1 flex-shrink-0";
+                        } else {
+                            b.classList.remove('filter-btn-active');
+                            b.classList.add('hover:border-black', 'dark:hover:border-white');
+                        }
                     });
 
-                    btn.classList.add('filter-btn-active');
-                    btn.classList.remove('hover:border-black', 'dark:hover:border-white');
+                    if (btn.getAttribute('data-category') !== 'selection') {
+                        btn.classList.add('filter-btn-active');
+                        btn.classList.remove('hover:border-black', 'dark:hover:border-white');
+                    } else {
+                        btn.classList.add('ring-2', 'ring-black', 'dark:ring-white');
+                    }
 
                     currentFilter = btn.getAttribute('data-category');
                     renderArticles();
