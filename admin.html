@@ -69,7 +69,7 @@
 
     <main class="max-w-4xl mx-auto w-full px-4 py-8 flex-grow">
         
-        <!-- Configuration de la connexion GitHub (Masquée une fois configurée) -->
+        <!-- Configuration de la connexion GitHub -->
         <div id="configCard" class="mb-8 p-6 bg-gray-900 border border-gray-800 rounded-lg">
             <h2 class="text-lg font-bold text-white mb-2 flex items-center gap-2">
                 🔑 Clé d'Accès GitHub
@@ -78,7 +78,7 @@
                 Pour publier directement sur ton site, colle ton Token d'Accès GitHub (PAT). Il sera sauvegardé uniquement dans ton navigateur local.
             </p>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <input type="text" id="ghRepo" placeholder="Nom du dépôt (ex: Kaneberg)" class="bg-black border border-gray-700 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-white">
+                <input type="text" id="ghRepo" placeholder="Nom du dépôt (ex: kaneberg)" class="bg-black border border-gray-700 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-white">
                 <input type="text" id="ghUsername" placeholder="Pseudo GitHub" class="bg-black border border-gray-700 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-white">
                 <input type="password" id="ghToken" placeholder="ghp_xxxxxxxxxxxx" class="bg-black border border-gray-700 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-white">
             </div>
@@ -128,8 +128,9 @@
                 <!-- Image de couverture & Auteur -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Image de couverture (Chemin ou URL)</label>
-                        <input type="text" id="artImage" placeholder="images/mon-image.jpg (Optionnel)" class="w-full bg-gray-900 border border-gray-800 rounded px-3 py-2 text-sm text-white outline-none">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Image de couverture</label>
+                        <input type="text" id="artImage" placeholder="ex: mon-image.jpg ou https://..." class="w-full bg-gray-900 border border-gray-800 rounded px-3 py-2 text-sm text-white outline-none">
+                        <p class="text-[10px] text-gray-500 mt-1">Écris le nom du fichier dans /images (ex: <code>da.vid3.png</code>) ou un lien URL direct.</p>
                     </div>
                     <div>
                         <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Auteur</label>
@@ -162,7 +163,6 @@
     </main>
 
     <script>
-        // Initialisation de l'éditeur Quill
         const quill = new Quill('#editor', {
             theme: 'snow',
             placeholder: 'Rédigez votre article ici...',
@@ -177,7 +177,6 @@
             }
         });
 
-        // Chargement de la configuration GitHub au démarrage
         document.addEventListener('DOMContentLoaded', () => {
             const savedRepo = localStorage.getItem('kb_repo');
             const savedUser = localStorage.getItem('kb_user');
@@ -198,10 +197,10 @@
         function generateSlug() {
             const title = document.getElementById('artTitle').value;
             const slug = title.toLowerCase()
-                .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // Supprime les accents
-                .replace(/[^a-z0-9 -]/g, "") // Supprime les caractères spéciaux
+                .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+                .replace(/[^a-z0-9 -]/g, "")
                 .trim()
-                .replace(/\s+/g, "-"); // Remplace les espaces par des tirets
+                .replace(/\s+/g, "-");
             document.getElementById('artSlug').value = slug;
         }
 
@@ -224,14 +223,19 @@
             const category = document.getElementById('artCategory').value;
             const readTime = document.getElementById('artReadTime').value.trim();
             const author = document.getElementById('artAuthor').value.trim();
-            const image = document.getElementById('artImage').value.trim();
+            let image = document.getElementById('artImage').value.trim();
             const summary = document.getElementById('artSummary').value.trim();
             const htmlContent = quill.root.innerHTML;
+
+            // --- FORMATAGE AUTOMATIQUE DU CHEMIN D'IMAGE ---
+            if (image && !image.startsWith('http://') && !image.startsWith('https://') && !image.startsWith('/') && !image.startsWith('data:') && !image.startsWith('images/')) {
+                image = 'images/' + image;
+            }
 
             const today = new Date().toISOString().split('T')[0];
 
             submitBtn.disabled = true;
-            submitBtn.opacity = '0.5';
+            submitBtn.style.opacity = '0.5';
             statusMsg.className = "text-xs font-bold text-yellow-400 animate-pulse";
             statusMsg.textContent = "1/2 Création du fichier d'article...";
 
@@ -279,9 +283,11 @@
                     summary: summary
                 };
 
-                existingArticles.unshift(newArticleMeta);
+                // Éviter les doublons si on republie le même slug
+                const filteredArticles = existingArticles.filter(art => art.id !== slug);
+                filteredArticles.unshift(newArticleMeta);
 
-                const updatedJsonEncoded = btoa(unescape(encodeURIComponent(JSON.stringify(existingArticles, null, 2))));
+                const updatedJsonEncoded = btoa(unescape(encodeURIComponent(JSON.stringify(filteredArticles, null, 2))));
 
                 // 4. Mettre à jour articles.json sur GitHub
                 const jsonPut = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/articles.json`, {
@@ -303,7 +309,6 @@
                 statusMsg.textContent = "🎉 Publication réussie ! Le site sera à jour dans ~30 secondes.";
                 alert('Félicitations ! Ton article est publié et sera en ligne dans quelques secondes !');
                 
-                // Réinitialiser le formulaire
                 document.getElementById('articleForm').reset();
                 quill.setText('');
 
@@ -313,7 +318,7 @@
                 statusMsg.textContent = "Erreur : " + error.message;
             } finally {
                 submitBtn.disabled = false;
-                submitBtn.opacity = '1';
+                submitBtn.style.opacity = '1';
             }
         }
     </script>
