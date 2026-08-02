@@ -158,7 +158,7 @@
 
     <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
         
-        <!-- SECTION HERO (Injection 100% Dynamique) -->
+        <!-- SECTION HERO (Injection Dynamique) -->
         <section class="mb-16">
             <div class="grid grid-cols-1 lg:grid-cols-4 gap-4 h-auto lg:h-[500px]" id="heroGrid">
                 <div class="col-span-full py-16 text-center text-gray-400 animate-pulse">
@@ -332,7 +332,7 @@
                     "readTime": "10 min",
                     "author": "Rédaction Kaneberg",
                     "date": "2026-07-01",
-                    "image": "",
+                    "image": "images/da.vid3.png",
                     "summary": "Dune Awakening a-t-il menti à sa communauté ? Retour sur la polémique du MMO de Funcom, ses échecs de design au lancement, et sa spectaculaire mise à jour PvE/PvP de 2026."
                 },
                 {
@@ -342,28 +342,8 @@
                     "readTime": "8 min",
                     "author": "Rédaction Kaneberg",
                     "date": "2026-06-30",
-                    "image": "image_db9103.jpg",
+                    "image": "",
                     "summary": "L'Épice, ou Mélange, est le pilier de l'Empire. Mais comment est-elle produite exactement sur Arrakis et pourquoi fixe-t-elle l'économie galactique ?"
-                },
-                {
-                    "id": "jihad-butlerien",
-                    "title": "Le Jihad Butlérien : Pourquoi l'univers a banni l'intelligence artificielle",
-                    "category": "Histoire",
-                    "readTime": "12 min",
-                    "author": "Kaneberg",
-                    "date": "2026-06-29",
-                    "image": "",
-                    "summary": "Retour sur la guerre dévastatrice entre les humains et les machines pensantes, l'événement fondateur de la société féodale de Dune."
-                },
-                {
-                    "id": "sentier-dor",
-                    "title": "Le Sentier d'Or : Leto II était-il un tyran ou le sauveur de l'humanité ?",
-                    "category": "Philosophie",
-                    "readTime": "15 min",
-                    "author": "Rédaction Kaneberg",
-                    "date": "2026-06-28",
-                    "image": "",
-                    "summary": "Une plongée complexe dans les motivations de l'Empereur-Dieu. Pourquoi la stagnation était-elle la véritable menace, et comment la dispersion a forcé la survie."
                 }
             ];
 
@@ -388,7 +368,6 @@
             }
 
             function buildDynamicGrid() {
-                // Tri par date décroissante
                 const sorted = [...loadedArticles].sort((a, b) => new Date(b.date) - new Date(a.date));
 
                 // 1. Bannière Trending
@@ -412,12 +391,12 @@
 
                 // 3. Focus Analyse (Philosophie)
                 const philoHighlightContainer = document.getElementById('philoHighlightContainer');
-                let philoArticle = sorted.find(art => art.category.toLowerCase() === 'philosophie') || sorted[4] || sorted[0];
+                let philoArticle = sorted.find(art => art.category.toLowerCase() === 'philosophie') || sorted[1] || sorted[0];
                 if (philoArticle) {
                     philoHighlightContainer.innerHTML = createPhilosophyHighlightHTML(philoArticle);
                 }
 
-                // 4. Fil "Dernières publications" (Limité strictement aux 4 articles les plus récents)
+                // 4. Fil "Dernières publications" (Limité aux 4 plus récents)
                 const newsFeedContainer = document.getElementById('newsFeedContainer');
                 newsFeedContainer.innerHTML = '';
 
@@ -427,15 +406,16 @@
                 });
             }
 
-            // Générateurs d'éléments HTML
+            // Générateurs d'éléments HTML avec Secours d'Image
             function createHeroLeftHTML(article) {
                 const el = document.createElement('article');
                 el.className = "searchable-item group relative lg:col-span-2 lg:row-span-2 rounded-md overflow-hidden bg-black text-white h-[400px] lg:h-full cursor-pointer border border-transparent dark:border-gray-900";
                 el.onclick = () => window.location.href = `article.html?id=${article.id}`;
                 
+                const fallbackBlock = `<div class="absolute inset-0 bg-neutral-900 img-placeholder flex items-center justify-center"><span class="text-gray-700 font-black text-2xl uppercase tracking-widest select-none">KANEBERG</span></div>`;
                 const imgTag = article.image 
-                    ? `<img src="${article.image}" alt="${article.title}" class="absolute inset-0 w-full h-full object-cover img-placeholder opacity-60">`
-                    : `<div class="absolute inset-0 bg-neutral-900 img-placeholder"></div>`;
+                    ? `<img src="${article.image}" alt="${article.title}" class="absolute inset-0 w-full h-full object-cover img-placeholder opacity-60" onerror="this.onerror=null; this.parentElement.innerHTML='${fallbackBlock.replace(/'/g, "\\'")}';">`
+                    : fallbackBlock;
 
                 el.innerHTML = `
                     ${imgTag}
@@ -462,9 +442,10 @@
                 el.className = "searchable-item group relative rounded-md overflow-hidden bg-black text-white h-[200px] lg:h-auto cursor-pointer border border-transparent dark:border-gray-900";
                 el.onclick = () => window.location.href = `article.html?id=${article.id}`;
 
+                const fallbackBlock = `<div class="absolute inset-0 bg-neutral-800 img-placeholder flex items-center justify-center"><span class="text-gray-600 font-black text-xl uppercase tracking-widest select-none">KANEBERG</span></div>`;
                 const imgTag = article.image 
-                    ? `<img src="${article.image}" alt="${article.title}" class="absolute inset-0 w-full h-full object-cover img-placeholder opacity-50">`
-                    : `<div class="absolute inset-0 bg-neutral-800 img-placeholder"></div>`;
+                    ? `<img src="${article.image}" alt="${article.title}" class="absolute inset-0 w-full h-full object-cover img-placeholder opacity-50" onerror="this.onerror=null; this.parentElement.innerHTML='${fallbackBlock.replace(/'/g, "\\'")}';">`
+                    : fallbackBlock;
 
                 el.innerHTML = `
                     ${imgTag}
@@ -484,9 +465,10 @@
                 el.className = "searchable-item group relative lg:col-span-2 rounded-md overflow-hidden bg-black text-white h-[200px] lg:h-auto cursor-pointer border border-transparent dark:border-gray-900";
                 el.onclick = () => window.location.href = `article.html?id=${article.id}`;
 
+                const fallbackBlock = `<div class="absolute inset-0 bg-neutral-900 img-placeholder flex items-center justify-center"><span class="text-gray-700 font-black text-xl uppercase tracking-widest select-none">KANEBERG</span></div>`;
                 const imgTag = article.image 
-                    ? `<img src="${article.image}" alt="${article.title}" class="absolute inset-0 w-full h-full object-cover img-placeholder opacity-50">`
-                    : `<div class="absolute inset-0 bg-neutral-900 img-placeholder"></div>`;
+                    ? `<img src="${article.image}" alt="${article.title}" class="absolute inset-0 w-full h-full object-cover img-placeholder opacity-50" onerror="this.onerror=null; this.parentElement.innerHTML='${fallbackBlock.replace(/'/g, "\\'")}';">`
+                    : fallbackBlock;
 
                 el.innerHTML = `
                     ${imgTag}
@@ -505,9 +487,10 @@
             }
 
             function createPhilosophyHighlightHTML(article) {
+                const fallbackBlock = `<div class="w-full h-full img-placeholder bg-gray-100 dark:bg-gray-900 flex flex-col items-center justify-center border border-gray-200 dark:border-gray-800"><span class="text-gray-300 dark:text-gray-700 font-black text-xl tracking-widest uppercase">KANEBERG</span></div>`;
                 const imgPlaceholder = article.image 
-                    ? `<img src="${article.image}" alt="${article.title}" class="img-placeholder w-full h-full object-cover">`
-                    : `<div class="absolute inset-0 img-placeholder bg-gray-100 dark:bg-gray-900 border border-gray-200 dark:border-gray-800"></div>`;
+                    ? `<img src="${article.image}" alt="${article.title}" class="img-placeholder w-full h-full object-cover" onerror="this.onerror=null; this.parentElement.innerHTML='${fallbackBlock.replace(/'/g, "\\'")}';">`
+                    : fallbackBlock;
 
                 return `
                     <article class="group cursor-pointer flex flex-col h-full" onclick="window.location.href='article.html?id=${article.id}'">
@@ -535,9 +518,10 @@
                 el.className = "searchable-item group flex gap-4 cursor-pointer p-2 rounded hover:bg-gray-50 dark:hover:bg-gray-950 transition-colors";
                 el.onclick = () => window.location.href = `article.html?id=${article.id}`;
 
+                const fallbackBlock = `<div class="w-full h-full img-placeholder bg-gray-100 dark:bg-gray-900 flex items-center justify-center text-[9px] font-bold text-gray-400">KANEBERG</div>`;
                 const imgPlaceholder = article.image 
-                    ? `<img src="${article.image}" alt="${article.title}" class="img-placeholder w-full h-full object-cover">`
-                    : `<div class="absolute inset-0 img-placeholder bg-gray-100 dark:bg-gray-900 flex items-center justify-center text-[10px] font-bold text-gray-400">KANEBERG</div>`;
+                    ? `<img src="${article.image}" alt="${article.title}" class="img-placeholder w-full h-full object-cover" onerror="this.onerror=null; this.parentElement.innerHTML='${fallbackBlock.replace(/'/g, "\\'")}';">`
+                    : fallbackBlock;
 
                 el.innerHTML = `
                     <div class="flex-shrink-0 w-28 h-20 rounded-md overflow-hidden bg-gray-50 dark:bg-gray-950 border border-gray-100 dark:border-gray-900 relative image-zoom-container">
