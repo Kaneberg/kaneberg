@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kaneberg - Lecture de l'article</title>
+    <title id="pageTitle">Kaneberg - Lecture de l'article</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -38,6 +38,7 @@
         body {
             transition: background-color 0.2s ease, color 0.2s ease;
         }
+
         .nav-link {
             position: relative;
             text-decoration: none;
@@ -56,27 +57,77 @@
         .nav-link:hover::after {
             width: 100%;
         }
-        .prose p {
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d4d4d4;
+            border-radius: 3px;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #404040;
+        }
+
+        /* Styles spécifiques pour la typographie de l'article */
+        .article-body p {
             margin-bottom: 1.5rem;
-            font-size: 1.125rem;
             line-height: 1.8;
-            color: #262626;
+            font-size: 1.05rem;
         }
-        .dark .prose p {
-            color: #d4d4d4;
-        }
-        .prose h2 {
+        .article-body h2 {
             font-size: 1.5rem;
-            font-weight: 700;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: -0.025em;
             margin-top: 2.5rem;
             margin-bottom: 1rem;
-            letter-spacing: -0.015em;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #e5e5e5;
+        }
+        .dark .article-body h2 {
+            border-bottom-color: #262626;
+        }
+        .article-body h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-top: 2rem;
+            margin-bottom: 0.75rem;
+        }
+        .article-body ul, .article-body ol {
+            margin-bottom: 1.5rem;
+            padding-left: 1.5rem;
+        }
+        .article-body ul {
+            list-style-type: disc;
+        }
+        .article-body ol {
+            list-style-type: decimal;
+        }
+        .article-body li {
+            margin-bottom: 0.5rem;
+            line-height: 1.7;
+        }
+        .article-body blockquote {
+            border-left: 4px solid #000;
+            padding-left: 1.25rem;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+            font-style: italic;
+            font-size: 1.1rem;
+        }
+        .dark .article-body blockquote {
+            border-left-color: #fff;
         }
     </style>
 </head>
 
 <body class="bg-white text-gray-950 dark:bg-black dark:text-gray-50 font-sans min-h-screen flex flex-col antialiased">
 
+    <!-- Header topbar -->
     <div class="bg-black text-white text-xs py-2 hidden md:block border-b border-gray-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
             <div class="flex space-x-6">
@@ -90,23 +141,26 @@
         </div>
     </div>
 
+    <!-- Navigation Bar -->
     <nav class="sticky top-0 z-50 bg-white/95 dark:bg-black/95 backdrop-blur border-b border-gray-200 dark:border-gray-800 transition-colors duration-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
+                
                 <div class="flex items-center space-x-8">
                     <a href="index.html" class="text-2xl font-black tracking-tighter text-black dark:text-white leading-none uppercase">
                         KANEBERG
                     </a>
+                    
                     <div class="hidden md:flex space-x-8">
                         <a href="index.html" class="nav-link text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white">Accueil</a>
-                        <a href="articles.html" class="nav-link text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white">Articles</a>
+                        <a href="articles.html" class="nav-link text-sm font-bold text-black dark:text-white">Articles</a>
                         <a href="videos.html" class="nav-link text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white">Vidéos</a>
                         <a href="ressources.html" class="nav-link text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white">Ressources</a>
                     </div>
                 </div>
 
                 <div class="flex items-center space-x-4">
-                    <button id="themeToggle" class="text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors">
+                    <button id="themeToggle" class="text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors" aria-label="Basculer le thème">
                         <svg id="sunIcon" class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
                         </svg>
@@ -119,73 +173,108 @@
         </div>
     </nav>
 
-    <main class="flex-grow max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
+    <!-- Conteneur Principal de l'Article -->
+    <main class="flex-grow max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full">
         
-        <div class="mb-8 flex justify-between items-center">
-            <a href="articles.html" class="text-xs font-semibold uppercase tracking-wider text-gray-500 hover:text-black dark:hover:text-white transition-colors flex items-center gap-2">
-                &larr; Retour au catalogue
+        <!-- Fil d'Ariane / Retour -->
+        <div class="mb-8">
+            <a href="articles.html" class="inline-flex items-center text-xs font-bold uppercase tracking-wider text-gray-500 hover:text-black dark:hover:text-white transition-colors">
+                &larr; Retour aux articles
             </a>
-            
-            <div class="flex items-center space-x-3 text-xs">
-                <span class="flex items-center gap-2 text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-900 px-3 py-1.5 rounded-full font-sans font-medium">
-                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                    </svg>
-                    <span id="articleViews">...</span> vues
-                </span>
-                <button id="likeBtn" class="flex items-center gap-2 border border-gray-200 dark:border-gray-800 hover:border-red-500/50 text-gray-700 dark:text-gray-300 px-3 py-1.5 rounded-full transition-all duration-200 active:scale-95 group">
-                    <svg id="likeHeart" class="w-4 h-4 text-gray-400 dark:text-gray-500 transition-all duration-300 transform group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                    </svg>
-                    <span id="articleLikes" class="font-semibold">0</span>
-                </button>
-            </div>
         </div>
 
-        <article>
-            <header class="mb-8">
-                <div class="flex items-center space-x-3 mb-4">
-                    <span id="categorieArticle" class="bg-black text-white dark:bg-white dark:text-black text-[10px] font-bold px-2 py-1 uppercase tracking-wider rounded-sm">
-                        ...
-                    </span>
-                    <span id="tempsLecture" class="text-xs text-gray-500 font-medium">
-                        ... de lecture
-                    </span>
-                </div>
-                
-                <h1 id="titreArticle" class="text-3xl sm:text-4xl font-black tracking-tight uppercase leading-tight text-black dark:text-white mb-6">
-                    Chargement de l'analyse...
-                </h1>
-
-                <div class="flex items-center space-x-3 text-xs text-gray-500 border-y border-gray-100 dark:border-gray-900 py-4">
-                    <span>Par <strong id="auteurArticle" class="text-black dark:text-white font-semibold">...</strong></span>
-                    <span>&bull;</span>
-                    <span id="dateArticle">...</span>
-                </div>
-            </header>
-
-            <div id="imageCouverture" class="mb-10 rounded-md overflow-hidden bg-gray-50 dark:bg-gray-950">
+        <!-- En-tête de l'Article -->
+        <header class="mb-10">
+            <div class="flex items-center space-x-3 mb-4">
+                <span id="categorieArticle" class="bg-black text-white dark:bg-white dark:text-black text-[10px] font-bold px-2.5 py-1 uppercase tracking-wider rounded-sm">
+                    Chargement...
+                </span>
+                <span class="text-xs text-gray-400">&bull;</span>
+                <span id="tempsLecture" class="text-xs font-medium text-gray-500 dark:text-gray-400">
+                    -- min de lecture
+                </span>
             </div>
 
-            <div id="corpsArticle" class="prose max-w-none text-gray-900 dark:text-gray-100">
-                <p class="animate-pulse text-gray-500">Aspiration des données d'Arrakis en cours...</p>
+            <h1 id="titreArticle" class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight text-black dark:text-white mb-6">
+                Chargement du titre...
+            </h1>
+
+            <div class="flex items-center justify-between border-y border-gray-100 dark:border-gray-900 py-4 text-xs text-gray-500 dark:text-gray-400">
+                <div class="flex items-center space-x-2">
+                    <span>Par <strong id="auteurArticle" class="text-black dark:text-white font-semibold">Rédaction Kaneberg</strong></span>
+                </div>
+                <div>
+                    <span>Publié le <time id="dateArticle">--/--/----</time></span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Image de Couverture -->
+        <div id="imageCouverture" class="mb-10 rounded-md overflow-hidden bg-gray-50 dark:bg-gray-950 border border-gray-100 dark:border-gray-900">
+            <!-- Injecté par JS -->
+        </div>
+
+        <!-- Résumé introductif (Chapeau) -->
+        <div id="resumeArticle" class="mb-10 p-6 bg-gray-50 dark:bg-gray-950 border-l-4 border-black dark:border-white rounded-r-md text-base leading-relaxed text-gray-800 dark:text-gray-200 font-medium">
+            <!-- Injecté par JS -->
+        </div>
+
+        <!-- Corps de l'Article (Texte dynamique HTML) -->
+        <article id="contenuArticle" class="article-body text-gray-900 dark:text-gray-100">
+            <div class="py-12 text-center text-gray-400 animate-pulse">
+                Accès aux archives impériales d'Arrakis...
             </div>
         </article>
 
-        <!-- Toast de remerciement lors du Like -->
-        <div id="likeToast" class="fixed bottom-6 right-6 z-50 bg-gray-900 text-white dark:bg-white dark:text-black text-xs font-medium px-4 py-3 rounded-lg shadow-2xl flex items-center space-x-2.5 transform translate-y-10 opacity-0 pointer-events-none transition-all duration-300 border border-gray-800 dark:border-gray-200">
-            <svg class="w-4 h-4 text-red-500 fill-current animate-pulse" viewBox="0 0 20 20">
-                <path d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" />
-            </svg>
-            <span>Merci pour le soutien !</span>
+        <!-- Zone d'action / Partage / Communauté -->
+        <div class="mt-16 pt-8 border-t border-gray-100 dark:border-gray-900">
+            <div class="bg-gray-50 dark:bg-gray-950 border border-gray-100 dark:border-gray-900 rounded-md p-8 text-center">
+                <h3 class="text-lg font-bold uppercase tracking-wide text-black dark:text-white mb-2">Rejoignez la discussion</h3>
+                <p class="text-xs text-gray-600 dark:text-gray-400 max-w-md mx-auto mb-6">
+                    Que pensez-vous de cet article ? Venez débattre avec notre communauté de passionnés sur le serveur Discord Kaneberg.
+                </p>
+                <div class="flex justify-center space-x-4">
+                    <a href="https://discord.gg/FY3WYmaNxd" target="_blank" class="px-5 py-2.5 bg-black dark:bg-white text-white dark:text-black font-bold uppercase text-xs rounded-sm hover:opacity-80 transition-opacity">
+                        Rejoindre le Discord
+                    </a>
+                    <a href="articles.html" class="px-5 py-2.5 border border-gray-300 dark:border-gray-700 text-black dark:text-white font-bold uppercase text-xs rounded-sm hover:bg-gray-100 dark:hover:bg-gray-900 transition-colors">
+                        Autres articles
+                    </a>
+                </div>
+            </div>
         </div>
 
     </main>
 
+    <!-- FOOTER -->
     <footer class="bg-black text-white mt-auto py-12 border-t border-gray-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="mt-8 pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center text-xs text-gray-500">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="md:col-span-2">
+                    <h2 class="text-3xl font-black uppercase tracking-tighter mb-4">KANEBERG</h2>
+                    <p class="text-gray-400 text-sm max-w-sm leading-relaxed">
+                        Média francophone indépendant dédié à l'univers de Dune. Décryptages, actualités, et réflexions philosophiques autour de l'œuvre de Frank Herbert.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-xs font-bold uppercase tracking-widest text-gray-500 mb-4">Média</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="articles.html" class="text-gray-300 hover:text-white transition-colors">Tous les articles</a></li>
+                        <li><a href="videos.html" class="text-gray-300 hover:text-white transition-colors">Vidéos</a></li>
+                        <li><a href="about.html" class="text-gray-300 hover:text-white transition-colors">À propos</a></li>
+                        <li><a href="contact.html" class="text-gray-300 hover:text-white transition-colors">Nous contacter</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xs font-bold uppercase tracking-widest text-gray-500 mb-4">Informations</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="legal.html" class="text-gray-300 hover:text-white transition-colors">Mentions légales</a></li>
+                        <li><a href="privacy.html" class="text-gray-300 hover:text-white transition-colors">Confidentialité</a></li>
+                        <li><a href="cookies.html" class="text-gray-300 hover:text-white transition-colors">Cookies</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mt-12 pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center text-xs text-gray-500">
                 <p>&copy; <span id="currentYear"></span> KANEBERG MEDIA. Tous droits réservés.</p>
                 <div class="flex space-x-4 mt-4 md:mt-0">
                     <a href="https://discord.gg/FY3WYmaNxd" target="_blank" class="hover:text-white transition-colors">Discord</a>
@@ -196,10 +285,10 @@
         </div>
     </footer>
 
+    <!-- SCRIPT DE CHARGEMENT DYNAMIQUE DE L'ARTICLE -->
     <script>
-        const FIREBASE_URL = "https://kaneberg-stats-default-rtdb.europe-west1.firebasedatabase.app/";
-
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Configuration Date et Heure
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
             const today = new Date();
             const dateStr = today.toLocaleDateString('fr-FR', options);
@@ -208,6 +297,8 @@
             }
             document.getElementById('currentYear').textContent = today.getFullYear();
 
+            // Gestion Thème Clair / Sombre
+            const themeToggleBtn = document.getElementById('themeToggle');
             const htmlElement = document.documentElement;
             if (localStorage.getItem('theme') === 'dark') {
                 htmlElement.classList.add('dark');
@@ -215,184 +306,121 @@
                 htmlElement.classList.remove('dark');
             }
 
-            const themeToggleBtn = document.getElementById('themeToggle');
-            if (themeToggleBtn) {
-                themeToggleBtn.addEventListener('click', () => {
-                    htmlElement.classList.toggle('dark');
-                    localStorage.setItem('theme', htmlElement.classList.contains('dark') ? 'dark' : 'light');
-                });
-            }
+            themeToggleBtn.addEventListener('click', () => {
+                htmlElement.classList.toggle('dark');
+                localStorage.setItem('theme', htmlElement.classList.contains('dark') ? 'dark' : 'light');
+            });
 
-            const adresseURL = window.location.href;
-            const separationID = adresseURL.split('?id=');
-            if (separationID.length < 2) {
-                window.location.href = 'index.html';
-                return;
-            }
-            const identifiantArticle = separationID[1].split('&')[0];
+            // Articles de secours en local si fetch échoue
+            const fallbackArticles = [
+                {
+                    "id": "probleme-dune-awakening-2026",
+                    "title": "Le problème de DUNE Awakening en 2026 : Entre fausses promesses et rédemption",
+                    "category": "Actu",
+                    "readTime": "10 min",
+                    "author": "Rédaction Kaneberg",
+                    "date": "2026-07-01",
+                    "image": "images/da.vid3.png",
+                    "summary": "Dune Awakening a-t-il menti à sa communauté ? Retour sur la polémique du MMO de Funcom, ses échecs de design au lancement, et sa spectaculaire mise à jour PvE/PvP de 2026."
+                },
+                {
+                    "id": "origine-epice",
+                    "title": "L'Épice Mélange : Analyse biologique et économique de la substance la plus rare",
+                    "category": "Lore",
+                    "readTime": "8 min",
+                    "author": "Rédaction Kaneberg",
+                    "date": "2026-06-30",
+                    "image": "",
+                    "summary": "L'Épice, ou Mélange, est le pilier de l'Empire. Mais comment est-elle produite exactement sur Arrakis et pourquoi fixe-t-elle l'économie galactique ?"
+                }
+            ];
 
-            chargerContenuDuBlog(identifiantArticle);
-            initStats(identifiantArticle);
-        });
+            // Récupération de l'identifiant depuis l'URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const articleId = urlParams.get('id') || 'probleme-dune-awakening-2026';
 
-        async function chargerContenuDuBlog(id) {
+            let articlesList = [];
             try {
-                let indexUrl = 'articles.json';
+                const cacheBuster = `?t=${new Date().getTime()}`;
+                let fetchUrl = 'articles.json' + cacheBuster;
                 if (window.location.protocol === 'blob:') {
-                    indexUrl = window.location.origin + '/articles.json';
+                    fetchUrl = window.location.origin + '/articles.json' + cacheBuster;
                 }
+                const res = await fetch(fetchUrl);
+                if (!res.ok) throw new Error("Erreur de chargement du catalogue JSON");
+                articlesList = await res.json();
+            } catch (err) {
+                console.warn("Chargement catalogue secours :", err);
+                articlesList = fallbackArticles;
+            }
 
-                const reponseIndex = await fetch(indexUrl);
-                if (!reponseIndex.ok) throw new Error("Impossible de lire l'index");
-                const listeArticles = await reponseIndex.json();
+            // Recherche de l'article correspondant
+            const articleMeta = articlesList.find(a => a.id === articleId) || articlesList[0];
 
-                const articleMeta = listeArticles.find(art => art.id === id);
-                if (!articleMeta) {
-                    document.getElementById('titreArticle').textContent = "Article introuvable";
-                    document.getElementById('corpsArticle').innerHTML = "<p>Cet article n'existe pas ou a été déplacé.</p>";
-                    return;
-                }
-
+            if (articleMeta) {
+                // Injection des Métadonnées
+                document.title = `${articleMeta.title} - Kaneberg`;
                 document.getElementById('titreArticle').textContent = articleMeta.title;
                 document.getElementById('auteurArticle').textContent = articleMeta.author;
                 document.getElementById('dateArticle').textContent = articleMeta.date;
                 document.getElementById('categorieArticle').textContent = articleMeta.category;
                 document.getElementById('tempsLecture').textContent = articleMeta.readTime;
+                document.getElementById('resumeArticle').textContent = articleMeta.summary;
 
+                // Gestion de l'Image de Couverture avec Secours Textuel
                 const containerImage = document.getElementById('imageCouverture');
                 const fallbackBlock = `
-                    <div class="w-full h-48 bg-gray-50 dark:bg-gray-950 flex flex-col items-center justify-center border border-gray-100 dark:border-gray-900 rounded-md select-none">
-                        <span class="text-gray-300 dark:text-gray-800 font-black text-3xl tracking-widest uppercase">KANEBERG</span>
+                    <div class="w-full h-56 sm:h-72 bg-gray-100 dark:bg-gray-950 flex flex-col items-center justify-center border border-gray-100 dark:border-gray-900 rounded-md select-none">
+                        <span class="text-gray-300 dark:text-gray-800 font-black text-3xl sm:text-4xl tracking-widest uppercase">KANEBERG</span>
+                        <span class="text-[10px] text-gray-400 dark:text-gray-600 tracking-widest uppercase mt-2 font-medium">Analyse Impériale</span>
                     </div>
                 `;
 
                 if (articleMeta.image) {
-                    containerImage.innerHTML = `<img src="${articleMeta.image}" alt="${articleMeta.title}" class="w-full h-auto max-h-[450px] object-cover rounded-md border border-gray-100 dark:border-gray-900" onerror="this.onerror=null; this.parentElement.innerHTML='${fallbackBlock.replace(/'/g, "\\'").replace(/\n/g, "")}';">`;
+                    containerImage.innerHTML = '';
+                    const img = document.createElement('img');
+                    img.src = articleMeta.image;
+                    img.alt = articleMeta.title;
+                    img.className = "w-full h-auto max-h-[500px] object-cover rounded-md border border-gray-100 dark:border-gray-900";
+                    img.onerror = function() {
+                        containerImage.innerHTML = fallbackBlock;
+                    };
+                    containerImage.appendChild(img);
                 } else {
                     containerImage.innerHTML = fallbackBlock;
                 }
 
-                let texteUrl = `articles/${id}.html`;
-                if (window.location.protocol === 'blob:') {
-                    texteUrl = window.location.origin + `/articles/${id}.html`;
-                }
-
-                const reponseTexte = await fetch(texteUrl);
-                if (!reponseTexte.ok) throw new Error("Fichier de contenu introuvable");
-                const codeContenuHTML = await reponseTexte.text();
-
-                document.getElementById('corpsArticle').innerHTML = codeContenuHTML;
-
-            } catch (erreur) {
-                console.warn("Mode secours aperçu local :", erreur);
-                document.getElementById('titreArticle').textContent = "Visualisation du contenu";
-            }
-        }
-
-        async function initStats(articleId) {
-            const viewsElem = document.getElementById('articleViews');
-            const likesElem = document.getElementById('articleLikes');
-            const likeBtn = document.getElementById('likeBtn');
-
-            const userLikedKey = `kb_has_liked_${articleId}`;
-            const cleanDbUrl = FIREBASE_URL.replace(/\/$/, "");
-            const articleEndpoint = `${cleanDbUrl}/stats/${articleId}.json`;
-
-            try {
-                const response = await fetch(articleEndpoint);
-                let data = await response.json() || { views: 0, likes: 0 };
-
-                let views = (data.views || 0) + 1;
-                let likes = data.likes || 0;
-
-                fetch(articleEndpoint, {
-                    method: 'PATCH',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ views: views })
-                }).catch(err => console.warn("Erreur sauvegarde vue :", err));
-
-                viewsElem.textContent = views.toLocaleString('fr-FR');
-                likesElem.textContent = likes.toString();
-
-                if (localStorage.getItem(userLikedKey)) {
-                    setLikedState(false);
-                }
-
-                likeBtn.addEventListener('click', () => {
-                    if (!localStorage.getItem(userLikedKey)) {
-                        likes += 1;
-                        likesElem.textContent = likes.toString();
-                        localStorage.setItem(userLikedKey, 'true');
-                        setLikedState(true);
-                        triggerToast();
-
-                        fetch(articleEndpoint, {
-                            method: 'PATCH',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ likes: likes })
-                        }).catch(err => console.warn("Erreur sauvegarde like :", err));
+                // Chargement du Corps de l'Article (HTML brut dans articles/{id}.html)
+                const contenuContainer = document.getElementById('contenuArticle');
+                try {
+                    let texteUrl = `articles/${articleMeta.id}.html`;
+                    if (window.location.protocol === 'blob:') {
+                        texteUrl = window.location.origin + `/articles/${articleMeta.id}.html`;
                     }
-                });
-
-            } catch (err) {
-                console.warn("Connexion à Firebase impossible, bascule en mode local :", err);
-                initLocalStorageFallback(articleId);
-            }
-
-            function setLikedState(animate = false) {
-                likeBtn.classList.add('bg-red-50', 'dark:bg-red-950/30', 'border-red-500/60', 'text-red-600', 'dark:text-red-400');
-                likeBtn.classList.remove('border-gray-200', 'dark:border-gray-800');
-
-                const heartIcon = document.getElementById('likeHeart');
-                if (heartIcon) {
-                    heartIcon.setAttribute('fill', 'currentColor');
-                    heartIcon.classList.add('text-red-500');
-                    heartIcon.classList.remove('text-gray-400', 'dark:text-gray-500');
-                    
-                    if (animate) {
-                        heartIcon.classList.add('scale-125');
-                        setTimeout(() => {
-                            heartIcon.classList.remove('scale-125');
-                        }, 300);
-                    }
+                    const textRes = await fetch(texteUrl);
+                    if (!textRes.ok) throw new Error("Fichier HTML de l'article introuvable.");
+                    const htmlText = await textRes.text();
+                    contenuContainer.innerHTML = htmlText;
+                } catch (textErr) {
+                    console.warn("Chargement texte secours...", textErr);
+                    // Contenu de secours par défaut si le fichier HTML spécifique n'est pas encore téléversé
+                    contenuContainer.innerHTML = `
+                        <p class="text-xl leading-relaxed text-gray-700 dark:text-gray-300 mb-8">
+                            ${articleMeta.summary}
+                        </p>
+                        <p class="mb-6 leading-relaxed">
+                            Ce dossier est actuellement disponible dans nos archives. Si vous voyez ce message, le fichier de texte complet <code>articles/${articleMeta.id}.html</code> est en cours de synchronisation sur GitHub.
+                        </p>
+                    `;
                 }
+            } else {
+                document.getElementById('contenuArticle').innerHTML = `
+                    <div class="py-12 text-center text-red-500 font-bold">
+                        Article non trouvé dans les archives.
+                    </div>
+                `;
             }
-
-            function triggerToast() {
-                const toast = document.getElementById('likeToast');
-                if (!toast) return;
-
-                toast.classList.remove('translate-y-10', 'opacity-0', 'pointer-events-none');
-                toast.classList.add('translate-y-0', 'opacity-100');
-
-                setTimeout(() => {
-                    toast.classList.remove('translate-y-0', 'opacity-100');
-                    toast.classList.add('translate-y-10', 'opacity-0', 'pointer-events-none');
-                }, 3000);
-            }
-
-            function initLocalStorageFallback(articleId) {
-                let views = parseInt(localStorage.getItem(`kb_views_${articleId}`) || "0") + 1;
-                localStorage.setItem(`kb_views_${articleId}`, views.toString());
-                viewsElem.textContent = views.toLocaleString('fr-FR');
-
-                let likes = parseInt(localStorage.getItem(`kb_likes_${articleId}`) || "0");
-                likesElem.textContent = likes.toString();
-
-                if (localStorage.getItem(userLikedKey)) setLikedState(false);
-
-                likeBtn.addEventListener('click', () => {
-                    if (!localStorage.getItem(userLikedKey)) {
-                        likes += 1;
-                        localStorage.setItem(`kb_likes_${articleId}`, likes.toString());
-                        localStorage.setItem(userLikedKey, 'true');
-                        likesElem.textContent = likes.toString();
-                        setLikedState(true);
-                        triggerToast();
-                    }
-                });
-            }
-        }
+        });
     </script>
 </body>
 </html>
