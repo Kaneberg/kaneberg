@@ -1,5 +1,15 @@
 [
   {
+    "id": "nouveau-test03",
+    "title": "Nouveau test03",
+    "category": "Actu",
+    "readTime": "8 min",
+    "author": "Rédaction Kaneberg",
+    "date": "2026-08-02",
+    "image": "images/HDoK5icbEAEeQQr.jpg",
+    "summary": "fgxhfshdh"
+  },
+  {
     "id": "nouveau-test02",
     "title": "Nouveau test02",
     "category": "Lore",
