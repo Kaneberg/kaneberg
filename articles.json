@@ -1,5 +1,16 @@
 [
   {
+    "id": "ceci-est-un-nouveau-test",
+    "title": "Ceci est un nouveau TEST",
+    "category": "Gaming",
+    "selection": false,
+    "readTime": "8 min",
+    "author": "Kaneberg",
+    "date": "2026-08-04",
+    "image": "images/Copie de Copie de VS (40).png",
+    "summary": "ceci est une description"
+  },
+  {
     "id": "lhistoire-de-la-patate",
     "title": "L'histoire de la patate",
     "category": "Autres",
