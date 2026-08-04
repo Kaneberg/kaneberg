@@ -1,32 +1,30 @@
 <!DOCTYPE html>
-<html lang="fr" class="">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kaneberg - Média d'actualité Dune</title>
+    <title>Kaneberg - Le Média Francophone de l'Univers de Dune</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <script>
         tailwind.config = {
-            darkMode: 'class',
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+                        sans: ['Plus Jakarta Sans', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
                     },
                     colors: {
-                        gray: {
-                            50: '#fafafa',
-                            100: '#f5f5f5',
-                            200: '#e5e5e5',
-                            300: '#d4d4d4',
-                            400: '#a3a3a3',
-                            500: '#737373',
-                            600: '#525252',
-                            700: '#404040',
-                            800: '#262626',
-                            900: '#171717',
-                            950: '#0a0a0a',
+                        brand: {
+                            bg: '#F8FAFC',
+                            card: '#FFFFFF',
+                            text: '#0F172A',
+                            muted: '#64748B',
+                            border: '#E2E8F0',
+                            accent: '#F1F5F9'
                         }
                     }
                 }
@@ -36,337 +34,334 @@
 
     <style>
         body {
-            transition: background-color 0.2s ease, color 0.2s ease;
+            background-color: #FAFAFA;
+            color: #0F172A;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-font-smoothing: antialiased;
         }
 
-        .image-zoom-container {
-            overflow: hidden;
-        }
-        .img-placeholder {
-            transition: transform 0.4s ease;
-        }
-        .group:hover .img-placeholder {
-            transform: scale(1.03);
-        }
-
-        .nav-link {
-            position: relative;
-            text-decoration: none;
-            padding-bottom: 2px;
-        }
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: 0;
-            left: 0;
-            background-color: currentColor;
-            transition: width 0.2s ease;
-        }
-        .nav-link:hover::after {
-            width: 100%;
-        }
-
+        /* Custom Scrollbar */
         ::-webkit-scrollbar {
             width: 6px;
+            height: 6px;
         }
         ::-webkit-scrollbar-track {
             background: transparent;
         }
         ::-webkit-scrollbar-thumb {
-            background: #d4d4d4;
-            border-radius: 3px;
+            background: #CBD5E1;
+            border-radius: 9999px;
         }
-        .dark ::-webkit-scrollbar-thumb {
-            background: #404040;
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94A3B8;
         }
-        
-        .hidden-by-search {
-            display: none !important;
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Top Active Tab Underline */
+        .top-tab {
+            position: relative;
+            padding-bottom: 0.75rem;
+            color: #64748B;
+            font-weight: 600;
+            transition: color 0.2s ease;
+        }
+        .top-tab.active {
+            color: #0F172A;
+            font-weight: 700;
+        }
+        .top-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: #0F172A;
+            border-radius: 2px;
+        }
+
+        /* Sidebar active item */
+        .sidebar-item-active {
+            background-color: #F1F5F9;
+            color: #0F172A;
+            font-weight: 700;
+        }
+
+        /* Line clamp utilities */
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .line-clamp-3 {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .img-hover-zoom {
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .card-group:hover .img-hover-zoom {
+            transform: scale(1.03);
         }
     </style>
 </head>
 
-<body class="bg-white text-gray-950 dark:bg-black dark:text-gray-50 font-sans min-h-screen flex flex-col antialiased">
+<body class="min-h-screen bg-[#FAFAFA] text-[#0F172A] flex flex-col antialiased">
 
-    <div class="bg-black text-white text-xs py-2 hidden md:block border-b border-gray-900">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-            <div class="flex space-x-6">
-                <a href="about.html" class="hover:text-gray-300 transition-colors">À propos</a>
-                <a href="contact.html" class="hover:text-gray-300 transition-colors">Contacts</a>
-                <a href="newsletter.html" class="hover:text-gray-300 transition-colors">Newsletter</a>
-            </div>
-            <div class="flex space-x-4 items-center">
-                <span class="text-gray-400" id="currentDate"></span>
-            </div>
-        </div>
-    </div>
-
-    <nav class="sticky top-0 z-50 bg-white/95 dark:bg-black/95 backdrop-blur border-b border-gray-200 dark:border-gray-800 transition-colors duration-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16 gap-2 md:gap-4">
-                
-                <!-- Logo & Liens de navigation -->
-                <div class="flex items-center space-x-6 lg:space-x-8 flex-shrink-0">
-                    <a href="index.html" class="text-xl lg:text-2xl font-black tracking-tighter text-black dark:text-white leading-none uppercase">
-                        KANEBERG
-                    </a>
-                    
-                    <div class="hidden lg:flex space-x-6 lg:space-x-8">
-                        <a href="index.html" class="nav-link text-sm font-bold text-black dark:text-white">Accueil</a>
-                        <a href="articles.html" class="nav-link text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white">Articles</a>
-                        <a href="videos.html" class="nav-link text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white">Vidéos</a>
-                        <a href="ressources.html" class="nav-link text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white">Ressources</a>
-                    </div>
-                </div>
-
-                <!-- Actions à droite: Recherche, Thème, S'abonner, Menu mobile -->
-                <div class="flex items-center space-x-2 sm:space-x-3 lg:space-x-4">
-                    
-                    <!-- Barre de Recherche Universelle -->
-                    <div class="relative flex items-center">
-                        <svg class="w-4 h-4 absolute left-3 text-gray-400 dark:text-gray-500 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                        </svg>
-                        <input type="text" id="globalSearchInput" placeholder="Rechercher..." 
-                            class="bg-gray-100 dark:bg-gray-900 border border-transparent focus:border-gray-300 dark:focus:border-gray-700 text-xs sm:text-sm rounded-full pl-9 pr-3 py-1.5 outline-none w-28 sm:w-36 md:w-48 lg:w-56 transition-all text-gray-900 dark:text-gray-100 placeholder-gray-500">
-                    </div>
-
-                    <!-- Bouton Bascule Thème -->
-                    <button id="themeToggle" class="p-1.5 sm:p-2 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors rounded-full hover:bg-gray-100 dark:hover:bg-gray-900" aria-label="Basculer le thème">
-                        <svg id="sunIcon" class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
-                        </svg>
-                        <svg id="moonIcon" class="w-5 h-5 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
-                        </svg>
-                    </button>
-
-                    <!-- Bouton YouTube "S'abonner" -->
-                    <a href="https://www.youtube.com/@KanebergYT" target="_blank" rel="noopener noreferrer" 
-                       class="hidden sm:inline-flex items-center gap-1.5 bg-red-600 hover:bg-red-700 text-white text-xs font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-full transition-colors shadow-sm flex-shrink-0">
-                        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-                        </svg>
-                        <span>S'abonner</span>
-                    </a>
-
-                    <!-- Bouton Menu Mobile -->
-                    <button id="mobileMenuBtn" class="lg:hidden p-1.5 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white focus:outline-none rounded-lg" aria-label="Menu principal">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <div id="mobileMenu" class="hidden lg:hidden border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-black px-4 pt-3 pb-5 space-y-3">
-            <div class="flex flex-col space-y-1">
-                <a href="index.html" class="block py-2 text-sm font-bold text-black dark:text-white border-b border-gray-100 dark:border-gray-900">Accueil</a>
-                <a href="articles.html" class="block py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white border-b border-gray-100 dark:border-gray-900">Articles</a>
-                <a href="videos.html" class="block py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white border-b border-gray-100 dark:border-gray-900">Vidéos</a>
-                <a href="ressources.html" class="block py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white border-b border-gray-100 dark:border-gray-900">Ressources</a>
-            </div>
-            <div class="pt-2">
-                <a href="https://www.youtube.com/@KanebergYT" target="_blank" rel="noopener noreferrer" 
-                   class="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white text-xs font-bold uppercase tracking-wider px-4 py-2.5 rounded-full transition-colors w-full justify-center shadow-sm">
-                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                        <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+    <!-- Navigation Supérieure Principale -->
+    <header class="sticky top-0 z-40 bg-white border-b border-slate-200/80 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-[1600px] mx-auto h-16 flex items-center justify-between gap-4">
+            
+            <!-- Gauche: Logo Kaneberg (Pas d'icône à côté du logo) -->
+            <div class="flex items-center gap-3">
+                <button id="mobileMenuToggle" class="lg:hidden p-2 text-slate-600 hover:text-slate-900 rounded-lg hover:bg-slate-100">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                     </svg>
-                    <span>S'abonner sur YouTube</span>
+                </button>
+
+                <a href="index.html" class="flex items-center">
+                    <span class="text-2xl font-black tracking-tighter uppercase text-slate-900">Kaneberg</span>
                 </a>
             </div>
-        </div>
-    </nav>
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 border-b border-gray-100 dark:border-gray-900">
-        <div class="flex items-center text-sm">
-            <span class="bg-yellow-400 text-black px-2 py-1 rounded-sm font-bold mr-4 uppercase tracking-wider text-[10px] select-none">Trending</span>
-            <div class="flex-1 truncate text-gray-600 dark:text-gray-400 font-medium" id="trendingContainer">
-                <span class="animate-pulse">Chargement de la dernière actualité...</span>
+            <!-- Centre: Onglets Centraux (Articles par défaut, Vidéos, Ressources) -->
+            <nav class="hidden md:flex items-center space-x-8 text-sm">
+                <button onclick="switchMainTab('articles')" id="topTabArticles" class="top-tab active">Articles</button>
+                <button onclick="switchMainTab('videos')" id="topTabVideos" class="top-tab">Vidéos</button>
+                <button onclick="switchMainTab('ressources')" id="topTabRessources" class="top-tab">Ressources</button>
+            </nav>
+
+            <!-- Droite: Recherche & Bouton d'action -->
+            <div class="flex items-center gap-3">
+                <div class="relative flex items-center">
+                    <svg class="w-4 h-4 absolute left-3.5 text-slate-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                    <input type="text" id="globalSearchInput" placeholder="Rechercher sur Kaneberg..." 
+                        class="bg-slate-50 border border-slate-200 text-xs sm:text-sm rounded-full pl-10 pr-4 py-2 outline-none w-36 sm:w-52 md:w-64 focus:border-slate-400 focus:bg-white transition-all text-slate-800 placeholder-slate-400">
+                </div>
+
+                <a href="https://www.youtube.com/@KanebergYT" target="_blank" title="S'abonner sur YouTube" 
+                   class="hidden sm:flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-red-600 hover:bg-red-700 text-white text-xs font-bold transition-colors shadow-sm">
+                    <svg class="w-3.5 h-3.5 fill-current text-white" viewBox="0 0 24 24">
+                        <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                    </svg>
+                    <span>S'abonner</span>
+                </a>
             </div>
+
         </div>
+    </header>
+
+    <!-- Layout Général: Sidebar Gauche | Contenu Central | Sidebar Droite -->
+    <div class="max-w-[1600px] mx-auto w-full flex-grow flex flex-col lg:flex-row px-4 sm:px-6 lg:px-8 py-6 gap-8">
+        
+        <!-- SIDEBAR GAUCHE -->
+        <aside id="leftSidebar" class="fixed lg:sticky top-20 z-30 w-64 h-[calc(100vh-6rem)] bg-[#FAFAFA] flex flex-col justify-between transition-transform duration-300 -translate-x-full lg:translate-x-0 overflow-y-auto no-scrollbar flex-shrink-0 pr-2 pb-6">
+            
+            <div class="space-y-6">
+                
+                <!-- Pages Principales Kaneberg -->
+                <div class="space-y-1">
+                    <a href="index.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl sidebar-item-active text-sm transition-colors">
+                        <svg class="w-4 h-4 text-slate-800" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                        <span>Accueil</span>
+                    </a>
+                    <a href="articles.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 text-sm font-medium transition-colors">
+                        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path></svg>
+                        <span>Articles</span>
+                    </a>
+                    <a href="videos.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 text-sm font-medium transition-colors">
+                        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                        <span>Vidéos</span>
+                    </a>
+                    <a href="ressources.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 text-sm font-medium transition-colors">
+                        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                        <span>Ressources</span>
+                    </a>
+                    <a href="games.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 text-sm font-medium transition-colors">
+                        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <span>Jeux</span>
+                    </a>
+                    <a href="about.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 text-sm font-medium transition-colors">
+                        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <span>À propos</span>
+                    </a>
+                    <a href="contact.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 text-sm font-medium transition-colors">
+                        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                        <span>Contact</span>
+                    </a>
+                    <a href="admin.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 text-sm font-medium transition-colors">
+                        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path></svg>
+                        <span>Studio Admin</span>
+                    </a>
+                </div>
+
+                <!-- Catégories du Média -->
+                <div class="pt-4 space-y-2 border-t border-slate-200/60">
+                    <button onclick="filterCategory('all')" class="cat-btn block w-full text-left px-3.5 text-sm font-bold text-slate-900 hover:text-slate-600 transition-colors">
+                        Tout
+                    </button>
+                    <button onclick="filterCategory('Actu')" class="cat-btn block w-full text-left px-3.5 text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors">
+                        Actu
+                    </button>
+                    <button onclick="filterCategory('Lore')" class="cat-btn block w-full text-left px-3.5 text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors">
+                        Lore
+                    </button>
+                    <button onclick="filterCategory('Analyse')" class="cat-btn block w-full text-left px-3.5 text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors">
+                        Analyse
+                    </button>
+                    <button onclick="filterCategory('Gaming')" class="cat-btn block w-full text-left px-3.5 text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors">
+                        Gaming
+                    </button>
+                    <button onclick="filterCategory('Science')" class="cat-btn block w-full text-left px-3.5 text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors">
+                        Science
+                    </button>
+                    <button onclick="filterCategory('Philosophie')" class="cat-btn block w-full text-left px-3.5 text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors">
+                        Philosophie
+                    </button>
+                </div>
+
+            </div>
+
+            <!-- Bas de la Sidebar (Mentions Légales / Footer déplacé ici à la place de Settings) -->
+            <div class="pt-6 border-t border-slate-200/60 space-y-2 text-xs text-slate-500 px-3.5">
+                <div class="flex flex-col space-y-1.5 font-medium">
+                    <a href="legal.html" class="hover:text-slate-900 transition-colors">Mentions légales</a>
+                    <a href="privacy.html" class="hover:text-slate-900 transition-colors">Confidentialité</a>
+                    <a href="cookies.html" class="hover:text-slate-900 transition-colors">Cookies</a>
+                </div>
+                <div class="pt-2 text-[11px] text-slate-400 font-normal">
+                    &copy; 2026 Kaneberg Media.<br>Tous droits réservés.
+                </div>
+            </div>
+
+        </aside>
+
+        <!-- FLUX CENTRAL (FEED) -->
+        <main class="flex-grow min-w-0 space-y-6">
+            
+            <!-- Carte à la Une (Hero Article Card) -->
+            <div id="featuredHeroCard">
+                <div class="animate-pulse bg-slate-200 rounded-3xl h-[400px] w-full"></div>
+            </div>
+
+            <!-- Grille de 6 Articles (3 cols x 2 rows) -->
+            <div id="mainArticlesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Alimenté par JS -->
+            </div>
+
+        </main>
+
+        <!-- SIDEBAR DROITE -->
+        <aside class="w-full lg:w-80 flex-shrink-0 space-y-8">
+            
+            <!-- Section Dernières Actualités -->
+            <div>
+                <h3 class="text-base font-bold text-slate-900 mb-4">Dernières Actualités</h3>
+                <div id="latestNewsList" class="space-y-4">
+                    <!-- Alimenté par JS -->
+                </div>
+            </div>
+
+            <!-- Section Nos Réseaux / Communauté Kaneberg (Au lieu des hashtags génériques) -->
+            <div class="pt-6 border-t border-slate-200/80">
+                <h3 class="text-base font-bold text-slate-900 mb-4">Communauté & Réseaux</h3>
+                <div id="socialLinksList" class="space-y-4">
+                    
+                    <a href="https://www.youtube.com/@KanebergYT" target="_blank" class="flex items-center justify-between group p-2 rounded-xl hover:bg-slate-100 transition-colors">
+                        <div>
+                            <div class="text-[11px] font-medium text-slate-400">YouTube • Média principal</div>
+                            <div class="text-sm font-bold text-slate-900 group-hover:underline">@KanebergYT</div>
+                            <div class="text-[11px] text-slate-400">Vidéos & Analyses vidéo</div>
+                        </div>
+                        <span class="p-2 rounded-full bg-red-50 text-red-600">
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                        </span>
+                    </a>
+
+                    <a href="https://discord.gg/FY3WYmaNxd" target="_blank" class="flex items-center justify-between group p-2 rounded-xl hover:bg-slate-100 transition-colors">
+                        <div>
+                            <div class="text-[11px] font-medium text-slate-400">Discord • Débats & Lore</div>
+                            <div class="text-sm font-bold text-slate-900 group-hover:underline">Serveur Kaneberg</div>
+                            <div class="text-[11px] text-slate-400">Rejoindre la communauté</div>
+                        </div>
+                        <span class="p-2 rounded-full bg-indigo-50 text-indigo-600">
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+                        </span>
+                    </a>
+
+                    <a href="https://www.instagram.com/kaneberg.dune/" target="_blank" class="flex items-center justify-between group p-2 rounded-xl hover:bg-slate-100 transition-colors">
+                        <div>
+                            <div class="text-[11px] font-medium text-slate-400">Instagram • Visuels</div>
+                            <div class="text-sm font-bold text-slate-900 group-hover:underline">@kaneberg.dune</div>
+                            <div class="text-[11px] text-slate-400">Actualités & Galerie</div>
+                        </div>
+                        <span class="p-2 rounded-full bg-pink-50 text-pink-600">
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                        </span>
+                    </a>
+
+                </div>
+            </div>
+
+        </aside>
+
     </div>
 
-    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
-        
-        <!-- SECTION HERO (Injection Dynamique) -->
-        <section class="mb-16">
-            <div class="grid grid-cols-1 lg:grid-cols-4 gap-4 h-auto lg:h-[500px]" id="heroGrid">
-                <div class="col-span-full py-16 text-center text-gray-400 animate-pulse">
-                    Mise en place de la bibliothèque impériale...
-                </div>
-            </div>
-        </section>
-
-        <!-- SECTION ANALYSE & FIL D'ACTUALITÉ DYNAMIQUE -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-16 border-t border-gray-100 dark:border-gray-900 pt-8">
-            
-            <!-- Colonne de Gauche (Focus : Analyse / Philosophie) -->
-            <div class="lg:col-span-4 flex flex-col">
-                <h3 class="text-sm font-bold uppercase tracking-wider border-b-2 border-black dark:border-white pb-2 mb-6 inline-block self-start">Focus : Analyse</h3>
-                <div id="philoHighlightContainer" class="flex-grow">
-                    <!-- Injecté par JavaScript -->
-                </div>
-            </div>
-
-            <!-- Colonne Centrale (Fil des Dernières Publications Automatique) -->
-            <div class="lg:col-span-5 flex flex-col">
-                <div class="flex items-center justify-between border-b border-gray-200 dark:border-gray-800 pb-2 mb-6">
-                    <h3 class="text-sm font-bold uppercase tracking-wider text-black dark:text-white">Dernières publications</h3>
-                    <a href="articles.html" class="text-xs text-gray-500 hover:text-black dark:hover:text-white transition-colors">Voir tout &rarr;</a>
-                </div>
-                <div id="newsFeedContainer" class="flex flex-col space-y-6">
-                    <!-- Injecté par JavaScript -->
-                </div>
-            </div>
-
-            <!-- Colonne de Droite (Réseaux & Support) -->
-            <aside class="lg:col-span-3 flex flex-col space-y-8">
-                <div>
-                    <h3 class="text-sm font-bold uppercase tracking-wider border-b-2 border-black dark:border-white pb-2 mb-6 inline-block">Restez Connectés</h3>
-                    <div class="grid grid-cols-2 gap-2">
-                        <a href="https://www.youtube.com/@KanebergYT" target="_blank" class="border border-gray-100 dark:border-gray-900 rounded-md p-4 flex flex-col items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors">
-                            <span class="font-black text-lg text-black dark:text-white">2.1k</span>
-                            <span class="text-[10px] uppercase text-gray-500 font-medium tracking-wider">Abonnés YT</span>
-                        </a>
-                        <a href="https://discord.gg/FY3WYmaNxd" target="_blank" class="border border-gray-100 dark:border-gray-900 rounded-md p-4 flex flex-col items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors">
-                            <span class="font-black text-lg text-black dark:text-white">Discord</span>
-                            <span class="text-[10px] uppercase text-gray-500 font-medium tracking-wider">Communauté</span>
-                        </a>
-                        <a href="https://www.instagram.com/kaneberg.dune/" target="_blank" class="col-span-2 border border-gray-100 dark:border-gray-900 rounded-md p-4 flex flex-col items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors">
-                            <span class="font-black text-lg text-black dark:text-white">Instagram</span>
-                            <span class="text-[10px] uppercase text-gray-500 font-medium tracking-wider">Actus & Visuels</span>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="bg-gray-50 dark:bg-gray-950 border border-gray-100 dark:border-gray-900 rounded-md h-64 flex items-center justify-center text-center p-6">
-                    <div>
-                        <div class="text-black dark:text-white font-bold text-xs uppercase tracking-wider mb-2">SOUTENEZ LE MÉDIA</div>
-                        <p class="text-xs text-gray-500 leading-relaxed max-w-[200px] mx-auto">Rejoignez notre chaîne YouTube pour ne manquer aucune de nos analyses vidéo.</p>
-                        <a href="https://www.youtube.com/@KanebergYT" target="_blank" class="inline-block mt-4 px-4 py-2 bg-black dark:bg-white text-white dark:text-black text-xs font-bold uppercase rounded-sm hover:opacity-80 transition-opacity">
-                            S'abonner sur YouTube
-                        </a>
-                    </div>
-                </div>
-            </aside>
-        </div>
-
-        <!-- SECTION DERNIÈRES VIDÉOS -->
-        <section class="mb-12 border-t border-gray-100 dark:border-gray-900 pt-8">
-            <div class="flex justify-between items-end mb-6">
-                <h3 class="text-sm font-bold uppercase tracking-wider border-b-2 border-black dark:border-white pb-2 inline-block">Dernières Vidéos</h3>
-                <a href="videos.html" class="text-xs font-bold uppercase text-gray-500 hover:text-black dark:hover:text-white transition-colors">Tout voir &rarr;</a>
-            </div>
-            
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div class="searchable-item flex flex-col gap-3 group">
-                    <div class="aspect-video w-full rounded-md overflow-hidden bg-gray-50 dark:bg-gray-950 border border-gray-100 dark:border-gray-900 relative image-zoom-container">
-                        <iframe class="w-full h-full absolute inset-0 z-10" src="https://www.youtube.com/embed/QXmjcJ2xWTc" title="Dune : L'épopée d'Arrakis" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    </div>
-                    <h4 class="article-title font-bold text-sm leading-snug group-hover:text-gray-500 dark:group-hover:text-gray-400 transition-colors">Analyse du lore de Dune Partie 1</h4>
-                </div>
-
-                <div class="searchable-item flex flex-col gap-3 group">
-                    <div class="aspect-video w-full rounded-md overflow-hidden bg-gray-50 dark:bg-gray-950 border border-gray-100 dark:border-gray-900 relative image-zoom-container">
-                        <iframe class="w-full h-full absolute inset-0 z-10" src="https://www.youtube.com/embed/OSNrhUhrTlE" title="Dune : Les secrets de tournage" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    </div>
-                    <h4 class="article-title font-bold text-sm leading-snug group-hover:text-gray-500 dark:group-hover:text-gray-400 transition-colors">Explication de la fin du film</h4>
-                </div>
-
-                <div class="searchable-item flex flex-col gap-3 group">
-                    <div class="aspect-video w-full rounded-md overflow-hidden bg-gray-50 dark:bg-gray-950 border border-gray-100 dark:border-gray-900 relative image-zoom-container">
-                        <iframe class="w-full h-full absolute inset-0 z-10" src="https://www.youtube.com/embed/BHIo0DMC3M4" title="Dune : Analyse de la bande son" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    </div>
-                    <h4 class="article-title font-bold text-sm leading-snug group-hover:text-gray-500 dark:group-hover:text-gray-400 transition-colors">Les différences Livre vs Film</h4>
-                </div>
-
-                <div class="searchable-item flex flex-col gap-3 group">
-                    <div class="aspect-video w-full rounded-md overflow-hidden bg-gray-50 dark:bg-gray-950 border border-gray-100 dark:border-gray-900 relative image-zoom-container">
-                        <iframe class="w-full h-full absolute inset-0 z-10" src="https://www.youtube.com/embed/hek9xjJBcvQ" title="Dune : L'avenir de la saga" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    </div>
-                    <h4 class="article-title font-bold text-sm leading-snug group-hover:text-gray-500 dark:group-hover:text-gray-400 transition-colors">Dune Messiah : À quoi s'attendre ?</h4>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <footer class="bg-black text-white mt-auto py-12 border-t border-gray-900">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <div class="md:col-span-2">
-                    <h2 class="text-3xl font-black uppercase tracking-tighter mb-4">KANEBERG</h2>
-                    <p class="text-gray-400 text-sm max-w-sm leading-relaxed">
-                        Média francophone indépendant dédié à l'univers de Dune. Décryptages, actualités, et réflexions philosophiques autour de l'œuvre de Frank Herbert.
-                    </p>
-                </div>
-                <div>
-                    <h3 class="text-xs font-bold uppercase tracking-widest text-gray-500 mb-4">Média</h3>
-                    <ul class="space-y-2 text-sm">
-                        <li><a href="articles.html" class="text-gray-300 hover:text-white transition-colors">Tous les articles</a></li>
-                        <li><a href="videos.html" class="text-gray-300 hover:text-white transition-colors">Vidéos</a></li>
-                        <li><a href="about.html" class="text-gray-300 hover:text-white transition-colors">À propos</a></li>
-                        <li><a href="contact.html" class="text-gray-300 hover:text-white transition-colors">Nous contacter</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="text-xs font-bold uppercase tracking-widest text-gray-500 mb-4">Informations</h3>
-                    <ul class="space-y-2 text-sm">
-                        <li><a href="legal.html" class="text-gray-300 hover:text-white transition-colors">Mentions légales</a></li>
-                        <li><a href="privacy.html" class="text-gray-300 hover:text-white transition-colors">Confidentialité</a></li>
-                        <li><a href="cookies.html" class="text-gray-300 hover:text-white transition-colors">Cookies</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="mt-12 pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center text-xs text-gray-500">
-                <p>&copy; <span id="currentYear"></span> KANEBERG MEDIA. Tous droits réservés.</p>
-                <div class="flex space-x-4 mt-4 md:mt-0">
-                    <a href="https://discord.gg/FY3WYmaNxd" target="_blank" class="hover:text-white transition-colors">Discord</a>
-                    <a href="https://www.instagram.com/kaneberg.dune/" target="_blank" class="hover:text-white transition-colors">Instagram</a>
-                    <a href="https://www.youtube.com/@KanebergYT" target="_blank" class="hover:text-white transition-colors">YouTube</a>
-                </div>
-            </div>
-        </div>
-    </footer>
-
+    <!-- Logique applicative JavaScript -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            const today = new Date();
-            const dateStr = today.toLocaleDateString('fr-FR', options);
-            if (document.getElementById('currentDate')) {
-                document.getElementById('currentDate').textContent = dateStr.charAt(0).toUpperCase() + dateStr.slice(1);
-            }
-            document.getElementById('currentYear').textContent = today.getFullYear();
 
-            // Thème Sombre / Clair
-            const themeToggleBtn = document.getElementById('themeToggle');
-            const htmlElement = document.documentElement;
-            if (localStorage.getItem('theme') === 'dark') {
-                htmlElement.classList.add('dark');
-            } else {
-                htmlElement.classList.remove('dark');
-            }
+            // Gestion du menu tiroir mobile
+            const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+            const leftSidebar = document.getElementById('leftSidebar');
 
-            themeToggleBtn.addEventListener('click', () => {
-                htmlElement.classList.toggle('dark');
-                localStorage.setItem('theme', htmlElement.classList.contains('dark') ? 'dark' : 'light');
-            });
+            if (mobileMenuToggle && leftSidebar) {
+                mobileMenuToggle.addEventListener('click', () => {
+                    leftSidebar.classList.toggle('-translate-x-full');
+                });
 
-            // Menu Mobile Toggle
-            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-            const mobileMenu = document.getElementById('mobileMenu');
-            if (mobileMenuBtn && mobileMenu) {
-                mobileMenuBtn.addEventListener('click', () => {
-                    mobileMenu.classList.toggle('hidden');
+                document.addEventListener('click', (e) => {
+                    if (window.innerWidth < 1024 && !leftSidebar.contains(e.target) && !mobileMenuToggle.contains(e.target)) {
+                        leftSidebar.classList.add('-translate-x-full');
+                    }
                 });
             }
 
-            // Articles de Secours
+            // Changement d'Onglets Centraux (Articles par défaut, Vidéos, Ressources)
+            window.switchMainTab = function(tab) {
+                const tabs = ['topTabArticles', 'topTabVideos', 'topTabRessources'];
+                tabs.forEach(t => {
+                    const el = document.getElementById(t);
+                    if (el) el.classList.remove('active');
+                });
+
+                if (tab === 'articles') {
+                    document.getElementById('topTabArticles')?.classList.add('active');
+                    renderUI();
+                } else if (tab === 'videos') {
+                    document.getElementById('topTabVideos')?.classList.add('active');
+                    window.location.href = 'videos.html';
+                } else if (tab === 'ressources') {
+                    document.getElementById('topTabRessources')?.classList.add('active');
+                    window.location.href = 'ressources.html';
+                }
+            };
+
+            // Données de secours d'articles réels Dune / Kaneberg en Français
             const fallbackArticles = [
                 {
                     "id": "probleme-dune-awakening-2026",
@@ -376,7 +371,8 @@
                     "author": "Rédaction Kaneberg",
                     "date": "2026-07-01",
                     "image": "images/da.vid3.png",
-                    "summary": "Dune Awakening a-t-il menti à sa communauté ? Retour sur la polémique du MMO de Funcom, ses échecs de design au lancement, et sa spectaculaire mise à jour PvE/PvP de 2026."
+                    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80",
+                    "summary": "Dune Awakening a-t-il menti à sa communauté ? Retour sur la polémique du MMO de Funcom, ses échecs de design au lancement, et sa spectaculaire mise à jour de 2026."
                 },
                 {
                     "id": "origine-epice",
@@ -385,12 +381,68 @@
                     "readTime": "8 min",
                     "author": "Rédaction Kaneberg",
                     "date": "2026-06-30",
-                    "image": "",
-                    "summary": "L'Épice, ou Mélange, est le pilier de l'Empire. Mais comment est-elle produite exactement sur Arrakis et pourquoi fixe-t-elle l'économie galactique ?"
+                    "image": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600&auto=format&fit=crop&q=80",
+                    "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80",
+                    "summary": "L'Épice, ou Mélange, est le pilier de l'Empire. Comment est-elle produite sur Arrakis et pourquoi fixe-t-elle l'économie galactique ?"
+                },
+                {
+                    "id": "jihad-butlerien",
+                    "title": "Le Jihad Butlérien : Pourquoi l'IA et les machines pensantes ont été bannies",
+                    "category": "Science",
+                    "readTime": "12 min",
+                    "author": "Rédaction Kaneberg",
+                    "date": "2026-06-25",
+                    "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&auto=format&fit=crop&q=80",
+                    "avatar": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&auto=format&fit=crop&q=80",
+                    "summary": "Mille ans avant Paul Atréides, l'humanité a fait la guerre aux machines. Retour sur le conflit fondateur de la Grande Révolte."
+                },
+                {
+                    "id": "philosophie-muaddib",
+                    "title": "Le danger des figures messianiques : La leçon politique de Frank Herbert",
+                    "category": "Philosophie",
+                    "readTime": "7 min",
+                    "author": "Rédaction Kaneberg",
+                    "date": "2026-06-18",
+                    "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&auto=format&fit=crop&q=80",
+                    "avatar": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&auto=format&fit=crop&q=80",
+                    "summary": "Pourquoi Frank Herbert a-t-il écrit Dune comme une mise en garde contre les héros charismatiques ? Décryptage de la philosophie de Paul Muad'Dib."
+                },
+                {
+                    "id": "secrets-bene-gesserit",
+                    "title": "Les secrets du Bene Gesserit : Contrôle génétique et manipulation de la voix",
+                    "category": "Lore",
+                    "readTime": "9 min",
+                    "author": "Rédaction Kaneberg",
+                    "date": "2026-06-12",
+                    "image": "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600&auto=format&fit=crop&q=80",
+                    "avatar": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&auto=format&fit=crop&q=80",
+                    "summary": "Découvrez le rôle obscur de l'Ordre du Bene Gesserit, la Voix impérative et le programme sélectif du Kwisatz Haderach."
+                },
+                {
+                    "id": "guilde-spatiale-navigateurs",
+                    "title": "La Guilde Spatiale : Les secrets des Navigateurs et du voyage instantané",
+                    "category": "Analyse",
+                    "readTime": "6 min",
+                    "author": "Rédaction Kaneberg",
+                    "date": "2026-06-05",
+                    "image": "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=600&auto=format&fit=crop&q=80",
+                    "avatar": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&auto=format&fit=crop&q=80",
+                    "summary": "Sans la Guilde Spatiale, l'Empire s'effondre. Analyse du monopole des Long-Courriers et de la prescience des Navigateurs."
+                },
+                {
+                    "id": "ecologie-arrakis",
+                    "title": "L'écologie d'Arrakis : Comment Pardot Kynes voulait transformer le désert en paradis",
+                    "category": "Science",
+                    "readTime": "11 min",
+                    "author": "Rédaction Kaneberg",
+                    "date": "2026-05-28",
+                    "image": "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?w=600&auto=format&fit=crop&q=80",
+                    "avatar": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=100&auto=format&fit=crop&q=80",
+                    "summary": "Étude détaillée du projet planétaire de terraformation de Dune et du lien intime entre l'eau et les Vers des sables."
                 }
             ];
 
-            let loadedArticles = [];
+            let allArticles = [];
 
             async function fetchArticles() {
                 try {
@@ -399,213 +451,159 @@
                     if (window.location.protocol === 'blob:') {
                         fetchUrl = window.location.origin + '/articles.json' + cacheBuster;
                     }
-                    const response = await fetch(fetchUrl);
-                    if (!response.ok) throw new Error("Erreur de chargement");
-                    loadedArticles = await response.json();
-                } catch (err) {
-                    console.warn("Utilisation du mode secours :", err);
-                    loadedArticles = fallbackArticles;
+                    const res = await fetch(fetchUrl);
+                    if (!res.ok) throw new Error("Erreur de réseau");
+                    const data = await res.json();
+                    
+                    allArticles = data.map((item, idx) => ({
+                        ...item,
+                        avatar: item.avatar || fallbackArticles[idx % fallbackArticles.length].avatar,
+                        image: item.image || fallbackArticles[idx % fallbackArticles.length].image
+                    }));
+                } catch (e) {
+                    console.warn("Utilisation des données alternatives Kaneberg :", e);
+                    allArticles = fallbackArticles;
                 } finally {
-                    buildDynamicGrid();
+                    renderUI();
                 }
             }
 
-            function buildDynamicGrid() {
-                const sorted = [...loadedArticles].sort((a, b) => new Date(b.date) - new Date(a.date));
+            function renderUI() {
+                if (allArticles.length === 0) return;
 
-                // Trending
-                const trendingContainer = document.getElementById('trendingContainer');
-                if (sorted.length > 0) {
-                    trendingContainer.innerHTML = `<a href="article.html?id=${sorted[0].id}" class="hover:underline">${sorted[0].title} &rarr;</a>`;
+                // 1. Rendu du Grand Article à la Une (Hero Card)
+                const hero = allArticles[0];
+                const heroContainer = document.getElementById('featuredHeroCard');
+                if (heroContainer && hero) {
+                    heroContainer.innerHTML = `
+                        <div class="card-group relative rounded-3xl overflow-hidden bg-slate-900 h-[380px] sm:h-[420px] w-full cursor-pointer shadow-sm border border-slate-200/50" onclick="window.location.href='article.html?id=${hero.id}'">
+                            <img src="${hero.image}" alt="${hero.title}" class="img-hover-zoom absolute inset-0 w-full h-full object-cover opacity-75" onerror="this.src='https://images.unsplash.com/photo-1541872703-74c5e44368f9?w=1200&auto=format&fit=crop&q=80'">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent"></div>
+                            
+                            <div class="absolute bottom-0 left-0 right-0 p-6 sm:p-8 space-y-3 z-10 text-white">
+                                <h1 class="text-xl sm:text-3xl font-bold leading-tight tracking-tight text-white hover:text-slate-200 transition-colors">
+                                    ${hero.title}
+                                </h1>
+                                
+                                <div class="flex items-center space-x-2 text-xs text-slate-300">
+                                    <img src="${hero.avatar}" alt="${hero.author}" class="w-5 h-5 rounded-full object-cover">
+                                    <span class="font-medium text-white">${hero.author || 'Rédaction Kaneberg'}</span>
+                                    <span>•</span>
+                                    <span class="text-slate-300">${hero.category || 'Actu'}</span>
+                                </div>
+
+                                <p class="text-xs sm:text-sm text-slate-300 line-clamp-2 max-w-2xl font-normal leading-relaxed">
+                                    ${hero.summary}
+                                </p>
+                            </div>
+                        </div>
+                    `;
                 }
 
-                // Hero Grid
-                const heroGrid = document.getElementById('heroGrid');
-                heroGrid.innerHTML = '';
+                // 2. Rendu de la Grille Principale (Articles 1 à 6)
+                const gridContainer = document.getElementById('mainArticlesGrid');
+                if (gridContainer) {
+                    gridContainer.innerHTML = '';
+                    const gridItems = allArticles.slice(1, 7);
 
-                if (sorted.length >= 4) {
-                    heroGrid.appendChild(createHeroLeftHTML(sorted[0]));
-                    heroGrid.appendChild(createHeroRightSmallHTML(sorted[1]));
-                    heroGrid.appendChild(createHeroRightSmallHTML(sorted[2]));
-                    heroGrid.appendChild(createHeroBottomDoubleHTML(sorted[3]));
-                } else if (sorted.length > 0) {
-                    sorted.forEach(art => heroGrid.appendChild(createHeroLeftHTML(art)));
+                    gridItems.forEach(item => {
+                        const card = document.createElement('div');
+                        card.className = "card-group cursor-pointer flex flex-col space-y-3";
+                        card.onclick = () => window.location.href = `article.html?id=${item.id}`;
+
+                        card.innerHTML = `
+                            <div class="aspect-[16/10] w-full rounded-2xl overflow-hidden bg-slate-100 relative border border-slate-200/60">
+                                <img src="${item.image}" alt="${item.title}" class="img-hover-zoom w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600&auto=format&fit=crop&q=80'">
+                            </div>
+                            <div class="space-y-2">
+                                <h3 class="text-sm font-bold text-slate-900 leading-snug line-clamp-2 group-hover:text-slate-600 transition-colors">
+                                    ${item.title}
+                                </h3>
+                                <div class="flex items-center space-x-2 text-xs text-slate-500">
+                                    <img src="${item.avatar}" alt="${item.author}" class="w-4 h-4 rounded-full object-cover">
+                                    <span class="font-medium text-slate-700">${item.author || 'Rédaction Kaneberg'}</span>
+                                    <span>•</span>
+                                    <span class="text-slate-400">${item.category || 'Lore'}</span>
+                                </div>
+                            </div>
+                        `;
+                        gridContainer.appendChild(card);
+                    });
                 }
 
-                // Focus Analyse
-                const philoHighlightContainer = document.getElementById('philoHighlightContainer');
-                let philoArticle = sorted.find(art => art.category.toLowerCase() === 'philosophie') || sorted[1] || sorted[0];
-                if (philoArticle) {
-                    philoHighlightContainer.innerHTML = createPhilosophyHighlightHTML(philoArticle);
+                // 3. Rendu de la Sidebar Droite (Dernières Actualités)
+                const latestList = document.getElementById('latestNewsList');
+                if (latestList) {
+                    latestList.innerHTML = '';
+                    
+                    const sideNews = [
+                        {
+                            title: "Dune Partie 3 (Messiah) : Denis Villeneuve confirme le script final",
+                            category: "Cinéma",
+                            image: "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=200&auto=format&fit=crop&q=80"
+                        },
+                        {
+                            title: "Funcom déploie le correctif 2.4 pour Dune Awakening",
+                            category: "Gaming",
+                            image: "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=200&auto=format&fit=crop&q=80"
+                        },
+                        {
+                            title: "Pourquoi l'Épice est irremplaçable dans le voyage spatial ?",
+                            category: "Lore",
+                            image: "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=200&auto=format&fit=crop&q=80"
+                        },
+                        {
+                            title: "Analyse : La psychologie des Fremen face au désert",
+                            category: "Philosophie",
+                            image: "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?w=200&auto=format&fit=crop&q=80"
+                        }
+                    ];
+
+                    sideNews.forEach(news => {
+                        const row = document.createElement('div');
+                        row.className = "flex items-center gap-3 group cursor-pointer";
+                        row.onclick = () => window.location.href = "articles.html";
+
+                        row.innerHTML = `
+                            <div class="w-20 h-16 rounded-xl overflow-hidden bg-slate-100 flex-shrink-0 border border-slate-200/60">
+                                <img src="${news.image}" alt="${news.title}" class="w-full h-full object-cover img-hover-zoom">
+                            </div>
+                            <div class="flex-grow min-w-0">
+                                <h4 class="text-xs font-bold text-slate-900 leading-snug line-clamp-2 group-hover:text-slate-600 transition-colors">
+                                    ${news.title}
+                                </h4>
+                                <span class="text-[11px] text-slate-400 mt-0.5 block">${news.category}</span>
+                            </div>
+                        `;
+                        latestList.appendChild(row);
+                    });
                 }
-
-                // Fil Dernières Publications
-                const newsFeedContainer = document.getElementById('newsFeedContainer');
-                newsFeedContainer.innerHTML = '';
-
-                const recentArticles = sorted.slice(0, 4);
-                recentArticles.forEach((article) => {
-                    newsFeedContainer.appendChild(createFeedItemHTML(article));
-                });
             }
 
-            function createHeroLeftHTML(article) {
-                const el = document.createElement('article');
-                el.className = "searchable-item group relative lg:col-span-2 lg:row-span-2 rounded-md overflow-hidden bg-black text-white h-[400px] lg:h-full cursor-pointer border border-transparent dark:border-gray-900";
-                el.onclick = () => window.location.href = `article.html?id=${article.id}`;
-                
-                const fallbackBlock = `<div class="absolute inset-0 bg-neutral-900 img-placeholder flex items-center justify-center"><span class="text-gray-700 font-black text-2xl uppercase tracking-widest select-none">KANEBERG</span></div>`;
-                const imgTag = article.image 
-                    ? `<div class="absolute inset-0">${fallbackBlock}<img src="${article.image}" alt="${article.title}" class="absolute inset-0 w-full h-full object-cover img-placeholder opacity-60" onerror="this.remove();"></div>`
-                    : fallbackBlock;
-
-                el.innerHTML = `
-                    ${imgTag}
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
-                    <div class="absolute bottom-0 left-0 p-6 z-10 w-full">
-                        <div class="flex items-center space-x-2 mb-3">
-                            <span class="bg-white text-black text-[10px] font-bold px-2 py-1 uppercase tracking-wider rounded-sm">${article.category}</span>
-                        </div>
-                        <h2 class="article-title text-2xl lg:text-3xl font-bold leading-tight mb-2 group-hover:text-gray-300 transition-colors">
-                            ${article.title}
-                        </h2>
-                        <div class="flex items-center text-xs text-gray-300 space-x-3">
-                            <span>Par ${article.author}</span>
-                            <span>&bull;</span>
-                            <span>${article.readTime}</span>
-                        </div>
-                    </div>
-                `;
-                return el;
-            }
-
-            function createHeroRightSmallHTML(article) {
-                const el = document.createElement('article');
-                el.className = "searchable-item group relative rounded-md overflow-hidden bg-black text-white h-[200px] lg:h-auto cursor-pointer border border-transparent dark:border-gray-900";
-                el.onclick = () => window.location.href = `article.html?id=${article.id}`;
-
-                const fallbackBlock = `<div class="absolute inset-0 bg-neutral-800 img-placeholder flex items-center justify-center"><span class="text-gray-600 font-black text-xl uppercase tracking-widest select-none">KANEBERG</span></div>`;
-                const imgTag = article.image 
-                    ? `<div class="absolute inset-0">${fallbackBlock}<img src="${article.image}" alt="${article.title}" class="absolute inset-0 w-full h-full object-cover img-placeholder opacity-50" onerror="this.remove();"></div>`
-                    : fallbackBlock;
-
-                el.innerHTML = `
-                    ${imgTag}
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
-                    <div class="absolute bottom-0 left-0 p-4 z-10 w-full">
-                        <span class="text-gray-300 text-[10px] font-bold uppercase tracking-wider mb-1 block">${article.category}</span>
-                        <h3 class="article-title text-base font-bold leading-tight group-hover:text-gray-300 transition-colors line-clamp-2">
-                            ${article.title}
-                        </h3>
-                    </div>
-                `;
-                return el;
-            }
-
-            function createHeroBottomDoubleHTML(article) {
-                const el = document.createElement('article');
-                el.className = "searchable-item group relative lg:col-span-2 rounded-md overflow-hidden bg-black text-white h-[200px] lg:h-auto cursor-pointer border border-transparent dark:border-gray-900";
-                el.onclick = () => window.location.href = `article.html?id=${article.id}`;
-
-                const fallbackBlock = `<div class="absolute inset-0 bg-neutral-900 img-placeholder flex items-center justify-center"><span class="text-gray-700 font-black text-xl uppercase tracking-widest select-none">KANEBERG</span></div>`;
-                const imgTag = article.image 
-                    ? `<div class="absolute inset-0">${fallbackBlock}<img src="${article.image}" alt="${article.title}" class="absolute inset-0 w-full h-full object-cover img-placeholder opacity-50" onerror="this.remove();"></div>`
-                    : fallbackBlock;
-
-                el.innerHTML = `
-                    ${imgTag}
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
-                    <div class="absolute bottom-0 left-0 p-4 lg:p-6 z-10 w-full">
-                        <div class="flex items-center space-x-2 mb-2">
-                            <span class="bg-gray-200 text-black text-[10px] font-bold px-2 py-1 uppercase tracking-wider rounded-sm">${article.category}</span>
-                            <span class="text-xs text-gray-300">&bull; ${article.readTime}</span>
-                        </div>
-                        <h3 class="article-title text-lg lg:text-xl font-bold leading-tight group-hover:text-gray-300 transition-colors line-clamp-2">
-                            ${article.title}
-                        </h3>
-                    </div>
-                `;
-                return el;
-            }
-
-            function createPhilosophyHighlightHTML(article) {
-                const fallbackBlock = `<div class="w-full h-full img-placeholder bg-gray-100 dark:bg-gray-900 flex flex-col items-center justify-center border border-gray-200 dark:border-gray-800"><span class="text-gray-300 dark:text-gray-700 font-black text-xl tracking-widest uppercase select-none">KANEBERG</span></div>`;
-                const imgPlaceholder = article.image 
-                    ? `<div class="w-full h-full relative">${fallbackBlock}<img src="${article.image}" alt="${article.title}" class="img-placeholder absolute inset-0 w-full h-full object-cover" onerror="this.remove();"></div>`
-                    : fallbackBlock;
-
-                return `
-                    <article class="group cursor-pointer flex flex-col h-full" onclick="window.location.href='article.html?id=${article.id}'">
-                        <div class="block image-zoom-container rounded-md overflow-hidden h-64 mb-4 bg-gray-50 dark:bg-gray-950 relative border border-gray-100 dark:border-gray-900">
-                            ${imgPlaceholder}
-                            <span class="absolute top-3 left-3 bg-white dark:bg-black px-2 py-1 text-[10px] font-bold uppercase rounded-sm border border-gray-100 dark:border-gray-900">
-                                ${article.category}
-                            </span>
-                        </div>
-                        <h4 class="article-title text-lg font-bold leading-snug mb-2 group-hover:text-gray-500 dark:group-hover:text-gray-400 transition-colors">
-                            ${article.title}
-                        </h4>
-                        <p class="text-xs text-gray-600 dark:text-gray-400 mb-3 line-clamp-3">
-                            ${article.summary}
-                        </p>
-                        <div class="text-[10px] text-gray-400 font-medium mt-auto">
-                            ${article.date} &bull; ${article.readTime}
-                        </div>
-                    </article>
-                `;
-            }
-
-            function createFeedItemHTML(article) {
-                const el = document.createElement('article');
-                el.className = "searchable-item group flex gap-4 cursor-pointer p-2 rounded hover:bg-gray-50 dark:hover:bg-gray-950 transition-colors";
-                el.onclick = () => window.location.href = `article.html?id=${article.id}`;
-
-                const fallbackBlock = `<div class="w-full h-full img-placeholder bg-gray-100 dark:bg-gray-900 flex items-center justify-center text-[9px] font-bold text-gray-400 select-none">KANEBERG</div>`;
-                const imgPlaceholder = article.image 
-                    ? `<div class="w-full h-full relative">${fallbackBlock}<img src="${article.image}" alt="${article.title}" class="img-placeholder absolute inset-0 w-full h-full object-cover" onerror="this.remove();"></div>`
-                    : fallbackBlock;
-
-                el.innerHTML = `
-                    <div class="flex-shrink-0 w-28 h-20 rounded-md overflow-hidden bg-gray-50 dark:bg-gray-950 border border-gray-100 dark:border-gray-900 relative image-zoom-container">
-                        ${imgPlaceholder}
-                    </div>
-                    <div class="flex flex-col justify-center">
-                        <span class="text-[9px] text-gray-400 font-bold uppercase tracking-wider mb-1">${article.category} &bull; ${article.date}</span>
-                        <h4 class="article-title font-bold text-sm leading-tight group-hover:text-gray-500 dark:group-hover:text-gray-400 transition-colors mb-1">
-                            ${article.title}
-                        </h4>
-                        <span class="text-[10px] text-gray-500 font-medium">${article.readTime} de lecture</span>
-                    </div>
-                `;
-                return el;
-            }
-
-            // Recherche Universelle
+            // Écouteur de la barre de recherche
             const globalSearchInput = document.getElementById('globalSearchInput');
             if (globalSearchInput) {
-                globalSearchInput.addEventListener('input', (e) => {
-                    const searchTerm = e.target.value.toLowerCase().trim();
-                    const searchableItems = document.querySelectorAll('.searchable-item');
-
-                    searchableItems.forEach(item => {
-                        const titleElement = item.querySelector('.article-title');
-                        if (titleElement) {
-                            const titleText = titleElement.textContent.toLowerCase();
-                            if (titleText.includes(searchTerm) || searchTerm === '') {
-                                item.classList.remove('hidden-by-search');
-                            } else {
-                                item.classList.add('hidden-by-search');
-                            }
-                        }
-                    });
-                });
-
                 globalSearchInput.addEventListener('keypress', (e) => {
                     if (e.key === 'Enter' && globalSearchInput.value.trim() !== '') {
                         window.location.href = `articles.html?q=${encodeURIComponent(globalSearchInput.value.trim())}`;
                     }
                 });
             }
+
+            // Écouteur des filtres de catégories dans la sidebar
+            window.filterCategory = function(cat) {
+                if (cat === 'all') {
+                    fetchArticles();
+                    return;
+                }
+                const filtered = allArticles.filter(a => (a.category || '').toLowerCase() === cat.toLowerCase());
+                if (filtered.length > 0) {
+                    allArticles = [...filtered, ...allArticles.filter(a => (a.category || '').toLowerCase() !== cat.toLowerCase())];
+                    renderUI();
+                } else {
+                    window.location.href = `articles.html?q=${encodeURIComponent(cat)}`;
+                }
+            };
 
             fetchArticles();
         });
