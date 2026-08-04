@@ -340,6 +340,18 @@
 
     <!-- Logique applicative JavaScript -->
     <script>
+        window.handleImgError = function(img) {
+            if (img && img.parentElement) {
+                img.parentElement.innerHTML = '<div class="w-full h-40 bg-slate-100 flex items-center justify-center text-slate-400 font-bold uppercase text-xs tracking-wider">Kaneberg</div>';
+            }
+        };
+
+        window.handleNewsImgError = function(img, text) {
+            if (img && img.parentElement) {
+                img.parentElement.innerHTML = '<span class="absolute inset-0 flex items-center justify-center font-bold text-slate-400 text-xs uppercase">' + (text || 'Actu') + '</span>';
+            }
+        };
+
         let allArticles = [];
 
         const fallbackArticles = [
@@ -437,7 +449,7 @@
 
                     const fallbackBg = `<div class="w-full h-40 bg-slate-100 flex items-center justify-center text-slate-400 font-bold uppercase text-xs tracking-wider">Kaneberg</div>`;
                     const imgTag = article.image 
-                        ? `<img src="${article.image}" alt="${article.title}" class="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.parentElement.innerHTML='${fallbackBg.replace(/'/g, "\\'")}';">` 
+                        ? `<img src="${article.image}" alt="${article.title}" class="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-300" onerror="handleImgError(this)">` 
                         : fallbackBg;
 
                     card.innerHTML = `
@@ -481,7 +493,7 @@
 
                     itemLink.innerHTML = `
                         <div class="w-16 h-16 rounded-xl bg-slate-100 flex-shrink-0 overflow-hidden relative">
-                            ${art.image ? `<img src="${art.image}" alt="${art.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.outerHTML='<span class=\\'absolute inset-0 flex items-center justify-center font-bold text-slate-400 text-xs uppercase\\'>${catShort}</span>';">` : `<span class="absolute inset-0 flex items-center justify-center font-bold text-slate-400 text-xs uppercase">${catShort}</span>`}
+                            ${art.image ? `<img src="${art.image}" alt="${art.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="handleNewsImgError(this, '${catShort}')">` : `<span class="absolute inset-0 flex items-center justify-center font-bold text-slate-400 text-xs uppercase">${catShort}</span>`}
                         </div>
                         <div class="space-y-1 min-w-0">
                             <h4 class="text-xs font-bold text-slate-900 group-hover:text-slate-600 transition-colors line-clamp-2 leading-snug">
