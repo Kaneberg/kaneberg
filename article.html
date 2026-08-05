@@ -39,12 +39,12 @@
             font-weight: 700;
         }
 
-        /* Badge "Notre Sélection" */
+        /* Badge "Notre Sélection" - Couleur #161c29 */
         .badge-prismatic {
-            background-color: #DC2626;
+            background-color: #161c29;
             color: #FFFFFF;
             font-weight: 800;
-            box-shadow: 0 2px 10px rgba(220, 38, 38, 0.25);
+            box-shadow: 0 2px 10px rgba(22, 28, 41, 0.25);
             border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
@@ -61,7 +61,6 @@
             animation: heartPulse 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        /* Typographie enrichie de l'article */
         .article-body p {
             margin-bottom: 1.5rem;
             line-height: 1.85;
@@ -132,8 +131,7 @@
 
 <body class="min-h-screen bg-[#FAFAFA] text-[#0F172A] flex flex-col antialiased">
 
-    <!-- Barre de progression de lecture en haut de page -->
-    <div id="readingProgressBar" class="fixed top-0 left-0 h-1 bg-rose-600 z-50 transition-all duration-150 w-0"></div>
+    <div id="readingProgressBar" class="fixed top-0 left-0 h-1 bg-[#161c29] z-50 transition-all duration-150 w-0"></div>
 
     <!-- Header Navigation Principale -->
     <header class="sticky top-0 z-40 bg-white border-b border-slate-200/80 px-4 sm:px-6 lg:px-8">
@@ -181,7 +179,6 @@
 
     <div id="mobileMenuBackdrop" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-40 hidden transition-opacity duration-300 opacity-0 pointer-events-none"></div>
 
-    <!-- Layout Général -->
     <div class="max-w-[1600px] mx-auto w-full flex-grow flex flex-col lg:flex-row px-4 sm:px-6 lg:px-8 py-6 gap-8">
         
         <!-- SIDEBAR GAUCHE -->
@@ -290,16 +287,16 @@
                                 <span id="articleViews">--</span>
                             </span>
 
-                            <!-- Bouton J'aime -->
-                            <button id="likeBtn" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-rose-50 text-slate-700 hover:text-rose-600 border border-slate-200/80 rounded-full transition-all text-xs font-bold cursor-pointer active:scale-95">
+                            <!-- Bouton J'aime (Incrémente uniquement les Likes - Ne touche PAS aux favoris) -->
+                            <button id="likeBtn" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-slate-100 hover:bg-rose-50 text-slate-700 hover:text-rose-600 border border-slate-200/80 rounded-full transition-all text-xs font-bold cursor-pointer active:scale-95" title="Aimer cet article">
                                 <svg id="likeHeartIcon" class="w-3.5 h-3.5 text-slate-400 transition-all duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
                                 </svg>
                                 <span id="articleLikes">0</span>
                             </button>
 
-                            <!-- Bouton Mettre en Favori -->
-                            <button id="favBtn" onclick="toggleFavorite()" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-rose-50 text-slate-700 hover:text-rose-600 border border-slate-200/80 rounded-full transition-all text-xs font-bold cursor-pointer active:scale-95">
+                            <!-- Bouton Mettre en Favori (Exclusif aux Favoris) -->
+                            <button id="favBtn" onclick="toggleFavorite()" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200/80 rounded-full transition-all text-xs font-bold cursor-pointer active:scale-95" title="Enregistrer dans vos favoris">
                                 <svg id="favIcon" class="w-3.5 h-3.5 text-slate-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
                                 </svg>
@@ -431,7 +428,7 @@
     <!-- Toast de notification rapide -->
     <div id="toastNotification" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
         <div class="bg-slate-900 text-white text-xs font-bold px-4 py-3 rounded-2xl shadow-xl flex items-center gap-2 border border-slate-800">
-            <span id="toastIcon">❤️</span>
+            <span id="toastIcon">🔖</span>
             <span id="toastMessage">Article ajouté à vos favoris</span>
         </div>
     </div>
@@ -441,7 +438,7 @@
         let currentArticleId = '';
 
         // Toast Manager
-        function showToast(message, icon = '❤️') {
+        function showToast(message, icon = '🔖') {
             const toast = document.getElementById('toastNotification');
             const msgEl = document.getElementById('toastMessage');
             const iconEl = document.getElementById('toastIcon');
@@ -571,7 +568,7 @@
                     resumeElem.classList.add('hidden');
                 }
 
-                // Badge Sélection s'il existe
+                // Badge Sélection avec la couleur #161c29
                 const prismaticHolder = document.getElementById('prismaticBadgeHolder');
                 if ((articleMeta.selection || articleMeta.featured) && prismaticHolder) {
                     prismaticHolder.innerHTML = `
@@ -616,7 +613,7 @@
                     `;
                 }
 
-                // Initialiser les stats (Vues, Likes et Favoris)
+                // Initialiser les stats (Vues, Likes et Favoris de manière strictement dissociée)
                 initStats(articleMeta.id);
                 updateFavButtonState(articleMeta.id);
 
@@ -673,6 +670,7 @@
 
             updateLikeUI(hasLiked);
 
+            /* STRICTEMENT DISSOCIÉ : Le clic sur Like n'ajoute JAMAIS aux favoris ! */
             if (likeBtn) {
                 likeBtn.onclick = () => {
                     const already = localStorage.getItem(userLikedKey) === 'true';
@@ -688,19 +686,20 @@
                         localStorage.setItem(likesKey, likes);
                         localStorage.setItem(userLikedKey, 'true');
                         updateLikeUI(true);
-                        showToast("Merci pour votre soutien !", "❤️");
+                        showToast("Merci pour votre mention J'aime !", "❤️");
                     } else {
                         likes = Math.max(0, likes - 1);
                         localStorage.setItem(likesKey, likes);
                         localStorage.removeItem(userLikedKey);
                         updateLikeUI(false);
+                        showToast("Mention J'aime retirée", "🤍");
                     }
                     document.getElementById('articleLikes').textContent = likes.toLocaleString('fr-FR');
                 };
             }
         }
 
-        // Gestionnaire des favoris (Bouton Marque-Page)
+        // Gestionnaire exclusif des favoris (Seul le bouton Favoris contrôle cet état)
         function isFavorite(id) {
             return localStorage.getItem(`kb_fav_${id}`) === 'true';
         }
@@ -712,15 +711,17 @@
             if (!favBtn || !favIcon || !favLabel) return;
 
             if (isFavorite(id)) {
-                favBtn.classList.add('bg-rose-50', 'text-rose-600', 'border-rose-200');
+                favBtn.classList.add('bg-slate-900', 'text-white', 'border-slate-900');
+                favBtn.classList.remove('bg-slate-100', 'text-slate-700', 'border-slate-200/80');
                 favIcon.setAttribute('fill', 'currentColor');
                 favIcon.classList.remove('text-slate-400');
-                favIcon.classList.add('text-rose-600');
-                favLabel.textContent = 'Enregistré !';
+                favIcon.classList.add('text-white');
+                favLabel.textContent = 'Enregistré dans vos favoris';
             } else {
-                favBtn.classList.remove('bg-rose-50', 'text-rose-600', 'border-rose-200');
+                favBtn.classList.remove('bg-slate-900', 'text-white', 'border-slate-900');
+                favBtn.classList.add('bg-slate-100', 'text-slate-700', 'border-slate-200/80');
                 favIcon.setAttribute('fill', 'none');
-                favIcon.classList.remove('text-rose-600');
+                favIcon.classList.remove('text-white');
                 favIcon.classList.add('text-slate-400');
                 favLabel.textContent = 'Mettre en favoris';
             }
@@ -733,10 +734,10 @@
 
             if (currentState) {
                 localStorage.removeItem(key);
-                showToast("Article retiré de vos favoris", "🗑️");
+                showToast("Article retiré de vos favoris", "🔖");
             } else {
                 localStorage.setItem(key, 'true');
-                showToast("Article ajouté à vos favoris !", "❤️");
+                showToast("Article ajouté à vos favoris !", "🔖");
             }
             updateFavButtonState(currentArticleId);
         }
@@ -762,37 +763,6 @@
                 nextLink.href = `article.html?id=${nextArticle.id}`;
                 nextLink.textContent = nextArticle.title;
                 nextCard.classList.remove('hidden');
-            }
-        }
-
-        function copyArticleLink() {
-            const url = window.location.href;
-            if (navigator.clipboard && window.isSecureContext) {
-                navigator.clipboard.writeText(url).then(showCopiedLabel).catch(fallbackCopy);
-            } else {
-                fallbackCopy();
-            }
-
-            function fallbackCopy() {
-                const tempInput = document.createElement('input');
-                tempInput.value = url;
-                document.body.appendChild(tempInput);
-                tempInput.select();
-                document.execCommand('copy');
-                document.body.removeChild(tempInput);
-                showCopiedLabel();
-            }
-
-            function showCopiedLabel() {
-                showToast("Lien de l'article copié !", "📋");
-                const label = document.getElementById('shareBtnLabel');
-                if (label) {
-                    const originalText = label.textContent;
-                    label.textContent = 'Lien copié !';
-                    setTimeout(() => {
-                        label.textContent = originalText;
-                    }, 2000);
-                }
             }
         }
 
