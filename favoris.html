@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="fr" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaneberg - Mes Favoris</title>
+
+    <!-- Favicon pour l'onglet du navigateur -->
+    <link rel="icon" type="image/png" href="images/logo.png">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Font: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+            background-color: #FAFAFA;
+            color: #0F172A;
+        }
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .top-tab {
+            font-weight: 600;
+            color: #64748B;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+        .top-tab:hover { color: #0F172A; }
+        .top-tab.active { color: #0F172A; border-bottom-color: #0F172A; font-weight: 700; }
+
+        .sidebar-item-active {
+            background-color: #F1F5F9;
+            color: #0F172A;
+            font-weight: 700;
+        }
+
+        .cat-pill {
+            background-color: #F1F5F9;
+            color: #475569;
+            border: 1px solid transparent;
+        }
+        .cat-pill:hover {
+            background-color: #E2E8F0;
+            color: #0F172A;
+        }
+        .cat-pill.active {
+            background-color: #0F172A;
+            color: #FFFFFF;
+            border-color: #0F172A;
+        }
+
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen bg-[#FAFAFA] text-[#0F172A] flex flex-col antialiased">
+
+    <!-- Header Navigation Principale -->
+    <header class="sticky top-0 z-40 bg-white border-b border-slate-200/80 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-[1600px] mx-auto h-16 grid grid-cols-2 md:grid-cols-3 items-center gap-4">
+            
+            <div class="flex items-center gap-3">
+                <button id="mobileMenuToggle" class="lg:hidden p-2 text-slate-600 hover:text-slate-900 rounded-lg hover:bg-slate-100 transition-colors" aria-label="Menu mobile">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+
+                <a href="index.html" class="flex items-center gap-2.5">
+                    <img src="images/logo.png" alt="Kaneberg Logo" class="w-7 h-7 object-contain brightness-0" onerror="this.style.display='none'">
+                    <span class="text-2xl font-black tracking-tighter uppercase text-slate-900">Kaneberg</span>
+                </a>
+            </div>
+
+            <nav class="hidden md:flex items-center justify-center space-x-8 text-sm">
+                <a href="articles.html" class="top-tab">Articles</a>
+                <a href="videos.html" class="top-tab">Vidéos</a>
+                <a href="ressources.html" class="top-tab">Ressources</a>
+            </nav>
+
+            <div class="flex items-center justify-end gap-3 col-span-1">
+                <div class="relative flex items-center">
+                    <svg class="w-4 h-4 absolute left-3.5 text-slate-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                    <input type="text" id="globalSearchInput" placeholder="Rechercher sur Kaneberg..." 
+                        class="bg-slate-50 border border-slate-200 text-xs sm:text-sm rounded-full pl-10 pr-4 py-2 outline-none w-36 sm:w-48 md:w-56 focus:border-slate-400 focus:bg-white transition-all text-slate-800 placeholder-slate-400">
+                </div>
+
+                <a href="https://www.youtube.com/@KanebergYT" target="_blank" title="S'abonner sur YouTube" 
+                   class="hidden sm:flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-red-600 hover:bg-red-700 text-white text-xs font-bold transition-colors flex-shrink-0">
+                    <svg class="w-3.5 h-3.5 fill-current text-white" viewBox="0 0 24 24">
+                        <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                    </svg>
+                    <span>S'abonner</span>
+                </a>
+            </div>
+
+        </div>
+    </header>
+
+    <div id="mobileMenuBackdrop" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-40 hidden transition-opacity duration-300 opacity-0 pointer-events-none"></div>
+
+    <!-- Layout Général: Sidebar Gauche | Contenu Central | Sidebar Droite -->
+    <div class="max-w-[1600px] mx-auto w-full flex-grow flex flex-col lg:flex-row px-4 sm:px-6 lg:px-8 py-6 gap-8">
+        
+        <!-- SIDEBAR GAUCHE -->
+        <aside id="leftSidebar" class="fixed inset-y-0 left-0 z-50 lg:z-30 w-72 lg:w-64 h-full lg:h-auto bg-white lg:bg-transparent shadow-2xl lg:shadow-none p-5 lg:p-0 lg:pr-6 flex flex-col justify-between transition-transform duration-300 ease-in-out -translate-x-full lg:translate-x-0 overflow-y-auto lg:overflow-visible flex-shrink-0 lg:sticky lg:top-20 lg:border-r lg:border-slate-200/80">
+            <div class="space-y-3">
+                <div class="flex items-center justify-between lg:hidden pb-3 border-b border-slate-200">
+                    <span class="text-xl font-black uppercase tracking-tighter text-slate-900">Kaneberg</span>
+                    <button id="closeMobileMenu" class="p-2 text-slate-500 hover:text-slate-900 rounded-lg hover:bg-slate-100 transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
+
+                <div class="space-y-1">
+                    <a href="index.html" class="flex items-center gap-3 px-3.5 py-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 text-sm font-medium transition-colors">
+                        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                        <span>Accueil</span>
+                    </a>
+                    <a href="articles.html" class="flex items-center gap-3 px-3.5 py-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 text-sm font-medium transition-colors">
+                        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path></svg>
+                        <span>Articles</span>
+                    </a>
+                    <a href="favoris.html" class="flex items-center gap-3 px-3.5 py-2 rounded-xl sidebar-item-active text-sm transition-colors">
+                        <svg class="w-4 h-4 text-rose-500 fill-current" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                        <span>Mes Favoris</span>
+                    </a>
+                    <a href="videos.html" class="flex items-center gap-3 px-3.5 py-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 text-sm font-medium transition-colors">
+                        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                        <span>Vidéos</span>
+                    </a>
+                    <a href="ressources.html" class="flex items-center gap-3 px-3.5 py-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 text-sm font-medium transition-colors">
+                        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                        <span>Ressources</span>
+                    </a>
+                    <a href="games.html" class="flex items-center gap-3 px-3.5 py-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 text-sm font-medium transition-colors">
+                        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <span>Jeux</span>
+                    </a>
+                    <a href="about.html" class="flex items-center gap-3 px-3.5 py-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 text-sm font-medium transition-colors">
+                        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <span>À propos</span>
+                    </a>
+                    <a href="contact.html" class="flex items-center gap-3 px-3.5 py-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 text-sm font-medium transition-colors">
+                        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                        <span>Contact</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="pt-3 space-y-2 text-xs text-slate-500 px-1">
+                <div class="flex flex-col space-y-1 font-medium">
+                    <a href="legal.html" class="hover:text-slate-900 transition-colors">Mentions légales</a>
+                    <a href="privacy.html" class="hover:text-slate-900 transition-colors">Confidentialité</a>
+                </div>
+                <div class="pt-1 text-[11px] text-slate-400 font-normal">
+                    &copy; 2026 Kaneberg Media.<br>Tous droits réservés.
+                </div>
+            </div>
+        </aside>
+
+        <!-- CONTENU PRINCIPAL -->
+        <main class="flex-grow space-y-6 min-w-0">
+            
+            <!-- En-tête de la page des favoris -->
+            <div class="bg-white rounded-3xl p-6 border border-slate-200/80 space-y-5">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h1 class="text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2">
+                                <span>❤️ Mes Articles Enregistrés</span>
+                            </h1>
+                            <span id="favCountBadge" class="bg-rose-100 text-rose-700 text-xs font-extrabold px-2.5 py-0.5 rounded-full">
+                                0
+                            </span>
+                        </div>
+                        <p class="text-xs text-slate-500 font-medium mt-1">Vos lectures sauvegardées sur cet appareil.</p>
+                    </div>
+
+                    <button id="clearAllFavsBtn" onclick="openClearModal()" class="hidden text-xs font-bold text-rose-600 hover:text-white bg-rose-50 hover:bg-rose-600 px-3.5 py-2 rounded-xl transition-colors flex items-center gap-1.5 self-start sm:self-auto">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                        </svg>
+                        <span>Tout effacer</span>
+                    </button>
+                </div>
+
+                <!-- Barre d'outils (Filtres par Catégorie, Recherche interne & Tri) -->
+                <div id="toolbarContainer" class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 pt-1">
+                    
+                    <!-- Filtres par catégorie -->
+                    <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5" id="favCatFilters">
+                        <button onclick="filterFavCategory('all')" data-favcat="all" class="cat-pill active px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all">
+                            Tout
+                        </button>
+                        <button onclick="filterFavCategory('Actu')" data-favcat="Actu" class="cat-pill px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all">
+                            Actu
+                        </button>
+                        <button onclick="filterFavCategory('Lore')" data-favcat="Lore" class="cat-pill px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all">
+                            Lore
+                        </button>
+                        <button onclick="filterFavCategory('Analyse')" data-favcat="Analyse" class="cat-pill px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all">
+                            Analyse
+                        </button>
+                        <button onclick="filterFavCategory('Gaming')" data-favcat="Gaming" class="cat-pill px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all">
+                            Gaming
+                        </button>
+                        <button onclick="filterFavCategory('Science')" data-favcat="Science" class="cat-pill px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all">
+                            Science
+                        </button>
+                        <button onclick="filterFavCategory('Philosophie')" data-favcat="Philosophie" class="cat-pill px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all">
+                            Philosophie
+                        </button>
+                    </div>
+
+                    <!-- Recherche dans les favoris + Tri -->
+                    <div class="flex items-center gap-2">
+                        <div class="relative flex-grow sm:flex-grow-0">
+                            <input type="text" id="favSearchInput" placeholder="Filtrer vos favoris..." 
+                                   class="w-full sm:w-44 bg-slate-50 border border-slate-200 text-xs rounded-xl pl-8 pr-3 py-1.5 outline-none focus:border-slate-400 focus:bg-white transition-all text-slate-800 placeholder-slate-400">
+                            <svg class="w-3.5 h-3.5 absolute left-2.5 top-2.5 text-slate-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                        </div>
+
+                        <select id="favSortSelect" onchange="handleFavSortChange()" class="bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-700 rounded-xl px-3 py-1.5 outline-none focus:border-slate-400 transition-all cursor-pointer">
+                            <option value="recent">Plus récent</option>
+                            <option value="oldest">Plus ancien</option>
+                            <option value="title">Alphabetique (A-Z)</option>
+                            <option value="readTime">Temps de lecture</option>
+                        </select>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Grille des articles enregistrés -->
+            <div id="favGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+
+            <!-- Message si aucun favori -->
+            <div id="noFavs" class="hidden bg-white rounded-3xl p-12 text-center border border-slate-200/80 space-y-3">
+                <div class="w-16 h-16 bg-rose-50 text-rose-500 rounded-full flex items-center justify-center text-3xl mx-auto mb-2">
+                    🔖
+                </div>
+                <h3 id="noFavsTitle" class="text-base font-extrabold text-slate-900">Aucun favori pour le moment</h3>
+                <p id="noFavsDesc" class="text-xs text-slate-500 max-w-sm mx-auto leading-relaxed">
+                    Cliquez sur le petit cœur au cours de vos lectures pour retrouver vos articles préférés ici à tout moment.
+                </p>
+                <a href="articles.html" class="inline-block mt-2 px-5 py-2.5 bg-slate-900 text-white font-bold text-xs uppercase tracking-wider rounded-xl hover:bg-slate-800 transition-colors">
+                    Découvrir des articles
+                </a>
+            </div>
+        </main>
+
+        <!-- SIDEBAR DROITE: RECOMMANDATIONS & RÉSEAUX -->
+        <aside class="w-full lg:w-80 flex-shrink-0 space-y-8">
+            
+            <div class="bg-white rounded-3xl p-6 border border-slate-200/80 space-y-4">
+                <h3 class="text-base font-extrabold text-slate-900 tracking-tight">Articles Recommandés</h3>
+                <div id="sidebarSelectionPicks" class="space-y-3">
+                    <!-- Injecté par JS -->
+                </div>
+            </div>
+
+            <div class="bg-white rounded-3xl p-6 border border-slate-200/80 space-y-4">
+                <h3 class="text-base font-extrabold text-slate-900 tracking-tight">Réseaux & Communauté</h3>
+                
+                <div class="space-y-3">
+                    <a href="https://www.youtube.com/@KanebergYT" target="_blank" class="flex items-center justify-between p-3 rounded-2xl bg-red-50 hover:bg-red-100/80 transition-colors group">
+                        <div class="flex items-center gap-3">
+                            <div class="w-9 h-9 rounded-xl bg-red-600 text-white flex items-center justify-center flex-shrink-0">
+                                <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                            </div>
+                            <div>
+                                <span class="text-xs font-bold text-slate-900 block">YouTube</span>
+                                <span class="text-[11px] text-slate-500 font-medium">@KanebergYT</span>
+                            </div>
+                        </div>
+                        <span class="text-xs font-bold text-red-600 group-hover:translate-x-0.5 transition-transform">&rarr;</span>
+                    </a>
+
+                    <a href="https://discord.gg/FY3WYmaNxd" target="_blank" class="flex items-center justify-between p-3 rounded-2xl bg-indigo-50 hover:bg-indigo-100/80 transition-colors group">
+                        <div class="flex items-center gap-3">
+                            <div class="w-9 h-9 rounded-xl bg-indigo-600 text-white flex items-center justify-center flex-shrink-0">
+                                <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                                    <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <span class="text-xs font-bold text-slate-900 block">Discord</span>
+                                <span class="text-[11px] text-slate-500 font-medium">Communauté Dune</span>
+                            </div>
+                        </div>
+                        <span class="text-xs font-bold text-indigo-600 group-hover:translate-x-0.5 transition-transform">&rarr;</span>
+                    </a>
+
+                    <a href="https://www.instagram.com/kaneberg.dune/" target="_blank" class="flex items-center justify-between p-3 rounded-2xl bg-pink-50 hover:bg-pink-100/80 transition-colors group">
+                        <div class="flex items-center gap-3">
+                            <div class="w-9 h-9 rounded-xl bg-pink-600 text-white flex items-center justify-center flex-shrink-0">
+                                <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                            </div>
+                            <div>
+                                <span class="text-xs font-bold text-slate-900 block">Instagram</span>
+                                <span class="text-[11px] text-slate-500 font-medium">@kaneberg.dune</span>
+                            </div>
+                        </div>
+                        <span class="text-xs font-bold text-pink-600 group-hover:translate-x-0.5 transition-transform">&rarr;</span>
+                    </a>
+                </div>
+            </div>
+
+        </aside>
+
+    </div>
+
+    <!-- Modale personnalisée de confirmation d'effacement sans confirm() -->
+    <div id="clearConfirmModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 transition-opacity">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 border border-slate-200 shadow-2xl space-y-4">
+            <div class="w-12 h-12 rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center mx-auto">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                </svg>
+            </div>
+            <div class="text-center space-y-1">
+                <h3 class="text-lg font-black text-slate-900">Voulez-vous tout effacer ?</h3>
+                <p class="text-xs text-slate-500 leading-relaxed">
+                    Cette action supprimera l'ensemble des articles sauvegardés dans vos favoris. Cette action ne peut pas être annulée.
+                </p>
+            </div>
+            <div class="flex items-center gap-3 pt-2">
+                <button onclick="closeClearModal()" class="w-1/2 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold rounded-xl transition-colors">
+                    Annuler
+                </button>
+                <button onclick="confirmClearAllFavs()" class="w-1/2 py-2.5 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-xl transition-colors">
+                    Oui, tout effacer
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.handleImgError = function(img) {
+            if (img && img.parentElement) {
+                img.parentElement.innerHTML = '<div class="w-full h-44 bg-slate-100 flex items-center justify-center text-slate-400 font-bold uppercase text-xs tracking-wider">Kaneberg</div>';
+            }
+        };
+
+        let loadedFavArticles = [];
+        let activeCategoryFilter = 'all';
+
+        const fallbackArticles = [
+            {
+                id: "probleme-dune-awakening-2026",
+                title: "Le problème de DUNE Awakening en 2026 : Entre fausses promesses et rédemption",
+                category: "Actu",
+                selection: true,
+                readTime: "10 min",
+                author: "Rédaction Kaneberg",
+                date: "2026-07-01",
+                image: "images/da.vid3.png",
+                summary: "Dune Awakening a-t-il menti à sa communauté ? Retour sur la polémique du MMO de Funcom, ses échecs de design au lancement, et sa spectaculaire mise à jour PvE/PvP de 2026."
+            },
+            {
+                id: "origine-epice",
+                title: "L'Épice Mélange : Analyse biologique et économique de la substance la plus rare",
+                category: "Lore",
+                selection: true,
+                readTime: "8 min",
+                author: "Rédaction Kaneberg",
+                date: "2026-06-30",
+                image: "",
+                summary: "L'Épice, ou Mélange, est le pilier de l'Empire. Mais comment est-elle produite exactement sur Arrakis et pourquoi fixe-t-elle l'économie galactique ?"
+            },
+            {
+                id: "jihad-butlerien",
+                title: "Le Jihad Butlérien : Pourquoi l'IA et les machines pensantes ont été bannies",
+                category: "Science",
+                selection: false,
+                readTime: "12 min",
+                author: "Rédaction Kaneberg",
+                date: "2026-06-25",
+                image: "",
+                summary: "Mille ans avant Paul Atréides, l'humanité a fait la guerre aux machines. Retour sur le conflit fondateur qui a banni les ordinateurs de l'univers connu."
+            },
+            {
+                id: "philosophie-muaddib",
+                title: "Le danger des figures messianiques : La leçon politique de Frank Herbert",
+                category: "Philosophie",
+                selection: false,
+                readTime: "7 min",
+                author: "Rédaction Kaneberg",
+                date: "2026-06-18",
+                image: "",
+                summary: "Pourquoi Frank Herbert a-t-il écrit Dune comme une mise en garde contre les héros charismatiques ? Décryptage de la philosophie de Paul Muad'Dib."
+            }
+        ];
+
+        function getSavedFavIds() {
+            const favs = [];
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key.startsWith('kb_fav_') && localStorage.getItem(key) === 'true') {
+                    const id = key.replace('kb_fav_', '');
+                    if (!favs.includes(id)) favs.push(id);
+                } else if (key.startsWith('kb_has_liked_') && localStorage.getItem(key) === 'true') {
+                    const id = key.replace('kb_has_liked_', '');
+                    if (!favs.includes(id)) favs.push(id);
+                }
+            }
+            return favs;
+        }
+
+        async function fetchAllArticlesData() {
+            try {
+                const res = await fetch(`articles.json?t=${Date.now()}`);
+                if (res.ok) {
+                    return await res.json();
+                }
+            } catch (err) {}
+            return fallbackArticles;
+        }
+
+        async function loadFavorites() {
+            const favIds = getSavedFavIds();
+            const allArticles = await fetchAllArticlesData();
+
+            // Filtrer les articles correspondant aux favoris enregistrés
+            loadedFavArticles = allArticles.filter(a => favIds.includes(a.id));
+
+            // Mettre à jour les recommandations de la sidebar droite avec les articles restants
+            renderSidebarPicks(allArticles);
+
+            // Appliquer filtres et tri
+            applyFavFiltersAndRender();
+        }
+
+        function applyFavFiltersAndRender() {
+            const grid = document.getElementById('favGrid');
+            const noFavs = document.getElementById('noFavs');
+            const clearBtn = document.getElementById('clearAllFavsBtn');
+            const badge = document.getElementById('favCountBadge');
+            const favSearchInput = document.getElementById('favSearchInput');
+            const sortSelect = document.getElementById('favSortSelect');
+
+            const totalSavedCount = getSavedFavIds().length;
+            if (badge) badge.textContent = totalSavedCount;
+
+            if (loadedFavArticles.length === 0) {
+                grid.classList.add('hidden');
+                noFavs.classList.remove('hidden');
+                if (clearBtn) clearBtn.classList.add('hidden');
+                
+                // Mettre à jour message selon qu'aucun favori n'existe du tout ou si filtré
+                const noFavsTitle = document.getElementById('noFavsTitle');
+                const noFavsDesc = document.getElementById('noFavsDesc');
+                if (totalSavedCount === 0) {
+                    noFavsTitle.textContent = "Aucun favori pour le moment";
+                    noFavsDesc.textContent = "Cliquez sur le petit cœur au cours de vos lectures pour retrouver vos articles préférés ici à tout moment.";
+                } else {
+                    noFavsTitle.textContent = "Aucun résultat dans vos favoris";
+                    noFavsDesc.textContent = "Aucun de vos articles favoris ne correspond aux critères de filtre sélectionnés.";
+                }
+                return;
+            }
+
+            if (clearBtn) clearBtn.classList.remove('hidden');
+
+            // 1. Filtrage par Catégorie
+            let filtered = loadedFavArticles;
+            if (activeCategoryFilter !== 'all') {
+                filtered = filtered.filter(a => (a.category || '').toLowerCase() === activeCategoryFilter.toLowerCase());
+            }
+
+            // 2. Recherche textuelle
+            const query = (favSearchInput ? favSearchInput.value : '').toLowerCase().trim();
+            if (query) {
+                filtered = filtered.filter(a => 
+                    a.title.toLowerCase().includes(query) || 
+                    (a.summary && a.summary.toLowerCase().includes(query)) ||
+                    (a.category && a.category.toLowerCase().includes(query))
+                );
+            }
+
+            // 3. Tri
+            const sortType = sortSelect ? sortSelect.value : 'recent';
+            filtered.sort((a, b) => {
+                if (sortType === 'title') {
+                    return a.title.localeCompare(b.title);
+                } else if (sortType === 'oldest') {
+                    return new Date(a.date || 0) - new Date(b.date || 0);
+                } else if (sortType === 'readTime') {
+                    const tA = parseInt(a.readTime) || 0;
+                    const tB = parseInt(b.readTime) || 0;
+                    return tA - tB;
+                } else {
+                    // recent
+                    return new Date(b.date || 0) - new Date(a.date || 0);
+                }
+            });
+
+            if (filtered.length === 0) {
+                grid.classList.add('hidden');
+                noFavs.classList.remove('hidden');
+                return;
+            }
+
+            grid.classList.remove('hidden');
+            noFavs.classList.add('hidden');
+            grid.innerHTML = '';
+
+            filtered.forEach(article => {
+                const card = document.createElement('article');
+                card.className = "group bg-white rounded-3xl border border-slate-200/80 overflow-hidden hover:border-slate-300 transition-all duration-200 cursor-pointer flex flex-col relative";
+
+                const fallbackBg = `<div class="w-full h-44 bg-slate-100 flex items-center justify-center text-slate-400 font-bold uppercase text-xs tracking-wider">Kaneberg</div>`;
+                const imgTag = article.image 
+                    ? `<img src="${article.image}" alt="${article.title}" class="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-300" onerror="handleImgError(this)">` 
+                    : fallbackBg;
+
+                card.innerHTML = `
+                    <div class="relative overflow-hidden bg-slate-100" onclick="window.location.href='article.html?id=${article.id}'">
+                        ${imgTag}
+                        <div class="absolute top-3 left-3 right-3 flex items-center justify-between pointer-events-none">
+                            <span class="bg-slate-900/90 backdrop-blur-md text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">
+                                ${article.category || 'Article'}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-5 flex flex-col flex-grow justify-between">
+                        <div onclick="window.location.href='article.html?id=${article.id}'">
+                            <h3 class="font-bold text-slate-900 text-base leading-snug group-hover:text-slate-600 transition-colors line-clamp-2 mb-2">
+                                ${article.title}
+                            </h3>
+                            <p class="text-xs text-slate-500 line-clamp-2 leading-relaxed mb-4">
+                                ${article.summary || ''}
+                            </p>
+                        </div>
+                        <div class="flex items-center justify-between text-[11px] font-medium text-slate-400 border-t border-slate-100 pt-3">
+                            <span class="flex items-center gap-1.5">
+                                <span class="text-slate-700 font-bold">${article.author || 'Kaneberg'}</span>
+                                <span>&bull;</span>
+                                <span>${article.readTime || '5 min'}</span>
+                            </span>
+
+                            <!-- Bouton Corbeille de suppression unique des favoris -->
+                            <button onclick="removeFav('${article.id}', event)" title="Retirer des favoris" 
+                                class="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-full transition-colors group/btn">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function removeFav(id, e) {
+            if (e) e.stopPropagation();
+            localStorage.removeItem(`kb_fav_${id}`);
+            localStorage.removeItem(`kb_has_liked_${id}`);
+            loadFavorites();
+        }
+
+        function filterFavCategory(cat) {
+            activeCategoryFilter = cat;
+            document.querySelectorAll('#favCatFilters button').forEach(btn => {
+                if (btn.getAttribute('data-favcat') === cat) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            applyFavFiltersAndRender();
+        }
+
+        function handleFavSortChange() {
+            applyFavFiltersAndRender();
+        }
+
+        function openClearModal() {
+            const modal = document.getElementById('clearConfirmModal');
+            if (modal) modal.classList.remove('hidden');
+        }
+
+        function closeClearModal() {
+            const modal = document.getElementById('clearConfirmModal');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        function confirmClearAllFavs() {
+            getSavedFavIds().forEach(id => {
+                localStorage.removeItem(`kb_fav_${id}`);
+                localStorage.removeItem(`kb_has_liked_${id}`);
+            });
+            closeClearModal();
+            loadFavorites();
+        }
+
+        function renderSidebarPicks(articles) {
+            const container = document.getElementById('sidebarSelectionPicks');
+            if (!container) return;
+
+            const recs = articles.slice(0, 3);
+            container.innerHTML = '';
+
+            recs.forEach((art, idx) => {
+                const item = document.createElement('a');
+                item.href = `article.html?id=${art.id}`;
+                item.className = `flex gap-3 items-center group cursor-pointer ${idx > 0 ? 'border-t border-slate-100 pt-3' : ''}`;
+
+                item.innerHTML = `
+                    <div class="w-12 h-12 rounded-xl bg-slate-100 flex-shrink-0 overflow-hidden relative border border-slate-200/80">
+                        ${art.image ? `<img src="${art.image}" class="w-full h-full object-cover group-hover:scale-105 transition-transform" onerror="this.remove()">` : '<span class="text-[10px] font-bold text-slate-400 flex items-center justify-center h-full">KB</span>'}
+                    </div>
+                    <div class="min-w-0 space-y-0.5">
+                        <span class="text-[10px] font-bold text-rose-600 block uppercase tracking-wider">${art.category || 'Article'}</span>
+                        <h4 class="text-xs font-bold text-slate-900 line-clamp-2 leading-tight group-hover:text-slate-600 transition-colors">${art.title}</h4>
+                    </div>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadFavorites();
+            
+            // Drawer Mobile
+            const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+            const closeMobileMenu = document.getElementById('closeMobileMenu');
+            const leftSidebar = document.getElementById('leftSidebar');
+            const mobileMenuBackdrop = document.getElementById('mobileMenuBackdrop');
+
+            function openDrawer() {
+                if (leftSidebar && mobileMenuBackdrop) {
+                    mobileMenuBackdrop.classList.remove('hidden');
+                    void mobileMenuBackdrop.offsetWidth;
+                    mobileMenuBackdrop.classList.remove('opacity-0', 'pointer-events-none');
+                    mobileMenuBackdrop.classList.add('opacity-100');
+                    leftSidebar.classList.remove('-translate-x-full');
+                    document.body.classList.add('overflow-hidden');
+                }
+            }
+
+            function closeDrawer() {
+                if (leftSidebar && mobileMenuBackdrop) {
+                    leftSidebar.classList.add('-translate-x-full');
+                    mobileMenuBackdrop.classList.remove('opacity-100');
+                    mobileMenuBackdrop.classList.add('opacity-0', 'pointer-events-none');
+                    setTimeout(() => mobileMenuBackdrop.classList.add('hidden'), 300);
+                    document.body.classList.remove('overflow-hidden');
+                }
+            }
+
+            if (mobileMenuToggle) mobileMenuToggle.addEventListener('click', openDrawer);
+            if (closeMobileMenu) closeMobileMenu.addEventListener('click', closeDrawer);
+            if (mobileMenuBackdrop) mobileMenuBackdrop.addEventListener('click', closeDrawer);
+
+            // Recherche interne dans les favoris
+            const favSearchInput = document.getElementById('favSearchInput');
+            if (favSearchInput) {
+                favSearchInput.addEventListener('input', () => {
+                    applyFavFiltersAndRender();
+                });
+            }
+
+            // Global search
+            const globalSearchInput = document.getElementById('globalSearchInput');
+            if (globalSearchInput) {
+                globalSearchInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter' && globalSearchInput.value.trim() !== '') {
+                        window.location.href = `articles.html?q=${encodeURIComponent(globalSearchInput.value.trim())}`;
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
