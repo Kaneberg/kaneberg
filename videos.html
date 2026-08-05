@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="fr" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaneberg - Vidéos & Émissions</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="images/logo.png">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Font: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+            background-color: #FAFAFA;
+            color: #0F172A;
+        }
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .top-tab {
+            font-weight: 600;
+            color: #64748B;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+        .top-tab:hover { color: #0F172A; }
+        .top-tab.active { color: #0F172A; border-bottom-color: #0F172A; font-weight: 700; }
+
+        .sidebar-item-active {
+            background-color: #F1F5F9;
+            color: #0F172A;
+            font-weight: 700;
+        }
+
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .modal-animate {
+            animation: modalFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen bg-[#FAFAFA] text-[#0F172A] flex flex-col antialiased">
+
+    <header class="sticky top-0 z-40 bg-white border-b border-slate-200/80 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-[1600px] mx-auto h-16 grid grid-cols-2 md:grid-cols-3 items-center gap-4">
+            
+            <div class="flex items-center gap-3">
+                <button id="mobileMenuToggle" class="lg:hidden p-2 text-slate-600 hover:text-slate-900 rounded-lg hover:bg-slate-100 transition-colors" aria-label="Menu mobile">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+
+                <a href="index.html" class="flex items-center gap-2.5">
+                    <img src="images/logo.png" alt="Kaneberg Logo" class="w-7 h-7 object-contain brightness-0" onerror="this.style.display='none'">
+                    <span class="text-2xl font-black tracking-tighter uppercase text-slate-900">Kaneberg</span>
+                </a>
+            </div>
+
+            <nav class="hidden md:flex items-center justify-center space-x-8 text-sm">
+                <a href="articles.html" class="top-tab">Articles</a>
+                <a href="videos.html" class="top-tab active">Vidéos</a>
+                <a href="ressources.html" class="top-tab">Ressources</a>
+            </nav>
+
+            <div class="flex items-center justify-end gap-3 col-span-1">
+                <div class="relative flex items-center">
+                    <svg class="w-4 h-4 absolute left-3.5 text-slate-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                    <input type="text" id="globalSearchInput" placeholder="Rechercher sur Kaneberg..." 
+                        class="bg-slate-50 border border-slate-200 text-xs sm:text-sm rounded-full pl-10 pr-4 py-2 outline-none w-36 sm:w-48 md:w-56 focus:border-slate-400 focus:bg-white transition-all text-slate-800 placeholder-slate-400">
+                </div>
+
+                <a href="https://www.youtube.com/@KanebergYT" target="_blank" title="S'abonner sur YouTube" 
+                   class="hidden sm:flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-red-600 hover:bg-red-700 text-white text-xs font-bold transition-colors flex-shrink-0 shadow-sm">
+                    <svg class="w-3.5 h-3.5 fill-current text-white" viewBox="0 0 24 24">
+                        <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                    </svg>
+                    <span>S'abonner</span>
+                </a>
+            </div>
+
+        </div>
+    </header>
+
+    <div id="mobileMenuBackdrop" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-40 hidden transition-opacity duration-300 opacity-0 pointer-events-none"></div>
+
+    <div class="max-w-[1600px] mx-auto w-full flex-grow flex flex-col lg:flex-row px-4 sm:px-6 lg:px-8 py-6 gap-8">
+        
+        <!-- SIDEBAR GAUCHE -->
+        <aside id="leftSidebar" class="fixed inset-y-0 left-0 z-50 lg:z-30 w-72 lg:w-64 h-full lg:h-auto bg-white lg:bg-transparent shadow-2xl lg:shadow-none p-5 lg:p-0 lg:pr-6 flex flex-col justify-between transition-transform duration-300 ease-in-out -translate-x-full lg:translate-x-0 overflow-y-auto lg:overflow-visible flex-shrink-0 lg:sticky lg:top-20 lg:border-r lg:border-slate-200/80">
+            <div class="space-y-3">
+                <div class="flex items-center justify-between lg:hidden pb-3 border-b border-slate-200">
+                    <span class="text-xl font-black uppercase tracking-tighter text-slate-900">Kaneberg</span>
+                    <button id="closeMobileMenu" class="p-2 text-slate-500 hover:text-slate-900 rounded-lg hover:bg-slate-100 transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
+
+                <div class="space-y-1">
+                    <a href="index.html" class="flex items-center gap-3 px-3.5 py-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 text-sm font-medium transition-colors">
+                        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                        <span>Accueil</span>
+                    </a>
+                    <a href="articles.html" class="flex items-center gap-3 px-3.5 py-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 text-sm font-medium transition-colors">
+                        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path></svg>
+                        <span>Articles</span>
+                    </a>
+                    <a href="favoris.html" class="flex items-center gap-3 px-3.5 py-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 text-sm font-medium transition-colors">
+                        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                        <span>Mes Favoris</span>
+                    </a>
+                    <a href="videos.html" class="flex items-center gap-3 px-3.5 py-2 rounded-xl sidebar-item-active text-sm transition-colors">
+                        <svg class="w-4 h-4 text-red-600 fill-current" viewBox="0 0 24 24">
+                            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                        </svg>
+                        <span>Vidéos</span>
+                    </a>
+                    <a href="ressources.html" class="flex items-center gap-3 px-3.5 py-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 text-sm font-medium transition-colors">
+                        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                        <span>Ressources</span>
+                    </a>
+                    <a href="games.html" class="flex items-center gap-3 px-3.5 py-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 text-sm font-medium transition-colors">
+                        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <span>Jeux</span>
+                    </a>
+                    <a href="about.html" class="flex items-center gap-3 px-3.5 py-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 text-sm font-medium transition-colors">
+                        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <span>À propos</span>
+                    </a>
+                    <a href="contact.html" class="flex items-center gap-3 px-3.5 py-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 text-sm font-medium transition-colors">
+                        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                        <span>Contact</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="pt-3 space-y-2 text-xs text-slate-500 px-1">
+                <div class="flex flex-col space-y-1 font-medium">
+                    <a href="legal.html" class="hover:text-slate-900 transition-colors">Mentions légales</a>
+                    <a href="privacy.html" class="hover:text-slate-900 transition-colors">Confidentialité</a>
+                </div>
+                <div class="pt-1 text-[11px] text-slate-400 font-normal">
+                    &copy; 2026 Kaneberg Media.<br>Tous droits réservés.
+                </div>
+            </div>
+        </aside>
+
+        <main class="flex-grow space-y-8 min-w-0">
+            
+            <!-- Carte Vidéo Hero (Grosse mise en avant sans bandeau ni point clignotant) -->
+            <div id="featuredVideoCard" onclick="openVideoModal('3_W2_J1zC2w', 'Le problème de DUNE Awakening en 2026 : Entre fausses promesses et rédemption')" 
+                 class="group relative rounded-3xl overflow-hidden bg-slate-950 cursor-pointer min-h-[320px] sm:min-h-[440px] flex flex-col justify-end border border-slate-200/80 shadow-sm">
+                
+                <img id="featuredThumbnail" src="images/da.vid3.png" alt="Miniature Vidéo DUNE Awakening" 
+                     class="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-500 ease-out"
+                     onerror="this.src='https://placehold.co/1280x720/0f172a/ffffff?text=Dune+Awakening+2026'">
+                
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
+
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-red-600/90 backdrop-blur-md text-white flex items-center justify-center shadow-2xl border border-red-500/40 group-hover:scale-110 group-hover:bg-red-600 transition-all duration-300">
+                        <svg class="w-8 h-8 sm:w-10 sm:h-10 fill-current ml-1 text-white" viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Métadonnées & Titre (Sans tags/badges) -->
+                <div class="relative z-10 p-6 sm:p-8 md:p-10 space-y-2 max-w-3xl">
+                    <div class="flex items-center gap-3 text-xs text-slate-300 font-medium">
+                        <span>10:14</span>
+                        <span>&bull;</span>
+                        <span>4 100+ vues</span>
+                    </div>
+
+                    <h3 id="featuredTitle" class="text-xl sm:text-2xl md:text-3xl font-black text-white leading-tight tracking-tight group-hover:underline">
+                        Le problème de DUNE Awakening en 2026 : Entre fausses promesses et rédemption
+                    </h3>
+
+                    <p id="featuredDesc" class="text-xs sm:text-sm text-slate-200 line-clamp-2 leading-relaxed font-normal">
+                        Dune Awakening a-t-il menti à sa communauté ? Retour complet sur la polémique du MMO de Funcom, ses échecs de design au lancement, et sa rédemption spectaculaire.
+                    </p>
+                </div>
+            </div>
+
+            <div class="space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-200/80 pb-3">
+                    <h2 class="text-xl font-extrabold text-slate-900 tracking-tight">Toutes les Vidéos</h2>
+                    <span id="videoCountBadge" class="text-xs font-bold text-slate-500 bg-slate-100 px-3 py-1 rounded-full">
+                        4 vidéos
+                    </span>
+                </div>
+
+                <div id="videosGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Injecté dynamiquement par JS -->
+                </div>
+            </div>
+
+        </main>
+
+        <aside class="w-full lg:w-80 flex-shrink-0 space-y-8">
+            
+            <div class="bg-white rounded-3xl p-6 border border-slate-200/80 space-y-4">
+                <h3 class="text-base font-extrabold text-slate-900 tracking-tight">Articles Associés</h3>
+                <div id="sidebarSelectionPicks" class="space-y-3">
+                    <!-- Injecté par JS -->
+                </div>
+            </div>
+
+            <div class="bg-white rounded-3xl p-6 border border-slate-200/80 space-y-4">
+                <h3 class="text-base font-extrabold text-slate-900 tracking-tight">Réseaux & Communauté</h3>
+                
+                <div class="space-y-3">
+                    <a href="https://www.youtube.com/@KanebergYT" target="_blank" class="flex items-center justify-between p-3 rounded-2xl bg-red-50 hover:bg-red-100/80 transition-colors group">
+                        <div class="flex items-center gap-3">
+                            <div class="w-9 h-9 rounded-xl bg-red-600 text-white flex items-center justify-center flex-shrink-0">
+                                <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                            </div>
+                            <div>
+                                <span class="text-xs font-bold text-slate-900 block">YouTube</span>
+                                <span class="text-[11px] text-slate-500 font-medium">@KanebergYT</span>
+                            </div>
+                        </div>
+                        <span class="text-xs font-bold text-red-600 group-hover:translate-x-0.5 transition-transform">&rarr;</span>
+                    </a>
+
+                    <a href="https://discord.gg/FY3WYmaNxd" target="_blank" class="flex items-center justify-between p-3 rounded-2xl bg-indigo-50 hover:bg-indigo-100/80 transition-colors group">
+                        <div class="flex items-center gap-3">
+                            <div class="w-9 h-9 rounded-xl bg-indigo-600 text-white flex items-center justify-center flex-shrink-0">
+                                <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                                    <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <span class="text-xs font-bold text-slate-900 block">Discord</span>
+                                <span class="text-[11px] text-slate-500 font-medium">Communauté Dune</span>
+                            </div>
+                        </div>
+                        <span class="text-xs font-bold text-indigo-600 group-hover:translate-x-0.5 transition-transform">&rarr;</span>
+                    </a>
+
+                    <a href="https://www.instagram.com/kaneberg.dune/" target="_blank" class="flex items-center justify-between p-3 rounded-2xl bg-pink-50 hover:bg-pink-100/80 transition-colors group">
+                        <div class="flex items-center gap-3">
+                            <div class="w-9 h-9 rounded-xl bg-pink-600 text-white flex items-center justify-center flex-shrink-0">
+                                <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                            </div>
+                            <div>
+                                <span class="text-xs font-bold text-slate-900 block">Instagram</span>
+                                <span class="text-[11px] text-slate-500 font-medium">@kaneberg.dune</span>
+                            </div>
+                        </div>
+                        <span class="text-xs font-bold text-pink-600 group-hover:translate-x-0.5 transition-transform">&rarr;</span>
+                    </a>
+                </div>
+            </div>
+
+        </aside>
+
+    </div>
+
+    <div id="videoModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 transition-opacity">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-4xl w-full overflow-hidden shadow-2xl modal-animate flex flex-col">
+            
+            <div class="p-4 sm:p-5 flex items-center justify-between border-b border-slate-800 bg-slate-900/90 text-white">
+                <div class="flex items-center gap-3 min-w-0 pr-4">
+                    <span class="w-3 h-3 rounded-full bg-red-600 flex-shrink-0"></span>
+                    <h3 id="modalVideoTitle" class="text-sm sm:text-base font-extrabold truncate">Lecture de la vidéo</h3>
+                </div>
+                <button onclick="closeVideoModal()" class="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors flex-shrink-0" title="Fermer">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="relative w-full aspect-video bg-black">
+                <iframe id="modalIframe" class="w-full h-full" src="" title="Lecteur vidéo YouTube" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+
+            <div class="p-4 bg-slate-900 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs text-slate-400">
+                <span class="font-medium">Retrouvez toutes nos productions sur notre chaîne officielle.</span>
+                <a href="https://www.youtube.com/@KanebergYT?sub_confirmation=1" target="_blank" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl transition-colors flex items-center gap-1.5 self-stretch sm:self-auto justify-center">
+                    <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                    <span>S'abonner sur YouTube</span>
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        window.handleVideoImgError = function(img) {
+            if (img && img.parentElement) {
+                img.parentElement.innerHTML = '<div class="w-full h-44 bg-slate-900 flex items-center justify-center text-slate-500 font-bold uppercase text-xs tracking-wider">Kaneberg Video</div>';
+            }
+        };
+
+        const kanebergVideos = [
+            {
+                youtubeId: "3_W2_J1zC2w",
+                title: "Le problème de DUNE Awakening en 2026 : Entre fausses promesses et rédemption",
+                duration: "10:14",
+                views: "4 100+ vues",
+                date: "2026-07-01",
+                thumbnail: "images/da.vid3.png",
+                summary: "Dune Awakening a-t-il menti à sa communauté ? Retour sur la polémique du MMO de Funcom, ses échecs de design au lancement, et sa rédemption."
+            },
+            {
+                youtubeId: "dQw4w9WgXcQ",
+                title: "Pourquoi l'Empereur a-t-il trahi les Atréides ? Le piège machiavélique",
+                duration: "08:45",
+                views: "1 850 vues",
+                date: "2026-06-28",
+                thumbnail: "",
+                summary: "Analyse politique de la decision de Shaddam IV. Pourquoi sacrifier la maison la plus populaire du Landsraad et s'allier aux Harkonnen ?"
+            },
+            {
+                youtubeId: "dQw4w9WgXcQ",
+                title: "Le danger des figures messianiques : La leçon politique de Frank Herbert",
+                duration: "09:30",
+                views: "630 vues",
+                date: "2026-06-20",
+                thumbnail: "",
+                summary: "Pourquoi Frank Herbert a-t-il écrit Dune comme une mise en garde contre les héros charismatiques ? Décryptage de Paul Muad'Dib."
+            },
+            {
+                youtubeId: "dQw4w9WgXcQ",
+                title: "L'Épice Mélange : Analyse biologique et économique de la substance rare",
+                duration: "11:05",
+                views: "2 400 vues",
+                date: "2026-06-12",
+                thumbnail: "",
+                summary: "Comment l'Épice est-elle produite exactement par Shai-Hulud sur Arrakis et pourquoi fixe-t-elle toute l'économie galactique ?"
+            }
+        ];
+
+        function renderVideosGrid(videos) {
+            const grid = document.getElementById('videosGrid');
+            const badge = document.getElementById('videoCountBadge');
+            if (!grid) return;
+
+            if (badge) badge.textContent = `${videos.length} vidéos`;
+
+            grid.innerHTML = '';
+
+            videos.forEach((vid) => {
+                const card = document.createElement('article');
+                card.className = "group bg-white rounded-3xl border border-slate-200/80 overflow-hidden hover:border-slate-300 transition-all duration-200 cursor-pointer flex flex-col";
+                card.onclick = () => openVideoModal(vid.youtubeId, vid.title);
+
+                const defaultThumb = `https://img.youtube.com/vi/${vid.youtubeId}/hqdefault.jpg`;
+                const thumbUrl = vid.thumbnail || defaultThumb;
+
+                card.innerHTML = `
+                    <div class="relative overflow-hidden bg-slate-950 aspect-video">
+                        <img src="${thumbUrl}" alt="${vid.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 opacity-90" onerror="handleVideoImgError(this)">
+                        
+                        <!-- Durée sur miniature -->
+                        <div class="absolute bottom-3 right-3 pointer-events-none">
+                            <span class="bg-black/80 backdrop-blur-md text-white text-[10px] font-extrabold px-2 py-0.5 rounded-md font-mono">
+                                ${vid.duration}
+                            </span>
+                        </div>
+
+                        <!-- Bouton Play semi-carré au survol -->
+                        <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-slate-950/40 backdrop-blur-[2px] transition-opacity">
+                            <div class="w-12 h-12 rounded-2xl bg-red-600/90 backdrop-blur-md text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                                <svg class="w-6 h-6 fill-current ml-0.5" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-5 flex flex-col flex-grow justify-between">
+                        <div>
+                            <h3 class="font-bold text-slate-900 text-base leading-snug group-hover:text-slate-600 transition-colors line-clamp-2 mb-2">
+                                ${vid.title}
+                            </h3>
+                            <p class="text-xs text-slate-500 line-clamp-2 leading-relaxed mb-4">
+                                ${vid.summary}
+                            </p>
+                        </div>
+
+                        <div class="flex items-center justify-between text-[11px] font-medium text-slate-400 border-t border-slate-100 pt-3">
+                            <span class="font-semibold text-slate-600">${vid.views}</span>
+                            <span>${vid.date}</span>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function openVideoModal(youtubeId, title) {
+            const modal = document.getElementById('videoModal');
+            const iframe = document.getElementById('modalIframe');
+            const titleEl = document.getElementById('modalVideoTitle');
+
+            if (!modal || !iframe) return;
+
+            if (titleEl) titleEl.textContent = title || "Lecture vidéo";
+            iframe.src = `https://www.youtube-nocookie.com/embed/${youtubeId}?autoplay=1&rel=0`;
+
+            modal.classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+        }
+
+        function closeVideoModal() {
+            const modal = document.getElementById('videoModal');
+            const iframe = document.getElementById('modalIframe');
+
+            if (!modal || !iframe) return;
+
+            iframe.src = '';
+            modal.classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+        }
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeVideoModal();
+        });
+
+        async function renderSidebarPicks() {
+            const container = document.getElementById('sidebarSelectionPicks');
+            if (!container) return;
+
+            try {
+                const res = await fetch(`articles.json?t=${Date.now()}`);
+                if (res.ok) {
+                    const articles = await res.json();
+                    container.innerHTML = '';
+                    articles.slice(0, 3).forEach((art, idx) => {
+                        const item = document.createElement('a');
+                        item.href = `article.html?id=${art.id}`;
+                        item.className = `flex gap-3 items-center group cursor-pointer ${idx > 0 ? 'border-t border-slate-100 pt-3' : ''}`;
+
+                        item.innerHTML = `
+                            <div class="w-12 h-12 rounded-xl bg-slate-100 flex-shrink-0 overflow-hidden relative border border-slate-200/80">
+                                ${art.image ? `<img src="${art.image}" class="w-full h-full object-cover group-hover:scale-105 transition-transform" onerror="this.remove()">` : '<span class="text-[10px] font-bold text-slate-400 flex items-center justify-center h-full">KB</span>'}
+                            </div>
+                            <div class="min-w-0 space-y-0.5">
+                                <span class="text-[10px] font-bold text-rose-600 block uppercase tracking-wider">${art.category || 'Article'}</span>
+                                <h4 class="text-xs font-bold text-slate-900 line-clamp-2 leading-tight group-hover:text-slate-600 transition-colors">${art.title}</h4>
+                            </div>
+                        `;
+                        container.appendChild(item);
+                    });
+                }
+            } catch (e) {}
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderVideosGrid(kanebergVideos);
+            renderSidebarPicks();
+
+            const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+            const closeMobileMenu = document.getElementById('closeMobileMenu');
+            const leftSidebar = document.getElementById('leftSidebar');
+            const mobileMenuBackdrop = document.getElementById('mobileMenuBackdrop');
+
+            function openDrawer() {
+                if (leftSidebar && mobileMenuBackdrop) {
+                    mobileMenuBackdrop.classList.remove('hidden');
+                    void mobileMenuBackdrop.offsetWidth;
+                    mobileMenuBackdrop.classList.remove('opacity-0', 'pointer-events-none');
+                    mobileMenuBackdrop.classList.add('opacity-100');
+                    leftSidebar.classList.remove('-translate-x-full');
+                    document.body.classList.add('overflow-hidden');
+                }
+            }
+
+            function closeDrawer() {
+                if (leftSidebar && mobileMenuBackdrop) {
+                    leftSidebar.classList.add('-translate-x-full');
+                    mobileMenuBackdrop.classList.remove('opacity-100');
+                    mobileMenuBackdrop.classList.add('opacity-0', 'pointer-events-none');
+                    setTimeout(() => mobileMenuBackdrop.classList.add('hidden'), 300);
+                    document.body.classList.remove('overflow-hidden');
+                }
+            }
+
+            if (mobileMenuToggle) mobileMenuToggle.addEventListener('click', openDrawer);
+            if (closeMobileMenu) closeMobileMenu.addEventListener('click', closeDrawer);
+            if (mobileMenuBackdrop) mobileMenuBackdrop.addEventListener('click', closeDrawer);
+
+            const globalSearchInput = document.getElementById('globalSearchInput');
+            if (globalSearchInput) {
+                globalSearchInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter' && globalSearchInput.value.trim() !== '') {
+                        window.location.href = `articles.html?q=${encodeURIComponent(globalSearchInput.value.trim())}`;
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
