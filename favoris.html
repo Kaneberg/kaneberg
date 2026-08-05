@@ -183,7 +183,7 @@
                     <div>
                         <div class="flex items-center gap-2">
                             <h1 class="text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2">
-                                <span>❤️ Mes Articles Enregistrés</span>
+                                <span>Mes Articles Enregistrés</span>
                             </h1>
                             <span id="favCountBadge" class="bg-rose-100 text-rose-700 text-xs font-extrabold px-2.5 py-0.5 rounded-full">
                                 0
@@ -204,26 +204,26 @@
                 <div id="toolbarContainer" class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 pt-1">
                     
                     <!-- Filtres par catégorie -->
-                    <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5" id="favCatFilters">
-                        <button onclick="filterFavCategory('all')" data-favcat="all" class="cat-pill active px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all">
+                    <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1 w-full md:w-auto max-w-full shrink min-w-0 touch-pan-x" id="favCatFilters">
+                        <button onclick="filterFavCategory('all')" data-favcat="all" class="cat-pill active px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap shrink-0 transition-all">
                             Tout
                         </button>
-                        <button onclick="filterFavCategory('Actu')" data-favcat="Actu" class="cat-pill px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all">
+                        <button onclick="filterFavCategory('Actu')" data-favcat="Actu" class="cat-pill px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap shrink-0 transition-all">
                             Actu
                         </button>
-                        <button onclick="filterFavCategory('Lore')" data-favcat="Lore" class="cat-pill px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all">
+                        <button onclick="filterFavCategory('Lore')" data-favcat="Lore" class="cat-pill px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap shrink-0 transition-all">
                             Lore
                         </button>
-                        <button onclick="filterFavCategory('Analyse')" data-favcat="Analyse" class="cat-pill px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all">
+                        <button onclick="filterFavCategory('Analyse')" data-favcat="Analyse" class="cat-pill px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap shrink-0 transition-all">
                             Analyse
                         </button>
-                        <button onclick="filterFavCategory('Gaming')" data-favcat="Gaming" class="cat-pill px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all">
+                        <button onclick="filterFavCategory('Gaming')" data-favcat="Gaming" class="cat-pill px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap shrink-0 transition-all">
                             Gaming
                         </button>
-                        <button onclick="filterFavCategory('Science')" data-favcat="Science" class="cat-pill px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all">
+                        <button onclick="filterFavCategory('Science')" data-favcat="Science" class="cat-pill px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap shrink-0 transition-all">
                             Science
                         </button>
-                        <button onclick="filterFavCategory('Philosophie')" data-favcat="Philosophie" class="cat-pill px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all">
+                        <button onclick="filterFavCategory('Philosophie')" data-favcat="Philosophie" class="cat-pill px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap shrink-0 transition-all">
                             Philosophie
                         </button>
                     </div>
@@ -417,9 +417,6 @@
                 if (key.startsWith('kb_fav_') && localStorage.getItem(key) === 'true') {
                     const id = key.replace('kb_fav_', '');
                     if (!favs.includes(id)) favs.push(id);
-                } else if (key.startsWith('kb_has_liked_') && localStorage.getItem(key) === 'true') {
-                    const id = key.replace('kb_has_liked_', '');
-                    if (!favs.includes(id)) favs.push(id);
                 }
             }
             return favs;
@@ -465,7 +462,6 @@
                 noFavs.classList.remove('hidden');
                 if (clearBtn) clearBtn.classList.add('hidden');
                 
-                // Mettre à jour message selon qu'aucun favori n'existe du tout ou si filtré
                 const noFavsTitle = document.getElementById('noFavsTitle');
                 const noFavsDesc = document.getElementById('noFavsDesc');
                 if (totalSavedCount === 0) {
@@ -508,7 +504,6 @@
                     const tB = parseInt(b.readTime) || 0;
                     return tA - tB;
                 } else {
-                    // recent
                     return new Date(b.date || 0) - new Date(a.date || 0);
                 }
             });
@@ -525,12 +520,23 @@
 
             filtered.forEach(article => {
                 const card = document.createElement('article');
-                card.className = "group bg-white rounded-3xl border border-slate-200/80 overflow-hidden hover:border-slate-300 transition-all duration-200 cursor-pointer flex flex-col relative";
+                const isReadLater = localStorage.getItem(`kb_readlater_${article.id}`) === 'true';
+
+                // Bordure jaune épaisse si marqué "À lire plus tard"
+                const cardBorderClass = isReadLater 
+                    ? "border-2 border-amber-400 bg-amber-50/10 shadow-sm" 
+                    : "border border-slate-200/80 hover:border-slate-300";
+
+                card.className = `group bg-white rounded-3xl ${cardBorderClass} overflow-hidden transition-all duration-200 cursor-pointer flex flex-col relative`;
 
                 const fallbackBg = `<div class="w-full h-44 bg-slate-100 flex items-center justify-center text-slate-400 font-bold uppercase text-xs tracking-wider">Kaneberg</div>`;
                 const imgTag = article.image 
                     ? `<img src="${article.image}" alt="${article.title}" class="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-300" onerror="handleImgError(this)">` 
                     : fallbackBg;
+
+                const readLaterBtnClass = isReadLater 
+                    ? "text-amber-600 bg-amber-100 hover:bg-amber-200" 
+                    : "text-slate-400 hover:text-amber-600 hover:bg-amber-50";
 
                 card.innerHTML = `
                     <div class="relative overflow-hidden bg-slate-100" onclick="window.location.href='article.html?id=${article.id}'">
@@ -539,6 +545,11 @@
                             <span class="bg-slate-900/90 backdrop-blur-md text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">
                                 ${article.category || 'Article'}
                             </span>
+                            ${isReadLater ? `
+                            <span class="bg-amber-500 text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider shadow-sm flex items-center gap-1">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                <span>À lire plus tard</span>
+                            </span>` : ''}
                         </div>
                     </div>
                     <div class="p-5 flex flex-col flex-grow justify-between">
@@ -557,13 +568,23 @@
                                 <span>${article.readTime || '5 min'}</span>
                             </span>
 
-                            <!-- Bouton Corbeille de suppression unique des favoris -->
-                            <button onclick="removeFav('${article.id}', event)" title="Retirer des favoris" 
-                                class="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-full transition-colors group/btn">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                                </svg>
-                            </button>
+                            <div class="flex items-center gap-1">
+                                <!-- Bouton À lire plus tard -->
+                                <button onclick="toggleReadLater('${article.id}', event)" title="${isReadLater ? 'Retirer de À lire plus tard' : 'Marquer À lire plus tard'}" 
+                                    class="p-2 ${readLaterBtnClass} rounded-full transition-colors group/btn">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                </button>
+
+                                <!-- Bouton Corbeille de suppression unique des favoris -->
+                                <button onclick="removeFav('${article.id}', event)" title="Retirer des favoris" 
+                                    class="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-full transition-colors group/btn">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                    </svg>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 `;
@@ -575,7 +596,20 @@
             if (e) e.stopPropagation();
             localStorage.removeItem(`kb_fav_${id}`);
             localStorage.removeItem(`kb_has_liked_${id}`);
+            localStorage.removeItem(`kb_readlater_${id}`);
             loadFavorites();
+        }
+
+        function toggleReadLater(id, e) {
+            if (e) e.stopPropagation();
+            const key = `kb_readlater_${id}`;
+            const isReadLater = localStorage.getItem(key) === 'true';
+            if (isReadLater) {
+                localStorage.removeItem(key);
+            } else {
+                localStorage.setItem(key, 'true');
+            }
+            applyFavFiltersAndRender();
         }
 
         function filterFavCategory(cat) {
@@ -608,6 +642,7 @@
             getSavedFavIds().forEach(id => {
                 localStorage.removeItem(`kb_fav_${id}`);
                 localStorage.removeItem(`kb_has_liked_${id}`);
+                localStorage.removeItem(`kb_readlater_${id}`);
             });
             closeClearModal();
             loadFavorites();
@@ -641,6 +676,17 @@
         document.addEventListener('DOMContentLoaded', () => {
             loadFavorites();
             
+            // Défilement fluide à la molette pour les filtres
+            const favCatFilters = document.getElementById('favCatFilters');
+            if (favCatFilters) {
+                favCatFilters.addEventListener('wheel', (e) => {
+                    if (e.deltaY !== 0) {
+                        e.preventDefault();
+                        favCatFilters.scrollLeft += e.deltaY;
+                    }
+                }, { passive: false });
+            }
+
             // Drawer Mobile
             const mobileMenuToggle = document.getElementById('mobileMenuToggle');
             const closeMobileMenu = document.getElementById('closeMobileMenu');
