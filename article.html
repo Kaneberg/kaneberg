@@ -132,6 +132,9 @@
 
 <body class="min-h-screen bg-[#FAFAFA] text-[#0F172A] flex flex-col antialiased">
 
+    <!-- Barre de progression de lecture en haut de page -->
+    <div id="readingProgressBar" class="fixed top-0 left-0 h-1 bg-rose-600 z-50 transition-all duration-150 w-0"></div>
+
     <!-- Header Navigation Principale -->
     <header class="sticky top-0 z-40 bg-white border-b border-slate-200/80 px-4 sm:px-6 lg:px-8">
         <div class="max-w-[1600px] mx-auto h-16 grid grid-cols-2 md:grid-cols-3 items-center gap-4">
@@ -202,7 +205,7 @@
                         <span>Articles</span>
                     </a>
                     <a href="favoris.html" class="flex items-center gap-3 px-3.5 py-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 text-sm font-medium transition-colors">
-                        <svg class="w-4 h-4 text-rose-500 fill-current" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
                         <span>Mes Favoris</span>
                     </a>
                     <a href="videos.html" class="flex items-center gap-3 px-3.5 py-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 text-sm font-medium transition-colors">
@@ -275,7 +278,7 @@
                             <span id="tempsLecture">5 min</span>
                         </div>
 
-                        <!-- Barre d'actions (Vues, J'aime, Favori, Partager, Signaler) -->
+                        <!-- Barre d'actions épurée (Vues, J'aime, Favori, Signaler) -->
                         <div class="flex items-center gap-2 flex-wrap">
                             
                             <!-- Vues -->
@@ -289,8 +292,8 @@
 
                             <!-- Bouton J'aime -->
                             <button id="likeBtn" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-rose-50 text-slate-700 hover:text-rose-600 border border-slate-200/80 rounded-full transition-all text-xs font-bold cursor-pointer active:scale-95">
-                                <svg id="likeHeartIcon" class="w-3.5 h-3.5 fill-current text-rose-500 transition-transform duration-200" viewBox="0 0 24 24">
-                                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                                <svg id="likeHeartIcon" class="w-3.5 h-3.5 text-slate-400 transition-all duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
                                 </svg>
                                 <span id="articleLikes">0</span>
                             </button>
@@ -298,17 +301,9 @@
                             <!-- Bouton Mettre en Favori -->
                             <button id="favBtn" onclick="toggleFavorite()" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-rose-50 text-slate-700 hover:text-rose-600 border border-slate-200/80 rounded-full transition-all text-xs font-bold cursor-pointer active:scale-95">
                                 <svg id="favIcon" class="w-3.5 h-3.5 text-slate-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
                                 </svg>
                                 <span id="favBtnLabel">Mettre en favoris</span>
-                            </button>
-
-                            <!-- Bouton Partager -->
-                            <button id="shareBtn" onclick="copyArticleLink()" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200/80 rounded-full transition-all text-xs font-bold cursor-pointer active:scale-95" title="Copier le lien de l'article">
-                                <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
-                                </svg>
-                                <span id="shareBtnLabel">Partager</span>
                             </button>
 
                             <!-- Bouton Signaler -->
@@ -355,6 +350,18 @@
                     <a href="articles.html" class="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-900 font-bold text-xs uppercase tracking-wider rounded-xl transition-colors">
                         Découvrir d'autres articles
                     </a>
+                </div>
+            </div>
+
+            <!-- Navigation Article Précédent / Suivant -->
+            <div id="articleNavigation" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div id="prevArticleCard" class="bg-white rounded-3xl p-5 border border-slate-200/80 hover:border-slate-300 transition-all hidden">
+                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">&larr; Article Précédent</span>
+                    <a id="prevArticleLink" href="#" class="font-bold text-xs text-slate-900 hover:text-rose-600 transition-colors line-clamp-1"></a>
+                </div>
+                <div id="nextArticleCard" class="bg-white rounded-3xl p-5 border border-slate-200/80 hover:border-slate-300 transition-all text-right hidden sm:col-start-2">
+                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Article Suivant &rarr;</span>
+                    <a id="nextArticleLink" href="#" class="font-bold text-xs text-slate-900 hover:text-rose-600 transition-colors line-clamp-1"></a>
                 </div>
             </div>
 
@@ -421,9 +428,47 @@
 
     </div>
 
+    <!-- Toast de notification rapide -->
+    <div id="toastNotification" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+        <div class="bg-slate-900 text-white text-xs font-bold px-4 py-3 rounded-2xl shadow-xl flex items-center gap-2 border border-slate-800">
+            <span id="toastIcon">❤️</span>
+            <span id="toastMessage">Article ajouté à vos favoris</span>
+        </div>
+    </div>
+
     <!-- Script Applicatif -->
     <script>
         let currentArticleId = '';
+
+        // Toast Manager
+        function showToast(message, icon = '❤️') {
+            const toast = document.getElementById('toastNotification');
+            const msgEl = document.getElementById('toastMessage');
+            const iconEl = document.getElementById('toastIcon');
+            if (!toast || !msgEl) return;
+
+            msgEl.textContent = message;
+            if (iconEl) iconEl.textContent = icon;
+
+            toast.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
+            }, 2500);
+        }
+
+        // Scroll Reading Progress Bar
+        window.addEventListener('scroll', () => {
+            const progressBar = document.getElementById('readingProgressBar');
+            if (!progressBar) return;
+            const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+            if (totalHeight > 0) {
+                const progress = (window.scrollY / totalHeight) * 100;
+                progressBar.style.width = `${Math.min(100, Math.max(0, progress))}%`;
+            }
+        });
 
         const fallbackArticles = [
             {
@@ -575,6 +620,9 @@
                 initStats(articleMeta.id);
                 updateFavButtonState(articleMeta.id);
 
+                // Navigation Précédent / Suivant
+                renderArticleNav(articlesList, articleMeta.id);
+
                 // Articles recommandés dans la sidebar
                 renderRecommended(articlesList, articleMeta.id);
             }
@@ -608,12 +656,25 @@
             const heartIcon = document.getElementById('likeHeartIcon');
             const hasLiked = localStorage.getItem(userLikedKey) === 'true';
 
-            if (hasLiked && likeBtn) {
-                likeBtn.classList.add('bg-rose-50', 'text-rose-600', 'border-rose-200');
+            function updateLikeUI(liked) {
+                if (!likeBtn || !heartIcon) return;
+                if (liked) {
+                    likeBtn.classList.add('bg-rose-50', 'text-rose-600', 'border-rose-200');
+                    heartIcon.setAttribute('fill', 'currentColor');
+                    heartIcon.classList.remove('text-slate-400');
+                    heartIcon.classList.add('text-rose-500');
+                } else {
+                    likeBtn.classList.remove('bg-rose-50', 'text-rose-600', 'border-rose-200');
+                    heartIcon.setAttribute('fill', 'none');
+                    heartIcon.classList.remove('text-rose-500');
+                    heartIcon.classList.add('text-slate-400');
+                }
             }
 
+            updateLikeUI(hasLiked);
+
             if (likeBtn) {
-                likeBtn.addEventListener('click', () => {
+                likeBtn.onclick = () => {
                     const already = localStorage.getItem(userLikedKey) === 'true';
 
                     if (heartIcon) {
@@ -626,19 +687,20 @@
                         likes += 1;
                         localStorage.setItem(likesKey, likes);
                         localStorage.setItem(userLikedKey, 'true');
-                        likeBtn.classList.add('bg-rose-50', 'text-rose-600', 'border-rose-200');
+                        updateLikeUI(true);
+                        showToast("Merci pour votre soutien !", "❤️");
                     } else {
                         likes = Math.max(0, likes - 1);
                         localStorage.setItem(likesKey, likes);
                         localStorage.removeItem(userLikedKey);
-                        likeBtn.classList.remove('bg-rose-50', 'text-rose-600', 'border-rose-200');
+                        updateLikeUI(false);
                     }
                     document.getElementById('articleLikes').textContent = likes.toLocaleString('fr-FR');
-                });
+                };
             }
         }
 
-        // Gestionnaire des favoris (Bouton et LocalStorage)
+        // Gestionnaire des favoris (Bouton Marque-Page)
         function isFavorite(id) {
             return localStorage.getItem(`kb_fav_${id}`) === 'true';
         }
@@ -671,10 +733,36 @@
 
             if (currentState) {
                 localStorage.removeItem(key);
+                showToast("Article retiré de vos favoris", "🗑️");
             } else {
                 localStorage.setItem(key, 'true');
+                showToast("Article ajouté à vos favoris !", "❤️");
             }
             updateFavButtonState(currentArticleId);
+        }
+
+        function renderArticleNav(list, currentId) {
+            const currentIndex = list.findIndex(a => a.id === currentId);
+            if (currentIndex === -1) return;
+
+            const prevCard = document.getElementById('prevArticleCard');
+            const prevLink = document.getElementById('prevArticleLink');
+            const nextCard = document.getElementById('nextArticleCard');
+            const nextLink = document.getElementById('nextArticleLink');
+
+            if (currentIndex > 0 && prevCard && prevLink) {
+                const prevArticle = list[currentIndex - 1];
+                prevLink.href = `article.html?id=${prevArticle.id}`;
+                prevLink.textContent = prevArticle.title;
+                prevCard.classList.remove('hidden');
+            }
+
+            if (currentIndex < list.length - 1 && nextCard && nextLink) {
+                const nextArticle = list[currentIndex + 1];
+                nextLink.href = `article.html?id=${nextArticle.id}`;
+                nextLink.textContent = nextArticle.title;
+                nextCard.classList.remove('hidden');
+            }
         }
 
         function copyArticleLink() {
@@ -696,6 +784,7 @@
             }
 
             function showCopiedLabel() {
+                showToast("Lien de l'article copié !", "📋");
                 const label = document.getElementById('shareBtnLabel');
                 if (label) {
                     const originalText = label.textContent;
