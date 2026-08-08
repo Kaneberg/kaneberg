@@ -10,17 +10,48 @@
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    borderRadius: {
+                        'pro': '8px',
+                    },
+                    colors: {
+                        brand: {
+                            dark: '#08080a',
+                            surfaceDark: '#121215',
+                            borderDark: '#222228',
+                            light: '#fafafa',
+                            surfaceLight: '#ffffff',
+                            borderLight: '#e2e8f0'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
 
     <!-- Google Font: Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
     <style>
+        body, header, aside, main, div, article, input, button, select, section, nav, a {
+            transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+                        border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+                        color 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+                        box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        img, svg, .no-theme-transition {
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
         body {
             font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-            background-color: #FAFAFA;
-            color: #0F172A;
         }
 
         .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -28,33 +59,22 @@
 
         .top-tab {
             font-weight: 600;
-            color: #64748B;
             padding-bottom: 0.5rem;
-            border-bottom: 2px solid transparent;
+            border-bottom: 3px solid transparent;
             transition: all 0.2s ease;
         }
-        .top-tab:hover { color: #0F172A; }
-        .top-tab.active { color: #0F172A; border-bottom-color: #0F172A; font-weight: 700; }
-
-        .sidebar-item-active {
-            background-color: #F1F5F9;
-            color: #0F172A;
-            font-weight: 700;
+        .top-tab:hover { opacity: 1; }
+        .top-tab.active {
+            opacity: 1;
+            font-weight: 800;
         }
 
         .cat-pill {
-            background-color: #F1F5F9;
-            color: #475569;
-            border: 1px solid transparent;
-        }
-        .cat-pill:hover {
-            background-color: #E2E8F0;
-            color: #0F172A;
-        }
-        .cat-pill.active {
-            background-color: #0F172A;
-            color: #FFFFFF;
-            border-color: #0F172A;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.35rem 0.75rem;
+            border-radius: 8px;
+            transition: all 0.2s ease;
         }
 
         .line-clamp-2 {
@@ -66,43 +86,61 @@
     </style>
 </head>
 
-<body class="min-h-screen bg-[#FAFAFA] text-[#0F172A] flex flex-col antialiased">
+<body class="min-h-screen bg-slate-50 dark:bg-[#08080a] text-slate-900 dark:text-zinc-100 flex flex-col antialiased selection:bg-slate-900 selection:text-white dark:selection:bg-white dark:selection:text-black">
 
-    <!-- Header Navigation Principale -->
-    <header class="sticky top-0 z-40 bg-white border-b border-slate-200/80 px-4 sm:px-6 lg:px-8">
+    <!-- Header Navigation Supérieure -->
+    <header class="sticky top-0 z-40 bg-white/95 dark:bg-[#08080a]/95 backdrop-blur-md border-b border-slate-200 dark:border-[#1e1e24] px-4 sm:px-6 lg:px-8">
         <div class="max-w-[1600px] mx-auto h-16 grid grid-cols-2 md:grid-cols-3 items-center gap-4">
             
+            <!-- Gauche: Logo Kaneberg & Menu Mobile -->
             <div class="flex items-center gap-3">
-                <button id="mobileMenuToggle" class="lg:hidden p-2 text-slate-600 hover:text-slate-900 rounded-lg hover:bg-slate-100 transition-colors" aria-label="Menu mobile">
+                <button id="mobileMenuToggle" class="lg:hidden p-2 text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white rounded-[8px] hover:bg-slate-100 dark:hover:bg-zinc-900 transition-colors" aria-label="Menu mobile">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                     </svg>
                 </button>
 
                 <a href="index.html" class="flex items-center gap-2.5">
-                    <img src="images/logo.png" alt="Kaneberg Logo" class="w-7 h-7 object-contain brightness-0" onerror="this.style.display='none'">
-                    <span class="text-2xl font-black tracking-tighter uppercase text-slate-900">Kaneberg</span>
+                    <img src="images/logo.png" alt="Kaneberg Logo" class="w-7 h-7 object-contain brightness-0 dark:brightness-0 dark:invert transition-all" onerror="this.style.display='none'">
+                    <span class="text-2xl font-black tracking-tighter uppercase text-slate-900 dark:text-white">Kaneberg</span>
                 </a>
             </div>
 
+            <!-- Centre: Onglets Centraux -->
             <nav class="hidden md:flex items-center justify-center space-x-8 text-sm">
-                <a href="articles.html" class="top-tab">Articles</a>
-                <a href="videos.html" class="top-tab">Vidéos</a>
-                <a href="ressources.html" class="top-tab">Ressources</a>
+                <a href="articles.html" class="top-tab text-slate-500 dark:text-zinc-400 border-transparent hover:text-slate-900 dark:hover:text-white">Articles</a>
+                <a href="videos.html" class="top-tab text-slate-500 dark:text-zinc-400 border-transparent hover:text-slate-900 dark:hover:text-white">Vidéos</a>
+                <a href="ressources.html" class="top-tab text-slate-500 dark:text-zinc-400 border-transparent hover:text-slate-900 dark:hover:text-white">Ressources</a>
             </nav>
 
-            <div class="flex items-center justify-end gap-3 col-span-1">
+            <!-- Droite: Recherche Sans Bordure, Toggle Thème & Abonnement -->
+            <div class="flex items-center justify-end gap-2.5 col-span-1">
+                
+                <!-- Barre de Recherche Sans Bordure -->
                 <div class="relative flex items-center">
-                    <svg class="w-4 h-4 absolute left-3.5 text-slate-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-4 h-4 absolute left-3.5 text-slate-400 dark:text-zinc-500 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                     </svg>
                     <input type="text" id="globalSearchInput" placeholder="Rechercher sur Kaneberg..." 
-                        class="bg-slate-50 border border-slate-200 text-xs sm:text-sm rounded-full pl-10 pr-4 py-2 outline-none w-36 sm:w-48 md:w-56 focus:border-slate-400 focus:bg-white transition-all text-slate-800 placeholder-slate-400">
+                        class="bg-slate-100 dark:bg-[#121215] border-0 text-xs sm:text-sm rounded-[8px] pl-10 pr-4 py-2 outline-none w-32 sm:w-44 md:w-52 focus:bg-slate-200/70 dark:focus:bg-[#18181c] transition-all text-slate-900 dark:text-zinc-100 placeholder-slate-400 dark:placeholder-zinc-500">
                 </div>
 
+                <!-- Bouton Bascule Thème Sans Bordure -->
+                <button id="themeToggleBtn" onclick="toggleTheme()" 
+                        class="p-2 rounded-[8px] bg-slate-100 dark:bg-[#121215] text-slate-700 dark:text-zinc-300 hover:bg-slate-200 dark:hover:bg-zinc-800 transition-all flex items-center justify-center flex-shrink-0" 
+                        title="Basculer le thème (Clair / Sombre)" aria-label="Basculer le thème">
+                    <svg id="sunIcon" class="w-4 h-4 hidden dark:block text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+                    </svg>
+                    <svg id="moonIcon" class="w-4 h-4 block dark:hidden text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                    </svg>
+                </button>
+
+                <!-- Bouton Abonnement YouTube -->
                 <a href="https://www.youtube.com/@KanebergYT" target="_blank" title="S'abonner sur YouTube" 
-                   class="hidden sm:flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-red-600 hover:bg-red-700 text-white text-xs font-bold transition-colors flex-shrink-0">
-                    <svg class="w-3.5 h-3.5 fill-current text-white" viewBox="0 0 24 24">
+                   class="hidden sm:flex items-center gap-2 px-3.5 py-2 rounded-[8px] bg-slate-900 dark:bg-white text-white dark:text-black hover:bg-slate-800 dark:hover:bg-zinc-200 text-xs font-black uppercase tracking-wider transition-all flex-shrink-0 shadow-sm active:scale-95">
+                    <svg class="w-3.5 h-3.5 fill-current text-white dark:text-black" viewBox="0 0 24 24">
                         <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
                     </svg>
                     <span>S'abonner</span>
@@ -112,87 +150,129 @@
         </div>
     </header>
 
-    <div id="mobileMenuBackdrop" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-40 hidden transition-opacity duration-300 opacity-0 pointer-events-none"></div>
+    <!-- Overlay Mobile -->
+    <div id="mobileMenuBackdrop" class="fixed inset-0 bg-slate-900/50 dark:bg-black/70 backdrop-blur-sm z-40 hidden transition-opacity duration-300 opacity-0 pointer-events-none"></div>
 
-    <!-- Layout Général: Sidebar Gauche | Contenu Central | Sidebar Droite -->
+    <!-- Layout Principal -->
     <div class="max-w-[1600px] mx-auto w-full flex-grow flex flex-col lg:flex-row px-4 sm:px-6 lg:px-8 py-6 gap-8">
         
         <!-- SIDEBAR GAUCHE -->
-        <aside id="leftSidebar" class="fixed inset-y-0 left-0 z-50 lg:z-30 w-72 lg:w-64 h-full lg:h-auto bg-white lg:bg-transparent shadow-2xl lg:shadow-none p-5 lg:p-0 lg:pr-6 flex flex-col justify-between transition-transform duration-300 ease-in-out -translate-x-full lg:translate-x-0 overflow-y-auto lg:overflow-visible flex-shrink-0 lg:sticky lg:top-20 lg:border-r lg:border-slate-200/80">
-            <div class="space-y-3">
-                <div class="flex items-center justify-between lg:hidden pb-3 border-b border-slate-200">
-                    <span class="text-xl font-black uppercase tracking-tighter text-slate-900">Kaneberg</span>
-                    <button id="closeMobileMenu" class="p-2 text-slate-500 hover:text-slate-900 rounded-lg hover:bg-slate-100 transition-colors">
+        <aside id="leftSidebar" class="fixed inset-y-0 left-0 z-50 lg:z-30 w-72 lg:w-64 h-full lg:h-auto bg-white dark:bg-[#08080a] lg:bg-transparent dark:lg:bg-transparent shadow-2xl lg:shadow-none p-5 lg:p-0 lg:pr-6 flex flex-col justify-between transition-transform duration-300 ease-in-out -translate-x-full lg:translate-x-0 overflow-y-auto lg:overflow-visible flex-shrink-0 lg:sticky lg:top-20 lg:border-r border-slate-200 dark:border-[#1e1e24]">
+            
+            <div class="space-y-4">
+                
+                <!-- Header tiroir mobile -->
+                <div class="flex items-center justify-between lg:hidden pb-3 border-b border-slate-200 dark:border-zinc-800">
+                    <span class="text-xl font-black uppercase tracking-tighter text-slate-900 dark:text-white">Kaneberg</span>
+                    <button id="closeMobileMenu" class="p-2 text-slate-500 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white rounded-[8px] hover:bg-slate-100 dark:hover:bg-zinc-900 transition-colors">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                     </button>
                 </div>
 
+                <!-- Navigation principale -->
                 <div class="space-y-1">
-                    <a href="index.html" class="flex items-center gap-3 px-3.5 py-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 text-sm font-medium transition-colors">
-                        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                    <a href="index.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-[8px] text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-zinc-900 text-sm font-semibold transition-colors">
+                        <svg class="w-4 h-4 text-slate-400 dark:text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
                         <span>Accueil</span>
                     </a>
-                    <a href="articles.html" class="flex items-center gap-3 px-3.5 py-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 text-sm font-medium transition-colors">
-                        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path></svg>
+                    <a href="articles.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-[8px] text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-zinc-900 text-sm font-semibold transition-colors">
+                        <svg class="w-4 h-4 text-slate-400 dark:text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path></svg>
                         <span>Articles</span>
                     </a>
-                    <a href="favoris.html" class="flex items-center gap-3 px-3.5 py-2 rounded-xl sidebar-item-active text-sm transition-colors">
-                        <svg class="w-4 h-4 text-rose-500 fill-current" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                    <a href="favoris.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-[8px] bg-slate-900 dark:bg-white text-white dark:text-black font-extrabold text-sm transition-all shadow-sm">
+                        <svg class="w-4 h-4 text-rose-500 dark:text-rose-400 fill-current" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
                         <span>Mes Favoris</span>
                     </a>
-                    <a href="videos.html" class="flex items-center gap-3 px-3.5 py-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 text-sm font-medium transition-colors">
-                        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                    <a href="videos.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-[8px] text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-zinc-900 text-sm font-semibold transition-colors">
+                        <svg class="w-4 h-4 text-slate-400 dark:text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
                         <span>Vidéos</span>
                     </a>
-                    <a href="ressources.html" class="flex items-center gap-3 px-3.5 py-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 text-sm font-medium transition-colors">
-                        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                    <a href="ressources.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-[8px] text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-zinc-900 text-sm font-semibold transition-colors">
+                        <svg class="w-4 h-4 text-slate-400 dark:text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                         <span>Ressources</span>
                     </a>
-                    <a href="games.html" class="flex items-center gap-3 px-3.5 py-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 text-sm font-medium transition-colors">
-                        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <a href="games.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-[8px] text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-zinc-900 text-sm font-semibold transition-colors">
+                        <svg class="w-4 h-4 text-slate-400 dark:text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                         <span>Jeux</span>
                     </a>
-                    <a href="about.html" class="flex items-center gap-3 px-3.5 py-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 text-sm font-medium transition-colors">
-                        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <a href="about.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-[8px] text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-zinc-900 text-sm font-semibold transition-colors">
+                        <svg class="w-4 h-4 text-slate-400 dark:text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                         <span>À propos</span>
                     </a>
-                    <a href="contact.html" class="flex items-center gap-3 px-3.5 py-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 text-sm font-medium transition-colors">
-                        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                    <a href="contact.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-[8px] text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-zinc-900 text-sm font-semibold transition-colors">
+                        <svg class="w-4 h-4 text-slate-400 dark:text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
                         <span>Contact</span>
                     </a>
                 </div>
+
+                <!-- Thématiques & Catégories -->
+                <div class="py-4 my-2 border-y border-slate-200 dark:border-[#1e1e24] space-y-2.5">
+                    <div class="px-1 text-[10px] font-black text-slate-400 dark:text-zinc-500 uppercase tracking-widest">Thématiques</div>
+                    <div class="flex flex-wrap gap-1.5 px-0.5">
+                        <a href="articles.html" class="cat-pill bg-slate-100 dark:bg-[#121215] text-slate-600 dark:text-zinc-400 border-0 hover:text-slate-900 dark:hover:text-white flex items-center gap-1.5">
+                            <svg class="w-3 h-3 fill-current text-slate-500 dark:text-zinc-400" viewBox="0 0 24 24">
+                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                            </svg>
+                            <span>Notre Sélection</span>
+                        </a>
+                        <a href="articles.html" class="cat-pill bg-slate-100 dark:bg-[#121215] text-slate-600 dark:text-zinc-400 border-0 hover:text-slate-900 dark:hover:text-white">
+                            Tout
+                        </a>
+                        <a href="articles.html?q=Actu" class="cat-pill bg-slate-100 dark:bg-[#121215] text-slate-600 dark:text-zinc-400 border-0 hover:text-slate-900 dark:hover:text-white">
+                            Actu
+                        </a>
+                        <a href="articles.html?q=Lore" class="cat-pill bg-slate-100 dark:bg-[#121215] text-slate-600 dark:text-zinc-400 border-0 hover:text-slate-900 dark:hover:text-white">
+                            Lore
+                        </a>
+                        <a href="articles.html?q=Analyse" class="cat-pill bg-slate-100 dark:bg-[#121215] text-slate-600 dark:text-zinc-400 border-0 hover:text-slate-900 dark:hover:text-white">
+                            Analyse
+                        </a>
+                        <a href="articles.html?q=Gaming" class="cat-pill bg-slate-100 dark:bg-[#121215] text-slate-600 dark:text-zinc-400 border-0 hover:text-slate-900 dark:hover:text-white">
+                            Gaming
+                        </a>
+                        <a href="articles.html?q=Science" class="cat-pill bg-slate-100 dark:bg-[#121215] text-slate-600 dark:text-zinc-400 border-0 hover:text-slate-900 dark:hover:text-white">
+                            Science
+                        </a>
+                        <a href="articles.html?q=Philosophie" class="cat-pill bg-slate-100 dark:bg-[#121215] text-slate-600 dark:text-zinc-400 border-0 hover:text-slate-900 dark:hover:text-white">
+                            Philosophie
+                        </a>
+                    </div>
+                </div>
+
             </div>
 
-            <div class="pt-3 space-y-2 text-xs text-slate-500 px-1">
-                <div class="flex flex-col space-y-1 font-medium">
-                    <a href="legal.html" class="hover:text-slate-900 transition-colors">Mentions légales</a>
-                    <a href="privacy.html" class="hover:text-slate-900 transition-colors">Confidentialité</a>
+            <!-- Pied de la Sidebar -->
+            <div class="pt-4 space-y-2 text-xs text-slate-500 dark:text-zinc-500 px-1">
+                <div class="flex flex-col space-y-1.5 font-medium">
+                    <a href="legal.html" class="hover:text-slate-900 dark:hover:text-white transition-colors">Mentions légales</a>
+                    <a href="privacy.html" class="hover:text-slate-900 dark:hover:text-white transition-colors">Confidentialité</a>
                 </div>
-                <div class="pt-1 text-[11px] text-slate-400 font-normal">
+                <div class="pt-2 text-[11px] text-slate-400 dark:text-zinc-600 font-normal border-t border-slate-200 dark:border-[#1e1e24]">
                     &copy; 2026 Kaneberg Media.<br>Tous droits réservés.
                 </div>
             </div>
+
         </aside>
 
         <!-- CONTENU PRINCIPAL -->
         <main class="flex-grow space-y-6 min-w-0">
             
-            <!-- En-tête de la page des favoris -->
-            <div class="bg-white rounded-3xl p-6 border border-slate-200/80 space-y-5">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+            <!-- En-tête de la page des favoris épuré sans bordure -->
+            <div class="bg-white dark:bg-[#0c0c0f] rounded-[8px] p-6 border-0 shadow-sm space-y-5">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 dark:border-[#1e1e24] pb-4">
                     <div>
                         <div class="flex items-center gap-2">
-                            <h1 class="text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2">
+                            <h1 class="text-2xl font-black text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
                                 <span>Mes Articles Enregistrés</span>
                             </h1>
-                            <span id="favCountBadge" class="bg-rose-100 text-rose-700 text-xs font-extrabold px-2.5 py-0.5 rounded-full">
+                            <span id="favCountBadge" class="bg-rose-100 dark:bg-rose-950/60 text-rose-700 dark:text-rose-400 text-xs font-black px-2.5 py-0.5 rounded-[8px]">
                                 0
                             </span>
                         </div>
-                        <p class="text-xs text-slate-500 font-medium mt-1">Vos lectures sauvegardées sur cet appareil.</p>
+                        <p class="text-xs text-slate-500 dark:text-zinc-400 font-medium mt-1">Vos lectures sauvegardées sur cet appareil.</p>
                     </div>
 
-                    <button id="clearAllFavsBtn" onclick="openClearModal()" class="hidden text-xs font-bold text-rose-600 hover:text-white bg-rose-50 hover:bg-rose-600 px-3.5 py-2 rounded-xl transition-colors flex items-center gap-1.5 self-start sm:self-auto">
+                    <button id="clearAllFavsBtn" onclick="openClearModal()" class="hidden text-xs font-bold text-rose-600 dark:text-rose-400 hover:text-white dark:hover:text-white bg-rose-50 dark:bg-rose-950/40 hover:bg-rose-600 dark:hover:bg-rose-600 px-3.5 py-2 rounded-[8px] transition-colors flex items-center gap-1.5 self-start sm:self-auto border-0">
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                         </svg>
@@ -205,25 +285,25 @@
                     
                     <!-- Filtres par catégorie -->
                     <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1 w-full md:w-auto max-w-full shrink min-w-0 touch-pan-x" id="favCatFilters">
-                        <button onclick="filterFavCategory('all')" data-favcat="all" class="cat-pill active px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap shrink-0 transition-all">
+                        <button onclick="filterFavCategory('all')" data-favcat="all" class="cat-pill active bg-slate-900 dark:bg-white text-white dark:text-black border-0 whitespace-nowrap shrink-0">
                             Tout
                         </button>
-                        <button onclick="filterFavCategory('Actu')" data-favcat="Actu" class="cat-pill px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap shrink-0 transition-all">
+                        <button onclick="filterFavCategory('Actu')" data-favcat="Actu" class="cat-pill bg-slate-100 dark:bg-[#121215] text-slate-600 dark:text-zinc-400 border-0 hover:text-slate-900 dark:hover:text-white whitespace-nowrap shrink-0">
                             Actu
                         </button>
-                        <button onclick="filterFavCategory('Lore')" data-favcat="Lore" class="cat-pill px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap shrink-0 transition-all">
+                        <button onclick="filterFavCategory('Lore')" data-favcat="Lore" class="cat-pill bg-slate-100 dark:bg-[#121215] text-slate-600 dark:text-zinc-400 border-0 hover:text-slate-900 dark:hover:text-white whitespace-nowrap shrink-0">
                             Lore
                         </button>
-                        <button onclick="filterFavCategory('Analyse')" data-favcat="Analyse" class="cat-pill px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap shrink-0 transition-all">
+                        <button onclick="filterFavCategory('Analyse')" data-favcat="Analyse" class="cat-pill bg-slate-100 dark:bg-[#121215] text-slate-600 dark:text-zinc-400 border-0 hover:text-slate-900 dark:hover:text-white whitespace-nowrap shrink-0">
                             Analyse
                         </button>
-                        <button onclick="filterFavCategory('Gaming')" data-favcat="Gaming" class="cat-pill px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap shrink-0 transition-all">
+                        <button onclick="filterFavCategory('Gaming')" data-favcat="Gaming" class="cat-pill bg-slate-100 dark:bg-[#121215] text-slate-600 dark:text-zinc-400 border-0 hover:text-slate-900 dark:hover:text-white whitespace-nowrap shrink-0">
                             Gaming
                         </button>
-                        <button onclick="filterFavCategory('Science')" data-favcat="Science" class="cat-pill px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap shrink-0 transition-all">
+                        <button onclick="filterFavCategory('Science')" data-favcat="Science" class="cat-pill bg-slate-100 dark:bg-[#121215] text-slate-600 dark:text-zinc-400 border-0 hover:text-slate-900 dark:hover:text-white whitespace-nowrap shrink-0">
                             Science
                         </button>
-                        <button onclick="filterFavCategory('Philosophie')" data-favcat="Philosophie" class="cat-pill px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap shrink-0 transition-all">
+                        <button onclick="filterFavCategory('Philosophie')" data-favcat="Philosophie" class="cat-pill bg-slate-100 dark:bg-[#121215] text-slate-600 dark:text-zinc-400 border-0 hover:text-slate-900 dark:hover:text-white whitespace-nowrap shrink-0">
                             Philosophie
                         </button>
                     </div>
@@ -232,13 +312,13 @@
                     <div class="flex items-center gap-2">
                         <div class="relative flex-grow sm:flex-grow-0">
                             <input type="text" id="favSearchInput" placeholder="Filtrer vos favoris..." 
-                                   class="w-full sm:w-44 bg-slate-50 border border-slate-200 text-xs rounded-xl pl-8 pr-3 py-1.5 outline-none focus:border-slate-400 focus:bg-white transition-all text-slate-800 placeholder-slate-400">
-                            <svg class="w-3.5 h-3.5 absolute left-2.5 top-2.5 text-slate-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                   class="w-full sm:w-44 bg-slate-100 dark:bg-[#121215] border-0 text-xs rounded-[8px] pl-8 pr-3 py-1.5 outline-none focus:bg-slate-200/60 dark:focus:bg-[#18181c] transition-all text-slate-900 dark:text-zinc-100 placeholder-slate-400 dark:placeholder-zinc-500">
+                            <svg class="w-3.5 h-3.5 absolute left-2.5 top-2.5 text-slate-400 dark:text-zinc-500 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                             </svg>
                         </div>
 
-                        <select id="favSortSelect" onchange="handleFavSortChange()" class="bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-700 rounded-xl px-3 py-1.5 outline-none focus:border-slate-400 transition-all cursor-pointer">
+                        <select id="favSortSelect" onchange="handleFavSortChange()" class="bg-slate-100 dark:bg-[#121215] border-0 text-xs font-semibold text-slate-700 dark:text-zinc-300 rounded-[8px] px-3 py-1.5 outline-none transition-all cursor-pointer">
                             <option value="recent">Plus récent</option>
                             <option value="oldest">Plus ancien</option>
                             <option value="title">Alphabetique (A-Z)</option>
@@ -250,18 +330,18 @@
             </div>
 
             <!-- Grille des articles enregistrés -->
-            <div id="favGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+            <div id="favGrid" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
 
             <!-- Message si aucun favori -->
-            <div id="noFavs" class="hidden bg-white rounded-3xl p-12 text-center border border-slate-200/80 space-y-3">
-                <div class="w-16 h-16 bg-rose-50 text-rose-500 rounded-full flex items-center justify-center text-3xl mx-auto mb-2">
+            <div id="noFavs" class="hidden bg-white dark:bg-[#0c0c0f] rounded-[8px] p-12 text-center border-0 shadow-sm space-y-3">
+                <div class="w-16 h-16 bg-rose-50 dark:bg-rose-950/40 text-rose-500 rounded-[8px] flex items-center justify-center text-3xl mx-auto mb-2">
                     🔖
                 </div>
-                <h3 id="noFavsTitle" class="text-base font-extrabold text-slate-900">Aucun favori pour le moment</h3>
-                <p id="noFavsDesc" class="text-xs text-slate-500 max-w-sm mx-auto leading-relaxed">
+                <h3 id="noFavsTitle" class="text-base font-extrabold text-slate-900 dark:text-white">Aucun favori pour le moment</h3>
+                <p id="noFavsDesc" class="text-xs text-slate-500 dark:text-zinc-400 max-w-sm mx-auto leading-relaxed font-medium">
                     Cliquez sur le petit cœur au cours de vos lectures pour retrouver vos articles préférés ici à tout moment.
                 </p>
-                <a href="articles.html" class="inline-block mt-2 px-5 py-2.5 bg-slate-900 text-white font-bold text-xs uppercase tracking-wider rounded-xl hover:bg-slate-800 transition-colors">
+                <a href="articles.html" class="inline-block mt-2 px-5 py-2.5 bg-slate-900 dark:bg-white text-white dark:text-black font-extrabold text-xs uppercase tracking-wider rounded-[8px] hover:bg-slate-800 dark:hover:bg-zinc-200 transition-colors border-0">
                     Découvrir des articles
                 </a>
             </div>
@@ -270,56 +350,56 @@
         <!-- SIDEBAR DROITE: RECOMMANDATIONS & RÉSEAUX -->
         <aside class="w-full lg:w-80 flex-shrink-0 space-y-8">
             
-            <div class="bg-white rounded-3xl p-6 border border-slate-200/80 space-y-4">
-                <h3 class="text-base font-extrabold text-slate-900 tracking-tight">Articles Recommandés</h3>
+            <div class="bg-white dark:bg-[#0c0c0f] rounded-[8px] p-6 border-0 shadow-sm space-y-4">
+                <h3 class="text-xs font-black uppercase tracking-widest text-slate-400 dark:text-zinc-500 pb-2">Articles Recommandés</h3>
                 <div id="sidebarSelectionPicks" class="space-y-3">
                     <!-- Injecté par JS -->
                 </div>
             </div>
 
-            <div class="bg-white rounded-3xl p-6 border border-slate-200/80 space-y-4">
-                <h3 class="text-base font-extrabold text-slate-900 tracking-tight">Réseaux & Communauté</h3>
+            <div class="bg-white dark:bg-[#0c0c0f] rounded-[8px] p-6 border-0 shadow-sm space-y-4">
+                <h3 class="text-xs font-black uppercase tracking-widest text-slate-400 dark:text-zinc-500 pb-2">Communauté</h3>
                 
-                <div class="space-y-3">
-                    <a href="https://www.youtube.com/@KanebergYT" target="_blank" class="flex items-center justify-between p-3 rounded-2xl bg-red-50 hover:bg-red-100/80 transition-colors group">
+                <div class="space-y-2.5">
+                    <a href="https://www.youtube.com/@KanebergYT" target="_blank" class="flex items-center justify-between p-3 rounded-[8px] bg-slate-50 dark:bg-[#121215] border-0 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-all group">
                         <div class="flex items-center gap-3">
-                            <div class="w-9 h-9 rounded-xl bg-red-600 text-white flex items-center justify-center flex-shrink-0">
-                                <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                            <div class="w-8 h-8 rounded-[8px] bg-slate-900 dark:bg-white text-white dark:text-black flex items-center justify-center flex-shrink-0 font-black">
+                                <svg class="w-4 h-4 fill-current text-white dark:text-black" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
                             </div>
                             <div>
-                                <span class="text-xs font-bold text-slate-900 block">YouTube</span>
-                                <span class="text-[11px] text-slate-500 font-medium">@KanebergYT</span>
+                                <span class="text-xs font-extrabold text-slate-900 dark:text-white block">YouTube</span>
+                                <span class="text-[11px] text-slate-500 dark:text-zinc-500 font-medium">@KanebergYT</span>
                             </div>
                         </div>
-                        <span class="text-xs font-bold text-red-600 group-hover:translate-x-0.5 transition-transform">&rarr;</span>
+                        <span class="text-xs font-bold text-slate-400 dark:text-zinc-500 group-hover:text-slate-900 dark:group-hover:text-white group-hover:translate-x-0.5 transition-all">&rarr;</span>
                     </a>
 
-                    <a href="https://discord.gg/FY3WYmaNxd" target="_blank" class="flex items-center justify-between p-3 rounded-2xl bg-indigo-50 hover:bg-indigo-100/80 transition-colors group">
+                    <a href="https://discord.gg/FY3WYmaNxd" target="_blank" class="flex items-center justify-between p-3 rounded-[8px] bg-slate-50 dark:bg-[#121215] border-0 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-all group">
                         <div class="flex items-center gap-3">
-                            <div class="w-9 h-9 rounded-xl bg-indigo-600 text-white flex items-center justify-center flex-shrink-0">
-                                <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                            <div class="w-8 h-8 rounded-[8px] bg-slate-900 dark:bg-white text-white dark:text-black flex items-center justify-center flex-shrink-0 font-black">
+                                <svg class="w-4 h-4 fill-current text-white dark:text-black" viewBox="0 0 24 24">
                                     <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
                                 </svg>
                             </div>
                             <div>
-                                <span class="text-xs font-bold text-slate-900 block">Discord</span>
-                                <span class="text-[11px] text-slate-500 font-medium">Communauté Dune</span>
+                                <span class="text-xs font-extrabold text-slate-900 dark:text-white block">Discord</span>
+                                <span class="text-[11px] text-slate-500 dark:text-zinc-500 font-medium">Communauté Dune</span>
                             </div>
                         </div>
-                        <span class="text-xs font-bold text-indigo-600 group-hover:translate-x-0.5 transition-transform">&rarr;</span>
+                        <span class="text-xs font-bold text-slate-400 dark:text-zinc-500 group-hover:text-slate-900 dark:group-hover:text-white group-hover:translate-x-0.5 transition-all">&rarr;</span>
                     </a>
 
-                    <a href="https://www.instagram.com/kaneberg.dune/" target="_blank" class="flex items-center justify-between p-3 rounded-2xl bg-pink-50 hover:bg-pink-100/80 transition-colors group">
+                    <a href="https://www.instagram.com/kaneberg.dune/" target="_blank" class="flex items-center justify-between p-3 rounded-[8px] bg-slate-50 dark:bg-[#121215] border-0 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-all group">
                         <div class="flex items-center gap-3">
-                            <div class="w-9 h-9 rounded-xl bg-pink-600 text-white flex items-center justify-center flex-shrink-0">
-                                <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                            <div class="w-8 h-8 rounded-[8px] bg-slate-900 dark:bg-white text-white dark:text-black flex items-center justify-center flex-shrink-0 font-black">
+                                <svg class="w-4 h-4 fill-current text-white dark:text-black" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
                             </div>
                             <div>
-                                <span class="text-xs font-bold text-slate-900 block">Instagram</span>
-                                <span class="text-[11px] text-slate-500 font-medium">@kaneberg.dune</span>
+                                <span class="text-xs font-extrabold text-slate-900 dark:text-white block">Instagram</span>
+                                <span class="text-[11px] text-slate-500 dark:text-zinc-500 font-medium">@kaneberg.dune</span>
                             </div>
                         </div>
-                        <span class="text-xs font-bold text-pink-600 group-hover:translate-x-0.5 transition-transform">&rarr;</span>
+                        <span class="text-xs font-bold text-slate-400 dark:text-zinc-500 group-hover:text-slate-900 dark:group-hover:text-white group-hover:translate-x-0.5 transition-all">&rarr;</span>
                     </a>
                 </div>
             </div>
@@ -329,36 +409,88 @@
     </div>
 
     <!-- Modale personnalisée de confirmation d'effacement sans confirm() -->
-    <div id="clearConfirmModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 transition-opacity">
-        <div class="bg-white rounded-3xl max-w-md w-full p-6 border border-slate-200 shadow-2xl space-y-4">
-            <div class="w-12 h-12 rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center mx-auto">
+    <div id="clearConfirmModal" class="fixed inset-0 bg-slate-900/50 dark:bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 transition-opacity">
+        <div class="bg-white dark:bg-[#0c0c0f] rounded-[8px] max-w-md w-full p-6 border border-slate-200 dark:border-[#222228] shadow-2xl space-y-4">
+            <div class="w-12 h-12 rounded-[8px] bg-rose-100 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 flex items-center justify-center mx-auto border-0">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                 </svg>
             </div>
             <div class="text-center space-y-1">
-                <h3 class="text-lg font-black text-slate-900">Voulez-vous tout effacer ?</h3>
-                <p class="text-xs text-slate-500 leading-relaxed">
+                <h3 class="text-lg font-black text-slate-900 dark:text-white">Voulez-vous tout effacer ?</h3>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 leading-relaxed font-medium">
                     Cette action supprimera l'ensemble des articles sauvegardés dans vos favoris. Cette action ne peut pas être annulée.
                 </p>
             </div>
             <div class="flex items-center gap-3 pt-2">
-                <button onclick="closeClearModal()" class="w-1/2 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold rounded-xl transition-colors">
+                <button onclick="closeClearModal()" class="w-1/2 py-2.5 bg-slate-100 dark:bg-[#121215] hover:bg-slate-200 dark:hover:bg-zinc-800 text-slate-800 dark:text-zinc-200 text-xs font-bold rounded-[8px] transition-colors border-0">
                     Annuler
                 </button>
-                <button onclick="confirmClearAllFavs()" class="w-1/2 py-2.5 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-xl transition-colors">
+                <button onclick="confirmClearAllFavs()" class="w-1/2 py-2.5 bg-rose-600 hover:bg-rose-700 text-white text-xs font-extrabold uppercase tracking-wider rounded-[8px] transition-colors border-0">
                     Oui, tout effacer
                 </button>
             </div>
         </div>
     </div>
 
+    <!-- Toast Notification -->
+    <div id="toastNotification" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+        <div class="bg-slate-900 dark:bg-white text-white dark:text-black text-xs font-bold px-4 py-3 rounded-[8px] shadow-2xl flex items-center gap-2 border-0">
+            <span id="toastIcon">🔖</span>
+            <span id="toastMessage">Action effectuée</span>
+        </div>
+    </div>
+
     <script>
+        /* 1. GESTION DU THÈME CLAIR / SOMBRE */
+        function initTheme() {
+            const savedTheme = localStorage.getItem('kb_theme');
+
+            if (savedTheme === 'dark') {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        }
+
+        function toggleTheme() {
+            const isDark = document.documentElement.classList.contains('dark');
+            if (isDark) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('kb_theme', 'light');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('kb_theme', 'dark');
+            }
+        }
+
+        initTheme();
+
+        /* GESTION DES ERREURS D'IMAGES */
         window.handleImgError = function(img) {
             if (img && img.parentElement) {
-                img.parentElement.innerHTML = '<div class="w-full h-44 bg-slate-100 flex items-center justify-center text-slate-400 font-bold uppercase text-xs tracking-wider">Kaneberg</div>';
+                img.parentElement.innerHTML = '<div class="w-full h-40 bg-slate-100 dark:bg-[#121215] flex items-center justify-center text-slate-400 dark:text-zinc-600 font-black uppercase text-xs tracking-widest border-b border-slate-100 dark:border-[#18181c]">Kaneberg</div>';
             }
         };
+
+        // Toast Notification
+        function showToast(message, icon = '🔖') {
+            const toast = document.getElementById('toastNotification');
+            const msgEl = document.getElementById('toastMessage');
+            const iconEl = document.getElementById('toastIcon');
+            if (!toast || !msgEl) return;
+
+            msgEl.textContent = message;
+            if (iconEl) iconEl.textContent = icon;
+
+            toast.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
+            }, 2500);
+        }
 
         let loadedFavArticles = [];
         let activeCategoryFilter = 'all';
@@ -424,7 +556,8 @@
 
         async function fetchAllArticlesData() {
             try {
-                const res = await fetch(`articles.json?t=${Date.now()}`);
+                const cacheBuster = `?t=${Date.now()}`;
+                const res = await fetch(`articles.json${cacheBuster}`);
                 if (res.ok) {
                     return await res.json();
                 }
@@ -522,48 +655,48 @@
                 const card = document.createElement('article');
                 const isReadLater = localStorage.getItem(`kb_readlater_${article.id}`) === 'true';
 
-                // Bordure jaune épaisse si marqué "À lire plus tard"
+                // Style épuré sans bordure dure avec surbrillance ambrée si marqué "À lire plus tard"
                 const cardBorderClass = isReadLater 
-                    ? "border-2 border-amber-400 bg-amber-50/10 shadow-sm" 
-                    : "border border-slate-200/80 hover:border-slate-300";
+                    ? "ring-2 ring-amber-400/80 bg-amber-50/10 dark:bg-amber-950/20 shadow-sm" 
+                    : "border-0 shadow-sm hover:shadow-md";
 
-                card.className = `group bg-white rounded-3xl ${cardBorderClass} overflow-hidden transition-all duration-200 cursor-pointer flex flex-col relative`;
+                card.className = `group bg-white dark:bg-[#0c0c0f] rounded-[8px] ${cardBorderClass} overflow-hidden transition-all duration-300 cursor-pointer flex flex-col relative`;
 
-                const fallbackBg = `<div class="w-full h-44 bg-slate-100 flex items-center justify-center text-slate-400 font-bold uppercase text-xs tracking-wider">Kaneberg</div>`;
+                const fallbackBg = `<div class="w-full h-40 bg-slate-100 dark:bg-[#121215] flex items-center justify-center text-slate-400 dark:text-zinc-600 font-black uppercase text-xs tracking-widest border-b border-slate-100 dark:border-[#18181c]">Kaneberg</div>`;
                 const imgTag = article.image 
-                    ? `<img src="${article.image}" alt="${article.title}" class="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-300" onerror="handleImgError(this)">` 
+                    ? `<img src="${article.image}" alt="${article.title}" class="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 dark:opacity-80" onerror="handleImgError(this)">` 
                     : fallbackBg;
 
                 const readLaterBtnClass = isReadLater 
-                    ? "text-amber-600 bg-amber-100 hover:bg-amber-200" 
-                    : "text-slate-400 hover:text-amber-600 hover:bg-amber-50";
+                    ? "text-amber-600 dark:text-amber-400 bg-amber-100 dark:bg-amber-950/60" 
+                    : "text-slate-400 dark:text-zinc-500 hover:text-amber-600 dark:hover:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-950/40";
 
                 card.innerHTML = `
-                    <div class="relative overflow-hidden bg-slate-100" onclick="window.location.href='article.html?id=${article.id}'">
+                    <div class="relative overflow-hidden bg-slate-100 dark:bg-[#121215]" onclick="window.location.href='article.html?id=${article.id}'">
                         ${imgTag}
-                        <div class="absolute top-3 left-3 right-3 flex items-center justify-between pointer-events-none">
-                            <span class="bg-slate-900/90 backdrop-blur-md text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">
+                        <div class="absolute top-2.5 left-2.5 right-2.5 flex items-center justify-between pointer-events-none">
+                            <span class="bg-slate-900/90 dark:bg-black/90 backdrop-blur-md text-white text-[9px] font-extrabold px-2.5 py-1 rounded-[8px] uppercase tracking-widest border-0">
                                 ${article.category || 'Article'}
                             </span>
                             ${isReadLater ? `
-                            <span class="bg-amber-500 text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider shadow-sm flex items-center gap-1">
-                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            <span class="bg-amber-500 text-white text-[9px] font-black px-2.5 py-1 rounded-[8px] uppercase tracking-widest shadow-sm flex items-center gap-1 border-0">
+                                <svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                                 <span>À lire plus tard</span>
                             </span>` : ''}
                         </div>
                     </div>
-                    <div class="p-5 flex flex-col flex-grow justify-between">
+                    <div class="p-5 flex flex-col flex-grow justify-between space-y-4">
                         <div onclick="window.location.href='article.html?id=${article.id}'">
-                            <h3 class="font-bold text-slate-900 text-base leading-snug group-hover:text-slate-600 transition-colors line-clamp-2 mb-2">
+                            <h3 class="font-extrabold text-slate-900 dark:text-white text-base leading-snug group-hover:text-slate-600 dark:group-hover:text-zinc-300 transition-colors line-clamp-2 mb-2">
                                 ${article.title}
                             </h3>
-                            <p class="text-xs text-slate-500 line-clamp-2 leading-relaxed mb-4">
+                            <p class="text-xs text-slate-500 dark:text-zinc-400 line-clamp-2 leading-relaxed font-normal">
                                 ${article.summary || ''}
                             </p>
                         </div>
-                        <div class="flex items-center justify-between text-[11px] font-medium text-slate-400 border-t border-slate-100 pt-3">
+                        <div class="flex items-center justify-between text-[11px] font-medium text-slate-400 dark:text-zinc-500 border-t border-slate-100 dark:border-[#1e1e24] pt-3">
                             <span class="flex items-center gap-1.5">
-                                <span class="text-slate-700 font-bold">${article.author || 'Kaneberg'}</span>
+                                <span class="text-slate-900 dark:text-white font-bold">${article.author || 'Kaneberg'}</span>
                                 <span>&bull;</span>
                                 <span>${article.readTime || '5 min'}</span>
                             </span>
@@ -571,7 +704,7 @@
                             <div class="flex items-center gap-1">
                                 <!-- Bouton À lire plus tard -->
                                 <button onclick="toggleReadLater('${article.id}', event)" title="${isReadLater ? 'Retirer de À lire plus tard' : 'Marquer À lire plus tard'}" 
-                                    class="p-2 ${readLaterBtnClass} rounded-full transition-colors group/btn">
+                                    class="p-2 ${readLaterBtnClass} rounded-[8px] transition-colors border-0">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                     </svg>
@@ -579,7 +712,7 @@
 
                                 <!-- Bouton Corbeille de suppression unique des favoris -->
                                 <button onclick="removeFav('${article.id}', event)" title="Retirer des favoris" 
-                                    class="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-full transition-colors group/btn">
+                                    class="p-2 text-slate-400 dark:text-zinc-500 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded-[8px] transition-colors border-0">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                                     </svg>
@@ -597,6 +730,7 @@
             localStorage.removeItem(`kb_fav_${id}`);
             localStorage.removeItem(`kb_has_liked_${id}`);
             localStorage.removeItem(`kb_readlater_${id}`);
+            showToast("Article retiré de vos favoris", "🗑️");
             loadFavorites();
         }
 
@@ -606,8 +740,10 @@
             const isReadLater = localStorage.getItem(key) === 'true';
             if (isReadLater) {
                 localStorage.removeItem(key);
+                showToast("Retiré de la liste À lire plus tard", "⏳");
             } else {
                 localStorage.setItem(key, 'true');
+                showToast("Marqué À lire plus tard !", "🕒");
             }
             applyFavFiltersAndRender();
         }
@@ -616,9 +752,9 @@
             activeCategoryFilter = cat;
             document.querySelectorAll('#favCatFilters button').forEach(btn => {
                 if (btn.getAttribute('data-favcat') === cat) {
-                    btn.classList.add('active');
+                    btn.className = "cat-pill active bg-slate-900 dark:bg-white text-white dark:text-black border-0 whitespace-nowrap shrink-0";
                 } else {
-                    btn.classList.remove('active');
+                    btn.className = "cat-pill bg-slate-100 dark:bg-[#121215] text-slate-600 dark:text-zinc-400 border-0 hover:text-slate-900 dark:hover:text-white whitespace-nowrap shrink-0";
                 }
             });
             applyFavFiltersAndRender();
@@ -645,6 +781,7 @@
                 localStorage.removeItem(`kb_readlater_${id}`);
             });
             closeClearModal();
+            showToast("Tous vos favoris ont été effacés", "🧹");
             loadFavorites();
         }
 
@@ -658,15 +795,17 @@
             recs.forEach((art, idx) => {
                 const item = document.createElement('a');
                 item.href = `article.html?id=${art.id}`;
-                item.className = `flex gap-3 items-center group cursor-pointer ${idx > 0 ? 'border-t border-slate-100 pt-3' : ''}`;
+                item.className = `flex gap-3.5 group items-start ${idx > 0 ? 'border-t border-slate-100 dark:border-[#1e1e24] pt-3.5' : ''}`;
+
+                const catShort = (art.category || 'Actu').substring(0, 4);
 
                 item.innerHTML = `
-                    <div class="w-12 h-12 rounded-xl bg-slate-100 flex-shrink-0 overflow-hidden relative border border-slate-200/80">
-                        ${art.image ? `<img src="${art.image}" class="w-full h-full object-cover group-hover:scale-105 transition-transform" onerror="this.remove()">` : '<span class="text-[10px] font-bold text-slate-400 flex items-center justify-center h-full">KB</span>'}
+                    <div class="w-14 h-14 rounded-[8px] bg-slate-100 dark:bg-[#121215] flex-shrink-0 overflow-hidden relative border-0">
+                        ${art.image ? `<img src="${art.image}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 opacity-90 dark:opacity-80" onerror="this.remove()">` : `<span class="absolute inset-0 flex items-center justify-center font-black text-slate-400 dark:text-zinc-600 text-xs uppercase tracking-widest">${catShort}</span>`}
                     </div>
-                    <div class="min-w-0 space-y-0.5">
-                        <span class="text-[10px] font-bold text-rose-600 block uppercase tracking-wider">${art.category || 'Article'}</span>
-                        <h4 class="text-xs font-bold text-slate-900 line-clamp-2 leading-tight group-hover:text-slate-600 transition-colors">${art.title}</h4>
+                    <div class="space-y-1 min-w-0">
+                        <span class="text-[10px] font-black text-slate-900 dark:text-white uppercase tracking-widest block">${art.category || 'Article'}</span>
+                        <h4 class="text-xs font-bold text-slate-900 dark:text-white group-hover:text-slate-600 dark:group-hover:text-zinc-300 transition-colors line-clamp-2 leading-snug">${art.title}</h4>
                     </div>
                 `;
                 container.appendChild(item);
@@ -687,7 +826,7 @@
                 }, { passive: false });
             }
 
-            // Drawer Mobile
+            // Mobile Drawer
             const mobileMenuToggle = document.getElementById('mobileMenuToggle');
             const closeMobileMenu = document.getElementById('closeMobileMenu');
             const leftSidebar = document.getElementById('leftSidebar');
@@ -718,6 +857,14 @@
             if (closeMobileMenu) closeMobileMenu.addEventListener('click', closeDrawer);
             if (mobileMenuBackdrop) mobileMenuBackdrop.addEventListener('click', closeDrawer);
 
+            if (leftSidebar) {
+                leftSidebar.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        if (window.innerWidth < 1024) closeDrawer();
+                    });
+                });
+            }
+
             // Recherche interne dans les favoris
             const favSearchInput = document.getElementById('favSearchInput');
             if (favSearchInput) {
@@ -726,7 +873,7 @@
                 });
             }
 
-            // Global search
+            // Recherche globale avec touche Entrée
             const globalSearchInput = document.getElementById('globalSearchInput');
             if (globalSearchInput) {
                 globalSearchInput.addEventListener('keypress', (e) => {
