@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="fr" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaneberg - Vidéos & Émissions</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="images/logo.png">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    borderRadius: {
+                        'pro': '8px',
+                    },
+                    colors: {
+                        brand: {
+                            dark: '#08080a',
+                            surfaceDark: '#121215',
+                            borderDark: '#222228',
+                            light: '#fafafa',
+                            surfaceLight: '#ffffff',
+                            borderLight: '#e2e8f0'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Font: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        body, header, aside, main, div, article, input, button, select, section, nav, a {
+            transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+                        border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+                        color 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+                        box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        img, svg, iframe, .no-theme-transition {
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+        }
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .top-tab {
+            font-weight: 600;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s ease;
+        }
+        .top-tab:hover { opacity: 1; }
+        .top-tab.active {
+            opacity: 1;
+            font-weight: 800;
+        }
+
+        .cat-pill {
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.35rem 0.75rem;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen bg-slate-50 dark:bg-[#08080a] text-slate-900 dark:text-zinc-100 flex flex-col antialiased selection:bg-slate-900 selection:text-white dark:selection:bg-white dark:selection:text-black">
+
+    <header class="sticky top-0 z-40 bg-white/95 dark:bg-[#08080a]/95 backdrop-blur-md border-b border-slate-200 dark:border-[#1e1e24] px-4 sm:px-6 lg:px-8">
+        <div class="max-w-[1600px] mx-auto h-16 grid grid-cols-2 md:grid-cols-3 items-center gap-4">
+            
+            <!-- Gauche: Logo Kaneberg & Menu Mobile -->
+            <div class="flex items-center gap-3">
+                <button id="mobileMenuToggle" class="lg:hidden p-2 text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white rounded-[8px] hover:bg-slate-100 dark:hover:bg-zinc-900 transition-colors" aria-label="Menu mobile">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+
+                <a href="index.html" class="flex items-center gap-2.5">
+                    <img src="images/logo.png" alt="Kaneberg Logo" class="w-7 h-7 object-contain brightness-0 dark:brightness-0 dark:invert transition-all" onerror="this.style.display='none'">
+                    <span class="text-2xl font-black tracking-tighter uppercase text-slate-900 dark:text-white">Kaneberg</span>
+                </a>
+            </div>
+
+            <!-- Centre: Onglets Centraux -->
+            <nav class="hidden md:flex items-center justify-center space-x-8 text-sm">
+                <a href="articles.html" class="top-tab text-slate-500 dark:text-zinc-400 border-transparent hover:text-slate-900 dark:hover:text-white">Articles</a>
+                <a href="videos.html" class="top-tab active text-slate-900 dark:text-white border-slate-900 dark:border-white">Vidéos</a>
+                <a href="ressources.html" class="top-tab text-slate-500 dark:text-zinc-400 border-transparent hover:text-slate-900 dark:hover:text-white">Ressources</a>
+            </nav>
+
+            <!-- Droite: Recherche, Toggle Thème & Abonnement YouTube -->
+            <div class="flex items-center justify-end gap-2.5 col-span-1">
+                
+                <!-- Barre de Recherche Globale -->
+                <div class="relative flex items-center">
+                    <svg class="w-4 h-4 absolute left-3.5 text-slate-400 dark:text-zinc-500 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                    <input type="text" id="globalSearchInput" placeholder="Rechercher..." 
+                        class="bg-slate-100 dark:bg-[#121215] border-0 text-xs sm:text-sm rounded-[8px] pl-10 pr-4 py-2 outline-none w-32 sm:w-44 md:w-52 focus:bg-slate-200/70 dark:focus:bg-[#18181c] transition-all text-slate-900 dark:text-zinc-100 placeholder-slate-400 dark:placeholder-zinc-500">
+                </div>
+
+                <!-- Bouton Bascule Thème -->
+                <button id="themeToggleBtn" onclick="toggleTheme()" 
+                        class="p-2 rounded-[8px] bg-slate-100 dark:bg-[#121215] text-slate-700 dark:text-zinc-300 hover:bg-slate-200 dark:hover:bg-zinc-800 transition-all flex items-center justify-center flex-shrink-0" 
+                        title="Basculer le thème (Clair / Sombre)" aria-label="Basculer le thème">
+                    <svg id="sunIcon" class="w-4 h-4 hidden dark:block text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+                    </svg>
+                    <svg id="moonIcon" class="w-4 h-4 block dark:hidden text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                    </svg>
+                </button>
+
+                <!-- Bouton Abonnement YouTube -->
+                <a href="https://www.youtube.com/@KanebergYT?sub_confirmation=1" target="_blank" rel="noopener noreferrer" title="S'abonner sur YouTube" 
+                   class="hidden sm:flex items-center gap-2 px-3.5 py-2 rounded-[8px] bg-slate-900 dark:bg-white text-white dark:text-black hover:bg-slate-800 dark:hover:bg-zinc-200 text-xs font-black uppercase tracking-wider transition-all flex-shrink-0 shadow-sm active:scale-95 border-0">
+                    <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                        <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                    </svg>
+                    <span>S'abonner</span>
+                </a>
+            </div>
+
+        </div>
+    </header>
+
+    <!-- Overlay Mobile -->
+    <div id="mobileMenuBackdrop" class="fixed inset-0 bg-slate-900/50 dark:bg-black/70 backdrop-blur-sm z-40 hidden transition-opacity duration-300 opacity-0 pointer-events-none"></div>
+
+    <!-- Layout Principal -->
+    <div class="max-w-[1600px] mx-auto w-full flex-grow flex flex-col lg:flex-row px-4 sm:px-6 lg:px-8 py-6 gap-8">
+        
+        <aside id="leftSidebar" class="fixed inset-y-0 left-0 z-50 lg:z-30 w-72 lg:w-64 h-full lg:h-auto bg-white dark:bg-[#08080a] lg:bg-transparent dark:lg:bg-transparent shadow-2xl lg:shadow-none p-5 lg:p-0 lg:pr-6 flex flex-col justify-between transition-transform duration-300 ease-in-out -translate-x-full lg:translate-x-0 overflow-y-auto lg:overflow-visible flex-shrink-0 lg:sticky lg:top-20 lg:border-r border-slate-200 dark:border-[#1e1e24]">
+            
+            <div class="space-y-4">
+                
+                <!-- Header tiroir mobile -->
+                <div class="flex items-center justify-between lg:hidden pb-3 border-b border-slate-200 dark:border-zinc-800">
+                    <span class="text-xl font-black uppercase tracking-tighter text-slate-900 dark:text-white">Kaneberg</span>
+                    <button id="closeMobileMenu" class="p-2 text-slate-500 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white rounded-[8px] hover:bg-slate-100 dark:hover:bg-zinc-900 transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
+
+                <!-- Navigation principale -->
+                <div class="space-y-1">
+                    <a href="index.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-[8px] text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-zinc-900 text-sm font-semibold transition-colors">
+                        <svg class="w-4 h-4 text-slate-400 dark:text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                        <span>Accueil</span>
+                    </a>
+                    <a href="articles.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-[8px] text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-zinc-900 text-sm font-semibold transition-colors">
+                        <svg class="w-4 h-4 text-slate-400 dark:text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path></svg>
+                        <span>Articles</span>
+                    </a>
+                    <a href="favoris.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-[8px] text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-zinc-900 text-sm font-semibold transition-colors">
+                        <svg class="w-4 h-4 text-slate-400 dark:text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                        <span>Mes Favoris</span>
+                    </a>
+                    
+                    <!-- Bouton Actif Vidéos -->
+                    <a href="videos.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-[8px] bg-slate-900 dark:bg-white text-white dark:text-black font-extrabold text-sm transition-all shadow-sm">
+                        <svg class="w-4 h-4 fill-current text-white dark:text-black" viewBox="0 0 24 24">
+                            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                        </svg>
+                        <span>Vidéos</span>
+                    </a>
+
+                    <a href="ressources.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-[8px] text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-zinc-900 text-sm font-semibold transition-colors">
+                        <svg class="w-4 h-4 text-slate-400 dark:text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                        <span>Ressources</span>
+                    </a>
+                    <a href="games.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-[8px] text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-zinc-900 text-sm font-semibold transition-colors">
+                        <svg class="w-4 h-4 text-slate-400 dark:text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <span>Jeux</span>
+                    </a>
+                    <a href="about.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-[8px] text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-zinc-900 text-sm font-semibold transition-colors">
+                        <svg class="w-4 h-4 text-slate-400 dark:text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <span>À propos</span>
+                    </a>
+                    <a href="contact.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-[8px] text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-zinc-900 text-sm font-semibold transition-colors">
+                        <svg class="w-4 h-4 text-slate-400 dark:text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                        <span>Contact</span>
+                    </a>
+                </div>
+
+                <!-- Thématiques & Catégories -->
+                <div class="py-4 my-2 border-y border-slate-200 dark:border-[#1e1e24] space-y-2.5">
+                    <div class="px-1 text-[10px] font-black text-slate-400 dark:text-zinc-500 uppercase tracking-widest">Thématiques</div>
+                    <div class="flex flex-wrap gap-1.5 px-0.5">
+                        <a href="articles.html" class="cat-pill bg-slate-100 dark:bg-[#121215] text-slate-600 dark:text-zinc-400 border-0 hover:text-slate-900 dark:hover:text-white flex items-center gap-1.5">
+                            <svg class="w-3 h-3 fill-current text-slate-500 dark:text-zinc-400" viewBox="0 0 24 24">
+                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                            </svg>
+                            <span>Notre Sélection</span>
+                        </a>
+                        <a href="articles.html" class="cat-pill bg-slate-100 dark:bg-[#121215] text-slate-600 dark:text-zinc-400 border-0 hover:text-slate-900 dark:hover:text-white">
+                            Tout
+                        </a>
+                        <a href="articles.html?q=Actu" class="cat-pill bg-slate-100 dark:bg-[#121215] text-slate-600 dark:text-zinc-400 border-0 hover:text-slate-900 dark:hover:text-white">
+                            Actu
+                        </a>
+                        <a href="articles.html?q=Lore" class="cat-pill bg-slate-100 dark:bg-[#121215] text-slate-600 dark:text-zinc-400 border-0 hover:text-slate-900 dark:hover:text-white">
+                            Lore
+                        </a>
+                        <a href="articles.html?q=Analyse" class="cat-pill bg-slate-100 dark:bg-[#121215] text-slate-600 dark:text-zinc-400 border-0 hover:text-slate-900 dark:hover:text-white">
+                            Analyse
+                        </a>
+                        <a href="articles.html?q=Gaming" class="cat-pill bg-slate-100 dark:bg-[#121215] text-slate-600 dark:text-zinc-400 border-0 hover:text-slate-900 dark:hover:text-white">
+                            Gaming
+                        </a>
+                        <a href="articles.html?q=Science" class="cat-pill bg-slate-100 dark:bg-[#121215] text-slate-600 dark:text-zinc-400 border-0 hover:text-slate-900 dark:hover:text-white">
+                            Science
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Pied de la Sidebar -->
+            <div class="pt-4 space-y-2 text-xs text-slate-500 dark:text-zinc-500 px-1">
+                <div class="flex flex-col space-y-1.5 font-medium">
+                    <a href="legal.html" class="hover:text-slate-900 dark:hover:text-white transition-colors">Mentions légales</a>
+                    <a href="privacy.html" class="hover:text-slate-900 dark:hover:text-white transition-colors">Confidentialité</a>
+                </div>
+                <div class="pt-2 text-[11px] text-slate-400 dark:text-zinc-600 font-normal border-t border-slate-200 dark:border-[#1e1e24]">
+                    &copy; 2026 Kaneberg Media.<br>Tous droits réservés.
+                </div>
+            </div>
+
+        </aside>
+
+        <main class="flex-grow space-y-6 min-w-0">
+            
+            <!-- Carte d'En-tête de la Page -->
+            <div class="bg-white dark:bg-[#0c0c0f] rounded-[8px] p-6 sm:p-8 border-0 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                <div>
+                    <h1 class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight uppercase">Vidéos & Émissions</h1>
+                    <p class="text-xs sm:text-sm text-slate-500 dark:text-zinc-400 font-medium mt-1">
+                        Retrouvez toutes les analyses, décryptages et vidéos tirés directement de la chaîne officielle <strong class="text-slate-900 dark:text-white">@KanebergYT</strong>.
+                    </p>
+                </div>
+
+                <!-- Recherche vidéo et Rafraîchissement -->
+                <div class="flex items-center gap-2 w-full md:w-auto shrink-0">
+                    <div class="relative flex-grow md:w-64">
+                        <input type="text" id="videoSearchInput" placeholder="Rechercher une vidéo..." 
+                            class="w-full bg-slate-100 dark:bg-[#121215] border-0 text-xs sm:text-sm rounded-[8px] pl-9 pr-3 py-2.5 outline-none focus:bg-slate-200/70 dark:focus:bg-[#18181c] transition-all text-slate-900 dark:text-zinc-100 placeholder-slate-400 dark:placeholder-zinc-500">
+                        <svg class="w-4 h-4 absolute left-3 top-3 text-slate-400 dark:text-zinc-500 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </div>
+
+                    <button onclick="fetchYouTubeVideos(true)" title="Actualiser la liste" 
+                        class="p-2.5 bg-slate-100 dark:bg-[#121215] hover:bg-slate-200 dark:hover:bg-zinc-800 text-slate-700 dark:text-zinc-300 rounded-[8px] transition-all border-0 shrink-0">
+                        <svg id="refreshSpinIcon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <div id="videosGrid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- État de chargement initial -->
+                <div class="col-span-full py-16 text-center space-y-3">
+                    <div class="w-8 h-8 border-3 border-slate-900 dark:border-white border-t-transparent rounded-full animate-spin mx-auto"></div>
+                    <p class="text-xs font-bold text-slate-500 dark:text-zinc-400">Chargement des vidéos...</p>
+                </div>
+            </div>
+
+            <!-- Contrôles de Pagination -->
+            <div id="paginationControls" class="hidden flex items-center justify-center gap-2 pt-4">
+                <!-- Généré par JS -->
+            </div>
+
+            <!-- Message en cas d'absence de résultat -->
+            <div id="noVideosFound" class="hidden bg-white dark:bg-[#0c0c0f] rounded-[8px] p-12 text-center border-0 shadow-sm space-y-3">
+                <div class="text-3xl">🎬</div>
+                <h3 class="text-base font-extrabold text-slate-900 dark:text-white">Aucune vidéo trouvée</h3>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 max-w-sm mx-auto">
+                    Aucune vidéo ne correspond à votre recherche.
+                </p>
+                <button onclick="resetSearch()" class="mt-2 px-4 py-2 bg-slate-900 dark:bg-white text-white dark:text-black font-bold text-xs rounded-[8px] hover:bg-slate-800 dark:hover:bg-zinc-200 transition-colors border-0">
+                    Réinitialiser la recherche
+                </button>
+            </div>
+
+        </main>
+
+        <aside class="w-full lg:w-80 flex-shrink-0 space-y-8">
+            
+            <div class="bg-white dark:bg-[#0c0c0f] rounded-[8px] p-6 border-0 shadow-sm space-y-4">
+                <h3 class="text-xs font-black uppercase tracking-widest text-slate-400 dark:text-zinc-500 pb-2">Articles Recommandés</h3>
+                <div id="sidebarSelectionPicks" class="space-y-3">
+                    <!-- Injecté par JS -->
+                </div>
+            </div>
+
+            <div class="bg-white dark:bg-[#0c0c0f] rounded-[8px] p-6 border-0 shadow-sm space-y-4">
+                <h3 class="text-xs font-black uppercase tracking-widest text-slate-400 dark:text-zinc-500 pb-2">Communauté</h3>
+                
+                <div class="space-y-2.5">
+                    <a href="https://www.youtube.com/@KanebergYT" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-3 rounded-[8px] bg-slate-50 dark:bg-[#121215] border-0 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-all group">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-[8px] bg-slate-900 dark:bg-white text-white dark:text-black flex items-center justify-center flex-shrink-0 font-black">
+                                <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                            </div>
+                            <div>
+                                <span class="text-xs font-extrabold text-slate-900 dark:text-white block">YouTube</span>
+                                <span class="text-[11px] text-slate-500 dark:text-zinc-500 font-medium">@KanebergYT</span>
+                            </div>
+                        </div>
+                        <span class="text-xs font-bold text-slate-400 dark:text-zinc-500 group-hover:text-slate-900 dark:group-hover:text-white group-hover:translate-x-0.5 transition-all">&rarr;</span>
+                    </a>
+
+                    <a href="https://discord.gg/FY3WYmaNxd" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-3 rounded-[8px] bg-slate-50 dark:bg-[#121215] border-0 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-all group">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-[8px] bg-slate-900 dark:bg-white text-white dark:text-black flex items-center justify-center flex-shrink-0 font-black">
+                                <svg class="w-4 h-4 fill-current text-white dark:text-black" viewBox="0 0 24 24">
+                                    <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <span class="text-xs font-extrabold text-slate-900 dark:text-white block">Discord</span>
+                                <span class="text-[11px] text-slate-500 dark:text-zinc-500 font-medium">Communauté Dune</span>
+                            </div>
+                        </div>
+                        <span class="text-xs font-bold text-slate-400 dark:text-zinc-500 group-hover:text-slate-900 dark:group-hover:text-white group-hover:translate-x-0.5 transition-all">&rarr;</span>
+                    </a>
+
+                    <a href="https://www.instagram.com/kaneberg.dune/" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-3 rounded-[8px] bg-slate-50 dark:bg-[#121215] border-0 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-all group">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-[8px] bg-slate-900 dark:bg-white text-white dark:text-black flex items-center justify-center flex-shrink-0 font-black">
+                                <svg class="w-4 h-4 fill-current text-white dark:text-black" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                            </div>
+                            <div>
+                                <span class="text-xs font-extrabold text-slate-900 dark:text-white block">Instagram</span>
+                                <span class="text-[11px] text-slate-500 dark:text-zinc-500 font-medium">@kaneberg.dune</span>
+                            </div>
+                        </div>
+                        <span class="text-xs font-bold text-slate-400 dark:text-zinc-500 group-hover:text-slate-900 dark:group-hover:text-white group-hover:translate-x-0.5 transition-all">&rarr;</span>
+                    </a>
+                </div>
+            </div>
+
+        </aside>
+
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toastNotification" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+        <div class="bg-slate-900 dark:bg-white text-white dark:text-black text-xs font-bold px-4 py-3 rounded-[8px] shadow-2xl flex items-center gap-2 border-0">
+            <span id="toastIcon">🎬</span>
+            <span id="toastMessage">Action effectuée</span>
+        </div>
+    </div>
+
+    <!-- Script Applicatif JavaScript -->
+    <script>
+        function initTheme() {
+            const savedTheme = localStorage.getItem('kb_theme');
+            if (savedTheme === 'dark') {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        }
+
+        function toggleTheme() {
+            const isDark = document.documentElement.classList.contains('dark');
+            if (isDark) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('kb_theme', 'light');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('kb_theme', 'dark');
+            }
+        }
+
+        initTheme();
+
+        function showToast(message, icon = '🎬') {
+            const toast = document.getElementById('toastNotification');
+            const msgEl = document.getElementById('toastMessage');
+            const iconEl = document.getElementById('toastIcon');
+            if (!toast || !msgEl) return;
+
+            msgEl.textContent = message;
+            if (iconEl) iconEl.textContent = icon;
+
+            toast.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
+            }, 2500);
+        }
+
+        const YOUTUBE_CHANNEL_ID = 'UC5dcUpWZnQJ11zli0r7b51w';
+        const RSS_FEED_URL = `https://www.youtube.com/feeds/videos.xml?channel_id=${YOUTUBE_CHANNEL_ID}`;
+        const RSS2JSON_ENDPOINT = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(RSS_FEED_URL)}`;
+
+        const fallbackVideos = [
+            {
+                id: "CidNJx4is7E",
+                title: "Comment DUNE a réussi à expliquer le voyage spatial ?",
+                pubDate: "2026-07-04",
+                thumbnail: "https://img.youtube.com/vi/CidNJx4is7E/hqdefault.jpg",
+                author: "Kaneberg"
+            },
+            {
+                id: "hek9xjJBcvQ",
+                title: "Pourquoi Stilgar est le personnage le plus TRAGIQUE de DUNE ?",
+                pubDate: "2026-06-27",
+                thumbnail: "https://img.youtube.com/vi/hek9xjJBcvQ/hqdefault.jpg",
+                author: "Kaneberg"
+            },
+            {
+                id: "OSNrhUhrTlE",
+                title: "Pourquoi l'épice est-il si important dans DUNE ?",
+                pubDate: "2026-06-13",
+                thumbnail: "https://img.youtube.com/vi/OSNrhUhrTlE/hqdefault.jpg",
+                author: "Kaneberg"
+            },
+            {
+                id: "QXmjcJ2xWTc",
+                title: "Les films DUNE vous ont MANIPULÉS (voici pourquoi)",
+                pubDate: "2026-06-06",
+                thumbnail: "https://img.youtube.com/vi/QXmjcJ2xWTc/hqdefault.jpg",
+                author: "Kaneberg"
+            },
+            {
+                id: "7eLpB_b9c-8",
+                title: "L'histoire secrète et mystérieuse des Bene Gesserit dans Dune",
+                pubDate: "2026-05-20",
+                thumbnail: "https://img.youtube.com/vi/7eLpB_b9c-8/hqdefault.jpg",
+                author: "Kaneberg"
+            },
+            {
+                id: "f4Y-m9R12uA",
+                title: "Dune Awakening : Tout ce qu'il faut savoir avant la sortie MMO",
+                pubDate: "2026-05-02",
+                thumbnail: "https://img.youtube.com/vi/f4Y-m9R12uA/hqdefault.jpg",
+                author: "Kaneberg"
+            },
+            {
+                id: "vA_Z6p8xQ4g",
+                title: "Pourquoi la Guilde Spatiale contrôle l'univers de Dune ?",
+                pubDate: "2026-04-18",
+                thumbnail: "https://img.youtube.com/vi/vA_Z6p8xQ4g/hqdefault.jpg",
+                author: "Kaneberg"
+            },
+            {
+                id: "_4K6vA4Y0hM",
+                title: "Denis Villeneuve a-t-il modifié la fin de Dune Partie 2 ?",
+                pubDate: "2026-04-01",
+                thumbnail: "https://img.youtube.com/vi/_4K6vA4Y0hM/hqdefault.jpg",
+                author: "Kaneberg"
+            },
+            {
+                id: "X9kY_s4oQW8",
+                title: "L'origine cachée des Fremen et de la planète Arrakis",
+                pubDate: "2026-03-22",
+                thumbnail: "https://img.youtube.com/vi/X9kY_s4oQW8/hqdefault.jpg",
+                author: "Kaneberg"
+            },
+            {
+                id: "bG9jP0gXQ5Y",
+                title: "Le Jihad Butlérien : La grande guerre contre les machines intelligentes",
+                pubDate: "2026-03-10",
+                thumbnail: "https://img.youtube.com/vi/bG9jP0gXQ5Y/hqdefault.jpg",
+                author: "Kaneberg"
+            },
+            {
+                id: "R_3L8Z9pQ2A",
+                title: "Paul Atréide est-il réellement le héros ou le grand vilain de l'histoire ?",
+                pubDate: "2026-02-28",
+                thumbnail: "https://img.youtube.com/vi/R_3L8Z9pQ2A/hqdefault.jpg",
+                author: "Kaneberg"
+            },
+            {
+                id: "mP5g_X6kY9A",
+                title: "Dune 3 Le Messie : Ce qui nous attend au cinéma",
+                pubDate: "2026-02-14",
+                thumbnail: "https://img.youtube.com/vi/mP5g_X6kY9A/hqdefault.jpg",
+                author: "Kaneberg"
+            }
+        ];
+
+        let fetchedVideos = [];
+        let currentPage = 1;
+        const videosPerPage = 6;
+
+        function extractYouTubeId(urlOrGuid) {
+            if (!urlOrGuid) return null;
+            if (urlOrGuid.includes('yt:video:')) {
+                return urlOrGuid.replace('yt:video:', '');
+            }
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            const match = urlOrGuid.match(regExp);
+            return (match && match[2].length === 11) ? match[2] : urlOrGuid;
+        }
+
+        function formatDateFR(dateString) {
+            if (!dateString) return '';
+            try {
+                const date = new Date(dateString);
+                return date.toLocaleDateString('fr-FR', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                });
+            } catch (e) {
+                return dateString;
+            }
+        }
+
+        async function fetchYouTubeVideos(userTriggered = false) {
+            const refreshIcon = document.getElementById('refreshSpinIcon');
+            if (refreshIcon) refreshIcon.classList.add('animate-spin');
+
+            if (userTriggered) showToast("Mise à jour du flux en cours...", "🔄");
+
+            try {
+                const response = await fetch(`${RSS2JSON_ENDPOINT}&t=${Date.now()}`);
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    
+                    if (data.status === 'ok' && data.items && data.items.length > 0) {
+                        fetchedVideos = data.items.map(item => {
+                            const videoId = extractYouTubeId(item.guid || item.link);
+                            return {
+                                id: videoId,
+                                title: item.title,
+                                pubDate: formatDateFR(item.pubDate),
+                                thumbnail: `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`,
+                                link: item.link || `https://www.youtube.com/watch?v=${videoId}`,
+                                author: item.author || "Kaneberg"
+                            };
+                        });
+                        if (userTriggered) showToast("Flux YouTube à jour !", "✅");
+                    } else {
+                        throw new Error("Flux vide");
+                    }
+                } else {
+                    throw new Error("Erreur HTTP " + response.status);
+                }
+            } catch (err) {
+                fetchedVideos = fallbackVideos.map(v => ({
+                    ...v,
+                    pubDate: formatDateFR(v.pubDate),
+                    link: `https://www.youtube.com/watch?v=${v.id}`
+                }));
+                if (userTriggered) showToast("Vidéos actualisées", "ℹ️");
+            } finally {
+                if (refreshIcon) refreshIcon.classList.remove('animate-spin');
+                currentPage = 1;
+                renderVideoFeed();
+            }
+        }
+
+        function renderVideoFeed() {
+            const grid = document.getElementById('videosGrid');
+            const noRes = document.getElementById('noVideosFound');
+            const paginationEl = document.getElementById('paginationControls');
+
+            if (!grid) return;
+
+            const query = (document.getElementById('videoSearchInput')?.value || '').toLowerCase().trim();
+            let filteredList = fetchedVideos;
+
+            if (query) {
+                filteredList = filteredList.filter(v => v.title.toLowerCase().includes(query));
+            }
+
+            if (filteredList.length === 0) {
+                grid.classList.add('hidden');
+                if (paginationEl) paginationEl.classList.add('hidden');
+                if (noRes) noRes.classList.remove('hidden');
+                return;
+            }
+
+            grid.classList.remove('hidden');
+            if (noRes) noRes.classList.add('hidden');
+
+            const totalPages = Math.ceil(filteredList.length / videosPerPage);
+            if (currentPage > totalPages) currentPage = 1;
+
+            const startIndex = (currentPage - 1) * videosPerPage;
+            const paginatedVideos = filteredList.slice(startIndex, startIndex + videosPerPage);
+
+            grid.innerHTML = '';
+            paginatedVideos.forEach(video => {
+                const card = document.createElement('a');
+                card.href = video.link || `https://www.youtube.com/watch?v=${video.id}`;
+                card.target = "_blank";
+                card.rel = "noopener noreferrer";
+                card.className = "group bg-white dark:bg-[#0c0c0f] rounded-[8px] border-0 shadow-sm hover:shadow-md overflow-hidden transition-all duration-300 flex flex-col";
+
+                card.innerHTML = `
+                    <div class="relative overflow-hidden bg-black aspect-video">
+                        <img src="${video.thumbnail}" alt="${video.title}" 
+                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100"
+                             onerror="this.src='https://img.youtube.com/vi/${video.id}/hqdefault.jpg'">
+                    </div>
+
+                    <div class="p-5 flex flex-col flex-grow justify-between space-y-4">
+                        <div>
+                            <h3 class="font-extrabold text-slate-900 dark:text-white text-base leading-snug group-hover:text-slate-600 dark:group-hover:text-zinc-300 transition-colors line-clamp-2 mb-2">
+                                ${video.title}
+                            </h3>
+                        </div>
+
+                        <div class="flex items-center justify-between text-[11px] font-medium text-slate-400 dark:text-zinc-500 border-t border-slate-100 dark:border-[#1e1e24] pt-3">
+                            <span class="font-bold text-slate-700 dark:text-zinc-300">${video.author}</span>
+                            <span>${video.pubDate}</span>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+
+            renderPaginationControls(totalPages);
+        }
+
+        function renderPaginationControls(totalPages) {
+            const container = document.getElementById('paginationControls');
+            if (!container) return;
+
+            if (totalPages <= 1) {
+                container.classList.add('hidden');
+                return;
+            }
+
+            container.classList.remove('hidden');
+            container.innerHTML = '';
+
+            const prevBtn = document.createElement('button');
+            prevBtn.innerText = "← Précédent";
+            prevBtn.disabled = currentPage === 1;
+            prevBtn.className = `px-3.5 py-2 rounded-[8px] text-xs font-bold transition-all border-0 ${
+                currentPage === 1 
+                ? 'opacity-40 cursor-not-allowed bg-slate-100 dark:bg-[#121215] text-slate-400 dark:text-zinc-600' 
+                : 'bg-slate-100 dark:bg-[#121215] text-slate-700 dark:text-zinc-300 hover:bg-slate-200 dark:hover:bg-zinc-800'
+            }`;
+            prevBtn.onclick = () => changePage(currentPage - 1);
+            container.appendChild(prevBtn);
+
+            for (let i = 1; i <= totalPages; i++) {
+                const pageBtn = document.createElement('button');
+                pageBtn.innerText = i;
+                pageBtn.className = `w-8 h-8 rounded-[8px] text-xs font-extrabold transition-all border-0 flex items-center justify-center ${
+                    i === currentPage 
+                    ? 'bg-slate-900 dark:bg-white text-white dark:text-black shadow-sm' 
+                    : 'bg-slate-100 dark:bg-[#121215] text-slate-700 dark:text-zinc-300 hover:bg-slate-200 dark:hover:bg-zinc-800'
+                }`;
+                pageBtn.onclick = () => changePage(i);
+                container.appendChild(pageBtn);
+            }
+
+            const nextBtn = document.createElement('button');
+            nextBtn.innerText = "Suivant →";
+            nextBtn.disabled = currentPage === totalPages;
+            nextBtn.className = `px-3.5 py-2 rounded-[8px] text-xs font-bold transition-all border-0 ${
+                currentPage === totalPages 
+                ? 'opacity-40 cursor-not-allowed bg-slate-100 dark:bg-[#121215] text-slate-400 dark:text-zinc-600' 
+                : 'bg-slate-100 dark:bg-[#121215] text-slate-700 dark:text-zinc-300 hover:bg-slate-200 dark:hover:bg-zinc-800'
+            }`;
+            nextBtn.onclick = () => changePage(currentPage + 1);
+            container.appendChild(nextBtn);
+        }
+
+        function changePage(newPage) {
+            currentPage = newPage;
+            renderVideoFeed();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function resetSearch() {
+            const vSearch = document.getElementById('videoSearchInput');
+            if (vSearch) vSearch.value = '';
+            currentPage = 1;
+            renderVideoFeed();
+        }
+
+        const fallbackArticles = [
+            { id: "probleme-dune-awakening-2026", title: "Le problème de DUNE Awakening en 2026", category: "Actu" },
+            { id: "origine-epice", title: "L'Épice Mélange : Analyse biologique et économique", category: "Lore" },
+            { id: "jihad-butlerien", title: "Le Jihad Butlérien : Pourquoi l'IA a été bannie", category: "Science" }
+        ];
+
+        async function renderSidebarPicks() {
+            const container = document.getElementById('sidebarSelectionPicks');
+            if (!container) return;
+
+            let articles = fallbackArticles;
+            try {
+                const res = await fetch(`articles.json?t=${Date.now()}`);
+                if (res.ok) articles = await res.json();
+            } catch (e) {}
+
+            container.innerHTML = '';
+            articles.slice(0, 3).forEach((art, idx) => {
+                const item = document.createElement('a');
+                item.href = `article.html?id=${art.id}`;
+                item.className = `flex gap-3.5 group items-start ${idx > 0 ? 'border-t border-slate-100 dark:border-[#1e1e24] pt-3.5' : ''}`;
+
+                const catShort = (art.category || 'Actu').substring(0, 4);
+
+                item.innerHTML = `
+                    <div class="w-14 h-14 rounded-[8px] bg-slate-100 dark:bg-[#121215] flex-shrink-0 overflow-hidden relative border-0">
+                        ${art.image ? `<img src="${art.image}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 opacity-90 dark:opacity-80" onerror="this.remove()">` : `<span class="absolute inset-0 flex items-center justify-center font-black text-slate-400 dark:text-zinc-600 text-xs uppercase tracking-widest">${catShort}</span>`}
+                    </div>
+                    <div class="space-y-1 min-w-0">
+                        <span class="text-[10px] font-black text-slate-900 dark:text-white uppercase tracking-widest block">${art.category || 'Article'}</span>
+                        <h4 class="text-xs font-bold text-slate-900 dark:text-white group-hover:text-slate-600 dark:group-hover:text-zinc-300 transition-colors line-clamp-2 leading-snug">${art.title}</h4>
+                    </div>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderSidebarPicks();
+            fetchYouTubeVideos();
+
+            const vSearch = document.getElementById('videoSearchInput');
+            if (vSearch) {
+                vSearch.addEventListener('input', () => {
+                    currentPage = 1;
+                    renderVideoFeed();
+                });
+            }
+
+            const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+            const closeMobileMenu = document.getElementById('closeMobileMenu');
+            const leftSidebar = document.getElementById('leftSidebar');
+            const mobileMenuBackdrop = document.getElementById('mobileMenuBackdrop');
+
+            function openDrawer() {
+                if (leftSidebar && mobileMenuBackdrop) {
+                    mobileMenuBackdrop.classList.remove('hidden');
+                    void mobileMenuBackdrop.offsetWidth;
+                    mobileMenuBackdrop.classList.remove('opacity-0', 'pointer-events-none');
+                    mobileMenuBackdrop.classList.add('opacity-100');
+                    leftSidebar.classList.remove('-translate-x-full');
+                    document.body.classList.add('overflow-hidden');
+                }
+            }
+
+            function closeDrawer() {
+                if (leftSidebar && mobileMenuBackdrop) {
+                    leftSidebar.classList.add('-translate-x-full');
+                    mobileMenuBackdrop.classList.remove('opacity-100');
+                    mobileMenuBackdrop.classList.add('opacity-0', 'pointer-events-none');
+                    setTimeout(() => mobileMenuBackdrop.classList.add('hidden'), 300);
+                    document.body.classList.remove('overflow-hidden');
+                }
+            }
+
+            if (mobileMenuToggle) mobileMenuToggle.addEventListener('click', openDrawer);
+            if (closeMobileMenu) closeMobileMenu.addEventListener('click', closeDrawer);
+            if (mobileMenuBackdrop) mobileMenuBackdrop.addEventListener('click', closeDrawer);
+
+            if (leftSidebar) {
+                leftSidebar.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        if (window.innerWidth < 1024) closeDrawer();
+                    });
+                });
+            }
+
+            const globalSearchInput = document.getElementById('globalSearchInput');
+            if (globalSearchInput) {
+                globalSearchInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter' && globalSearchInput.value.trim() !== '') {
+                        window.location.href = `articles.html?q=${encodeURIComponent(globalSearchInput.value.trim())}`;
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
