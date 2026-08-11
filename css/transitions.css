@@ -1,34 +1,29 @@
-/* STREAMING_CHUNK: Styling navigation and page transitions... /
-/ Barre de progression en haut de page */
-#kb-top-bar {
-position: fixed;
-top: 0;
-left: 0;
-height: 2px;
-z-index: 9999;
-transition: width 0.3s ease, opacity 0.3s ease;
-pointer-events: none;
+/* ============================================================
+   TRANSITIONS DE PAGE SÉCURISÉES (ANTI-PAGE BLANCHE)
+   ============================================================ */
+
+/* Par défaut, la page est VISIBLE. 
+   Si le JS ne charge pas ou plante, le site reste utilisable. */
+body {
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
 }
 
-/* Effet de transition léger uniquement au clic */
-body.page-exiting {
-opacity: 0.6;
-transition: opacity 0.15s ease-out;
+/* État masqué lors de la sortie (clic sur un lien) */
+body.page-is-exITING {
+  opacity: 0;
+  pointer-events: none; /* Empêche les double-clics pendant la transition */
 }
 
-/* View Transitions API */
-::view-transition-old(root) {
-animation: 120ms ease-out both fade-out;
-}
-::view-transition-new(root) {
-animation: 180ms ease-in both fade-in;
+/* État masqué au démarrage de l'apparition */
+body.page-is-entering {
+  opacity: 0;
 }
 
-@keyframes fade-out {
-from { opacity: 1; }
-to { opacity: 0.6; }
-}
-@keyframes fade-in {
-from { opacity: 0.6; }
-to { opacity: 1; }
+/* Prise en compte des préférences d'accessibilité (réduction de mouvement) */
+@media (prefers-reduced-motion: reduce) {
+  body {
+    transition: none !important;
+    opacity: 1 !important;
+  }
 }
