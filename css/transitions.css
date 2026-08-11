@@ -1,29 +1,42 @@
-/* ============================================================
-   TRANSITIONS DE PAGE SÉCURISÉES (ANTI-PAGE BLANCHE)
-   ============================================================ */
-
-/* Par défaut, la page est VISIBLE. 
-   Si le JS ne charge pas ou plante, le site reste utilisable. */
-body {
-  opacity: 1;
-  transition: opacity 0.3s ease-in-out;
+/* Animation de balayement lumineuse */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
 }
 
-/* État masqué lors de la sortie (clic sur un lien) */
-body.page-is-exITING {
-  opacity: 0;
-  pointer-events: none; /* Empêche les double-clics pendant la transition */
+.skeleton {
+  background: linear-gradient(90deg, #1a1a20 25%, #2a2a34 50%, #1a1a20 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite linear;
+  border-radius: 6px;
+  pointer-events: none;
 }
 
-/* État masqué au démarrage de l'apparition */
-body.page-is-entering {
-  opacity: 0;
+/* Tailles des blocs factices */
+.skeleton-title {
+  height: 1.8rem;
+  width: 70%;
+  margin-bottom: 0.8rem;
 }
 
-/* Prise en compte des préférences d'accessibilité (réduction de mouvement) */
-@media (prefers-reduced-motion: reduce) {
-  body {
-    transition: none !important;
-    opacity: 1 !important;
-  }
+.skeleton-text {
+  height: 1rem;
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+
+.skeleton-media {
+  width: 100%;
+  height: 240px;
+  margin-bottom: 1rem;
+}
+
+/* Transition fluide quand le contenu réel apparaît */
+.fade-in {
+  animation: fadeIn 0.35s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
 }
