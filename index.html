@@ -225,7 +225,7 @@
                     </a>
                 </div>
 
-                <!-- Thématiques & Catégories sans bordures lourdes -->
+                <!-- Thématiques & Catégories -->
                 <div class="py-4 my-2 border-y border-slate-200 dark:border-[#1e1e24] space-y-2.5">
                     <div class="px-1 text-[10px] font-black text-slate-400 dark:text-zinc-500 uppercase tracking-widest">Thématiques</div>
                     <div class="flex flex-wrap gap-1.5 px-0.5">
@@ -271,27 +271,31 @@
         <!-- FLUX DE CONTENU CENTRAL -->
         <main class="flex-grow space-y-8 min-w-0">
             
-            <!-- Hero Article Sans Bordure -->
-            <div class="relative rounded-[8px] overflow-hidden border-0 shadow-sm bg-slate-950 group min-h-[380px] sm:min-h-[440px] flex flex-col justify-end">
-                <img id="heroImage" src="images/da.vid3.png" alt="Hero Dune Awakening" 
+            <!-- Hero Article (Structure Skeleton dynamique au chargement) -->
+            <div class="relative rounded-[8px] overflow-hidden border-0 shadow-sm bg-slate-900 dark:bg-[#121215] group min-h-[380px] sm:min-h-[440px] flex flex-col justify-end">
+                <img id="heroImage" src="" alt="" 
                      class="absolute inset-0 w-full h-full object-cover opacity-75 dark:opacity-60 group-hover:scale-105 group-hover:opacity-85 transition-all duration-500 ease-out" 
-                     onerror="this.style.opacity='0.2'">
+                     onerror="this.style.opacity='0'">
                 
                 <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent"></div>
 
                 <div class="relative z-10 p-6 sm:p-8 md:p-10 space-y-3.5 max-w-3xl">
-                    <span id="heroCategory" class="inline-block bg-white/20 dark:bg-zinc-900/90 backdrop-blur-md text-white border-0 text-[10px] font-black px-3 py-1 rounded-[8px] uppercase tracking-widest">
-                        Actu &bull; 10 min
-                    </span>
+                    <div>
+                        <span id="heroCategory" class="inline-block skeleton text-transparent border-0 text-[10px] font-black px-3 py-1 rounded-[8px] uppercase tracking-widest min-w-[80px]">
+                            &nbsp;
+                        </span>
+                    </div>
 
                     <h1 class="text-2xl sm:text-3xl md:text-4xl font-black text-white leading-tight tracking-tight">
-                        <a id="heroLink" href="article.html?id=probleme-dune-awakening-2026" class="hover:underline">
-                            <span id="heroTitle">Le problème de DUNE Awakening en 2026 : Entre fausses promesses et rédemption</span>
+                        <a id="heroLink" href="#" class="hover:underline">
+                            <span id="heroTitle" class="inline-block skeleton text-transparent rounded-[8px] w-full">
+                                &nbsp;
+                            </span>
                         </a>
                     </h1>
 
-                    <p id="heroSummary" class="text-sm sm:text-base text-slate-200 dark:text-zinc-300 line-clamp-2 font-normal leading-relaxed">
-                        Dune Awakening a-t-il menti à sa communauté ? Retour sur la polémique du MMO de Funcom, ses échecs de design au lancement, et sa spectaculaire mise à jour PvE/PvP de 2026.
+                    <p id="heroSummary" class="text-sm sm:text-base text-slate-200 dark:text-zinc-300 line-clamp-2 font-normal leading-relaxed skeleton text-transparent rounded-[8px] w-4/5">
+                        &nbsp;
                     </p>
 
                     <div class="flex items-center gap-3 pt-2 border-t border-white/10 dark:border-zinc-800/80">
@@ -299,7 +303,7 @@
                             K
                         </div>
                         <div class="text-xs text-slate-300 dark:text-zinc-400 font-medium">
-                            Par <span id="heroAuthor" class="text-white font-bold">Rédaction Kaneberg</span> &bull; 1er Juillet 2026
+                            Par <span id="heroAuthor" class="text-white font-bold">Kaneberg</span>
                         </div>
                     </div>
                 </div>
@@ -322,7 +326,7 @@
         <!-- SIDEBAR DROITE -->
         <aside class="w-full lg:w-80 flex-shrink-0 space-y-8">
             
-            <!-- Bloc Dernières Actualités sans bordure -->
+            <!-- Bloc Dernières Actualités -->
             <div class="bg-white dark:bg-[#0c0c0f] rounded-[8px] p-6 border-0 shadow-sm space-y-4">
                 <h3 class="text-xs font-black uppercase tracking-widest text-slate-400 dark:text-zinc-500 pb-2">Dernières Actualités</h3>
                 
@@ -331,7 +335,7 @@
                 </div>
             </div>
 
-            <!-- Bloc Réseaux & Communauté sans bordure -->
+            <!-- Bloc Réseaux & Communauté -->
             <div class="bg-white dark:bg-[#0c0c0f] rounded-[8px] p-6 border-0 shadow-sm space-y-4">
                 <h3 class="text-xs font-black uppercase tracking-widest text-slate-400 dark:text-zinc-500 pb-2">Communauté</h3>
                 
@@ -473,7 +477,7 @@
         function renderUI() {
             if (!allArticles || allArticles.length === 0) return;
 
-            // 1. Hero Article
+            // 1. Hero Article (Remplacement propre sans résidu)
             const hero = allArticles[0];
             const heroTitle = document.getElementById('heroTitle');
             const heroSummary = document.getElementById('heroSummary');
@@ -482,14 +486,24 @@
             const heroLink = document.getElementById('heroLink');
             const heroImage = document.getElementById('heroImage');
 
-            if (heroTitle) heroTitle.textContent = hero.title;
-            if (heroSummary) heroSummary.textContent = hero.summary;
-            if (heroCategory) heroCategory.textContent = `${hero.category || 'Actu'} • ${hero.readTime || '10 min'}`;
+            if (heroTitle) {
+                heroTitle.textContent = hero.title;
+                heroTitle.classList.remove('skeleton', 'text-transparent');
+            }
+            if (heroSummary) {
+                heroSummary.textContent = hero.summary;
+                heroSummary.classList.remove('skeleton', 'text-transparent');
+            }
+            if (heroCategory) {
+                heroCategory.textContent = `${hero.category || 'Actu'} • ${hero.readTime || '10 min'}`;
+                heroCategory.classList.remove('skeleton', 'text-transparent');
+                heroCategory.classList.add('bg-white/20', 'dark:bg-zinc-900/90', 'backdrop-blur-md', 'text-white');
+            }
             if (heroAuthor) heroAuthor.textContent = hero.author || 'Rédaction Kaneberg';
             if (heroLink) heroLink.href = `article.html?id=${hero.id}`;
             if (heroImage && hero.image) heroImage.src = hero.image;
 
-            // 2. Grille d'Articles Principale Sans Bordures Trait Lourd
+            // 2. Grille d'Articles Principale
             const gridContainer = document.getElementById('articlesGrid');
             if (gridContainer) {
                 gridContainer.innerHTML = '';
