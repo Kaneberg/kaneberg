@@ -255,8 +255,8 @@
             
             <!-- Hero Article (Transition Fondu Doux) -->
             <div class="relative rounded-[8px] overflow-hidden border-0 shadow-sm bg-slate-950 group min-h-[380px] sm:min-h-[440px] flex flex-col justify-end">
-                <img id="heroImage" src="" alt="" 
-                     class="absolute inset-0 w-full h-full object-cover opacity-75 dark:opacity-60 group-hover:scale-105 group-hover:opacity-85 transition-all duration-500 ease-out" 
+                <img id="heroImage" alt="Article principal" 
+                     class="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:scale-105 transition-all duration-500 ease-out" 
                      onerror="this.style.opacity='0'">
                 
                 <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent"></div>
@@ -423,11 +423,9 @@
         function fetchArticles() {
             const grid = document.getElementById('articlesGrid');
             const heroContent = document.getElementById('heroContent');
-            const newsContainer = document.getElementById('latestNewsContainer');
 
             if (grid) grid.classList.add('opacity-0');
             if (heroContent) heroContent.classList.add('opacity-0');
-            if (newsContainer) newsContainer.classList.add('opacity-0');
 
             const cacheBuster = `?t=${Date.now()}`;
             fetch(`articles.json${cacheBuster}`)
@@ -462,7 +460,17 @@
             if (heroCategory) heroCategory.textContent = `${hero.category || 'Actu'} • ${hero.readTime || '10 min'}`;
             if (heroAuthor) heroAuthor.textContent = hero.author || 'Rédaction Kaneberg';
             if (heroLink) heroLink.href = `article.html?id=${hero.id}`;
-            if (heroImage && hero.image) heroImage.src = hero.image;
+            
+            if (heroImage) {
+                if (hero.image) {
+                    heroImage.src = hero.image;
+                    heroImage.alt = hero.title || '';
+                    heroImage.style.opacity = '';
+                    heroImage.className = "absolute inset-0 w-full h-full object-cover opacity-75 dark:opacity-60 group-hover:scale-105 group-hover:opacity-85 transition-all duration-500 ease-out";
+                } else {
+                    heroImage.style.opacity = '0';
+                }
+            }
 
             // 2. Grille d'Articles Principale
             const gridContainer = document.getElementById('articlesGrid');
