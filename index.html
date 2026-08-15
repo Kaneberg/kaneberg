@@ -85,6 +85,24 @@
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
+
+        /* Animation Skeleton / Chargement */
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        .skeleton {
+            background: linear-gradient(90deg, #e2e8f0 25%, #f8fafc 50%, #e2e8f0 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+        }
+
+        .dark .skeleton {
+            background: linear-gradient(90deg, #121215 25%, #1e1e24 50%, #121215 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+        }
     </style>
 </head>
 
@@ -405,54 +423,37 @@
 
         let allArticles = [];
 
-        const fallbackArticles = [
-            {
-                id: "probleme-dune-awakening-2026",
-                title: "Le problème de DUNE Awakening en 2026 : Entre fausses promesses et rédemption",
-                category: "Actu",
-                selection: true,
-                readTime: "10 min",
-                author: "Rédaction Kaneberg",
-                date: "2026-07-01",
-                image: "images/da.vid3.png",
-                summary: "Dune Awakening a-t-il menti à sa communauté ? Retour sur la polémique du MMO de Funcom, ses échecs de design au lancement, et sa spectaculaire mise à jour PvE/PvP de 2026."
-            },
-            {
-                id: "origine-epice",
-                title: "L'Épice Mélange : Analyse biologique et économique de la substance la plus rare",
-                category: "Lore",
-                selection: true,
-                readTime: "8 min",
-                author: "Rédaction Kaneberg",
-                date: "2026-06-30",
-                image: "",
-                summary: "L'Épice, ou Mélange, est le pilier de l'Empire. Mais comment est-elle produite exactement sur Arrakis et pourquoi fixe-t-elle l'économie galactique ?"
-            },
-            {
-                id: "jihad-butlerien",
-                title: "Le Jihad Butlérien : Pourquoi l'IA et les machines pensantes ont été bannies",
-                category: "Science",
-                selection: false,
-                readTime: "12 min",
-                author: "Rédaction Kaneberg",
-                date: "2026-06-25",
-                image: "",
-                summary: "Mille ans avant Paul Atréides, l'humanité a fait la guerre aux machines. Retour sur le conflit fondateur qui a banni les ordinateurs de l'univers connu."
-            },
-            {
-                id: "philosophie-muaddib",
-                title: "Le danger des figures messianiques : La leçon politique de Frank Herbert",
-                category: "Philosophie",
-                selection: false,
-                readTime: "7 min",
-                author: "Rédaction Kaneberg",
-                date: "2026-06-18",
-                image: "",
-                summary: "Pourquoi Frank Herbert a-t-il écrit Dune comme une mise en garde contre les héros charismatiques ? Décryptage de la philosophie de Paul Muad'Dib."
+        function showSkeletons() {
+            const gridContainer = document.getElementById('articlesGrid');
+            if (gridContainer) {
+                gridContainer.innerHTML = Array(4).fill(0).map(() => `
+                    <div class="bg-white dark:bg-[#0c0c0f] rounded-[8px] overflow-hidden flex flex-col space-y-4 p-4 shadow-sm border border-slate-100 dark:border-[#18181c]">
+                        <div class="w-full h-40 skeleton rounded-[8px]"></div>
+                        <div class="h-4 w-3/4 skeleton rounded-[4px]"></div>
+                        <div class="h-3 w-full skeleton rounded-[4px]"></div>
+                        <div class="h-3 w-1/2 skeleton rounded-[4px]"></div>
+                    </div>
+                `).join('');
             }
-        ];
+        }
+
+        function showErrorUI() {
+            const gridContainer = document.getElementById('articlesGrid');
+            if (gridContainer) {
+                gridContainer.innerHTML = `
+                    <div class="col-span-full py-12 text-center space-y-3">
+                        <p class="text-sm font-bold text-slate-500 dark:text-zinc-400">Impossible de charger les articles pour le moment.</p>
+                        <button onclick="fetchArticles()" class="px-4 py-2 text-xs font-bold bg-slate-900 dark:bg-white text-white dark:text-black rounded-[8px]">
+                            Réessayer
+                        </button>
+                    </div>
+                `;
+            }
+        }
 
         function fetchArticles() {
+            showSkeletons();
+
             const cacheBuster = `?t=${Date.now()}`;
             fetch(`articles.json${cacheBuster}`)
                 .then(response => {
@@ -464,9 +465,8 @@
                     renderUI();
                 })
                 .catch(err => {
-                    console.warn('Utilisation des articles de secours:', err);
-                    allArticles = fallbackArticles;
-                    renderUI();
+                    console.error('Erreur de chargement:', err);
+                    showErrorUI();
                 });
         }
 
