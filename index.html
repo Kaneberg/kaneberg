@@ -85,24 +85,6 @@
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
-
-        /* Animation Skeleton / Chargement */
-        @keyframes shimmer {
-            0% { background-position: -200% 0; }
-            100% { background-position: 200% 0; }
-        }
-
-        .skeleton {
-            background: linear-gradient(90deg, #e2e8f0 25%, #f8fafc 50%, #e2e8f0 75%);
-            background-size: 200% 100%;
-            animation: shimmer 1.5s infinite;
-        }
-
-        .dark .skeleton {
-            background: linear-gradient(90deg, #121215 25%, #1e1e24 50%, #121215 75%);
-            background-size: 200% 100%;
-            animation: shimmer 1.5s infinite;
-        }
     </style>
 </head>
 
@@ -271,31 +253,27 @@
         <!-- FLUX DE CONTENU CENTRAL -->
         <main class="flex-grow space-y-8 min-w-0">
             
-            <!-- Hero Article (Structure Skeleton dynamique au chargement) -->
-            <div class="relative rounded-[8px] overflow-hidden border-0 shadow-sm bg-slate-900 dark:bg-[#121215] group min-h-[380px] sm:min-h-[440px] flex flex-col justify-end">
+            <!-- Hero Article (Transition Fondu Doux) -->
+            <div class="relative rounded-[8px] overflow-hidden border-0 shadow-sm bg-slate-950 group min-h-[380px] sm:min-h-[440px] flex flex-col justify-end">
                 <img id="heroImage" src="" alt="" 
                      class="absolute inset-0 w-full h-full object-cover opacity-75 dark:opacity-60 group-hover:scale-105 group-hover:opacity-85 transition-all duration-500 ease-out" 
                      onerror="this.style.opacity='0'">
                 
                 <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent"></div>
 
-                <div class="relative z-10 p-6 sm:p-8 md:p-10 space-y-3.5 max-w-3xl">
+                <div id="heroContent" class="relative z-10 p-6 sm:p-8 md:p-10 space-y-3.5 max-w-3xl opacity-0 transition-opacity duration-300">
                     <div>
-                        <span id="heroCategory" class="inline-block skeleton text-transparent border-0 text-[10px] font-black px-3 py-1 rounded-[8px] uppercase tracking-widest min-w-[80px]">
-                            &nbsp;
+                        <span id="heroCategory" class="inline-block bg-white/20 dark:bg-zinc-900/90 backdrop-blur-md text-white border-0 text-[10px] font-black px-3 py-1 rounded-[8px] uppercase tracking-widest">
                         </span>
                     </div>
 
                     <h1 class="text-2xl sm:text-3xl md:text-4xl font-black text-white leading-tight tracking-tight">
                         <a id="heroLink" href="#" class="hover:underline">
-                            <span id="heroTitle" class="inline-block skeleton text-transparent rounded-[8px] w-full">
-                                &nbsp;
-                            </span>
+                            <span id="heroTitle"></span>
                         </a>
                     </h1>
 
-                    <p id="heroSummary" class="text-sm sm:text-base text-slate-200 dark:text-zinc-300 line-clamp-2 font-normal leading-relaxed skeleton text-transparent rounded-[8px] w-4/5">
-                        &nbsp;
+                    <p id="heroSummary" class="text-sm sm:text-base text-slate-200 dark:text-zinc-300 line-clamp-2 font-normal leading-relaxed">
                     </p>
 
                     <div class="flex items-center gap-3 pt-2 border-t border-white/10 dark:border-zinc-800/80">
@@ -309,14 +287,14 @@
                 </div>
             </div>
 
-            <!-- Grille d'Articles : 2 par ligne (md:grid-cols-2) -->
+            <!-- Grille d'Articles (Transition Fondu Doux) -->
             <div class="space-y-4">
                 <div class="flex items-center justify-between border-b border-slate-200 dark:border-[#1e1e24] pb-3">
                     <h2 class="text-xs sm:text-sm font-black text-slate-900 dark:text-white tracking-widest uppercase">Dernières Analyses</h2>
                     <a href="articles.html" class="text-xs font-bold text-slate-500 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white transition-colors">Tout voir &rarr;</a>
                 </div>
 
-                <div id="articlesGrid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div id="articlesGrid" class="grid grid-cols-1 md:grid-cols-2 gap-6 opacity-0 transition-opacity duration-300">
                     <!-- Injecté dynamiquement par JavaScript -->
                 </div>
             </div>
@@ -330,7 +308,7 @@
             <div class="bg-white dark:bg-[#0c0c0f] rounded-[8px] p-6 border-0 shadow-sm space-y-4">
                 <h3 class="text-xs font-black uppercase tracking-widest text-slate-400 dark:text-zinc-500 pb-2">Dernières Actualités</h3>
                 
-                <div id="latestNewsContainer" class="space-y-4">
+                <div id="latestNewsContainer" class="space-y-4 opacity-0 transition-opacity duration-300">
                     <!-- Généré dynamiquement par JavaScript -->
                 </div>
             </div>
@@ -427,20 +405,6 @@
 
         let allArticles = [];
 
-        function showSkeletons() {
-            const gridContainer = document.getElementById('articlesGrid');
-            if (gridContainer) {
-                gridContainer.innerHTML = Array(4).fill(0).map(() => `
-                    <div class="bg-white dark:bg-[#0c0c0f] rounded-[8px] overflow-hidden flex flex-col space-y-4 p-4 shadow-sm border border-slate-100 dark:border-[#18181c]">
-                        <div class="w-full h-40 skeleton rounded-[8px]"></div>
-                        <div class="h-4 w-3/4 skeleton rounded-[4px]"></div>
-                        <div class="h-3 w-full skeleton rounded-[4px]"></div>
-                        <div class="h-3 w-1/2 skeleton rounded-[4px]"></div>
-                    </div>
-                `).join('');
-            }
-        }
-
         function showErrorUI() {
             const gridContainer = document.getElementById('articlesGrid');
             if (gridContainer) {
@@ -452,11 +416,18 @@
                         </button>
                     </div>
                 `;
+                gridContainer.classList.remove('opacity-0');
             }
         }
 
         function fetchArticles() {
-            showSkeletons();
+            const grid = document.getElementById('articlesGrid');
+            const heroContent = document.getElementById('heroContent');
+            const newsContainer = document.getElementById('latestNewsContainer');
+
+            if (grid) grid.classList.add('opacity-0');
+            if (heroContent) heroContent.classList.add('opacity-0');
+            if (newsContainer) newsContainer.classList.add('opacity-0');
 
             const cacheBuster = `?t=${Date.now()}`;
             fetch(`articles.json${cacheBuster}`)
@@ -477,7 +448,7 @@
         function renderUI() {
             if (!allArticles || allArticles.length === 0) return;
 
-            // 1. Hero Article (Remplacement propre sans résidu)
+            // 1. Hero Article
             const hero = allArticles[0];
             const heroTitle = document.getElementById('heroTitle');
             const heroSummary = document.getElementById('heroSummary');
@@ -486,19 +457,9 @@
             const heroLink = document.getElementById('heroLink');
             const heroImage = document.getElementById('heroImage');
 
-            if (heroTitle) {
-                heroTitle.textContent = hero.title;
-                heroTitle.classList.remove('skeleton', 'text-transparent');
-            }
-            if (heroSummary) {
-                heroSummary.textContent = hero.summary;
-                heroSummary.classList.remove('skeleton', 'text-transparent');
-            }
-            if (heroCategory) {
-                heroCategory.textContent = `${hero.category || 'Actu'} • ${hero.readTime || '10 min'}`;
-                heroCategory.classList.remove('skeleton', 'text-transparent');
-                heroCategory.classList.add('bg-white/20', 'dark:bg-zinc-900/90', 'backdrop-blur-md', 'text-white');
-            }
+            if (heroTitle) heroTitle.textContent = hero.title;
+            if (heroSummary) heroSummary.textContent = hero.summary;
+            if (heroCategory) heroCategory.textContent = `${hero.category || 'Actu'} • ${hero.readTime || '10 min'}`;
             if (heroAuthor) heroAuthor.textContent = hero.author || 'Rédaction Kaneberg';
             if (heroLink) heroLink.href = `article.html?id=${hero.id}`;
             if (heroImage && hero.image) heroImage.src = hero.image;
@@ -587,6 +548,17 @@
                     newsContainer.appendChild(itemLink);
                 });
             }
+
+            // Affichage propre en fondu une fois tout prêt
+            setTimeout(() => {
+                const grid = document.getElementById('articlesGrid');
+                const heroContent = document.getElementById('heroContent');
+                const newsContainer = document.getElementById('latestNewsContainer');
+
+                if (grid) grid.classList.remove('opacity-0');
+                if (heroContent) heroContent.classList.remove('opacity-0');
+                if (newsContainer) newsContainer.classList.remove('opacity-0');
+            }, 50);
         }
 
         document.addEventListener('DOMContentLoaded', () => {
