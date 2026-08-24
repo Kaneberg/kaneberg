@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kaneberg - Mes Favoris</title>
+    <title>Kaneberg - Favoris</title>
 
     <!-- Styles de transition -->
     <link rel="stylesheet" href="css/transitions.css">
@@ -108,7 +108,7 @@
                 </button>
 
                 <a href="index.html" class="flex items-center gap-2.5">
-                    <img src="images/logo.png" alt="Kaneberg Logo" class="w-7 h-7 object-contain brightness-0 dark:brightness-0 dark:invert transition-all" onerror="this.style.display='none'">
+                    
                     <span class="text-2xl font-black tracking-tighter uppercase text-slate-900 dark:text-white">Kaneberg</span>
                 </a>
             </div>
@@ -255,7 +255,7 @@
                     <a href="privacy.html" class="hover:text-slate-900 dark:hover:text-white transition-colors">Confidentialité</a>
                 </div>
                 <div class="pt-2 text-[11px] text-slate-400 dark:text-zinc-600 font-normal border-t border-slate-200 dark:border-[#1e1e24]">
-                    &copy; 2026 Kaneberg Media.<br>Tous droits réservés.
+                    &copy; 2026 Kaneberg.<br>Tous droits réservés.
                 </div>
             </div>
 
@@ -501,53 +501,6 @@
 
         let loadedFavArticles = [];
         let activeCategoryFilter = 'all';
-
-        const fallbackArticles = [
-            {
-                id: "probleme-dune-awakening-2026",
-                title: "Le problème de DUNE Awakening en 2026 : Entre fausses promesses et rédemption",
-                category: "Actu",
-                selection: true,
-                readTime: "10 min",
-                author: "Rédaction Kaneberg",
-                date: "2026-07-01",
-                image: "images/da.vid3.png",
-                summary: "Dune Awakening a-t-il menti à sa communauté ? Retour sur la polémique du MMO de Funcom, ses échecs de design au lancement, et sa spectaculaire mise à jour PvE/PvP de 2026."
-            },
-            {
-                id: "origine-epice",
-                title: "L'Épice Mélange : Analyse biologique et économique de la substance la plus rare",
-                category: "Lore",
-                selection: true,
-                readTime: "8 min",
-                author: "Rédaction Kaneberg",
-                date: "2026-06-30",
-                image: "",
-                summary: "L'Épice, ou Mélange, est le pilier de l'Empire. Mais comment est-elle produite exactement sur Arrakis et pourquoi fixe-t-elle l'économie galactique ?"
-            },
-            {
-                id: "jihad-butlerien",
-                title: "Le Jihad Butlérien : Pourquoi l'IA et les machines pensantes ont été bannies",
-                category: "Science",
-                selection: false,
-                readTime: "12 min",
-                author: "Rédaction Kaneberg",
-                date: "2026-06-25",
-                image: "",
-                summary: "Mille ans avant Paul Atréides, l'humanité a fait la guerre aux machines. Retour sur le conflit fondateur qui a banni les ordinateurs de l'univers connu."
-            },
-            {
-                id: "philosophie-muaddib",
-                title: "Le danger des figures messianiques : La leçon politique de Frank Herbert",
-                category: "Philosophie",
-                selection: false,
-                readTime: "7 min",
-                author: "Rédaction Kaneberg",
-                date: "2026-06-18",
-                image: "",
-                summary: "Pourquoi Frank Herbert a-t-il écrit Dune comme une mise en garde contre les héros charismatiques ? Décryptage de la philosophie de Paul Muad'Dib."
-            }
-        ];
 
         function getSavedFavIds() {
             const favs = [];
