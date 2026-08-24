@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kaneberg - Ressources (En Travaux)</title>
+    <title>Kaneberg - Ressources </title>
 
     <!-- Styles de transition -->
     <link rel="stylesheet" href="css/transitions.css">
@@ -108,7 +108,7 @@
                 </button>
 
                 <a href="index.html" class="flex items-center gap-2.5">
-                    <img src="images/logo.png" alt="Kaneberg Logo" class="w-7 h-7 object-contain brightness-0 dark:brightness-0 dark:invert transition-all" onerror="this.style.display='none'">
+                    
                     <span class="text-2xl font-black tracking-tighter uppercase text-slate-900 dark:text-white">Kaneberg</span>
                 </a>
             </div>
@@ -255,7 +255,7 @@
                     <a href="privacy.html" class="hover:text-slate-900 dark:hover:text-white transition-colors">Confidentialité</a>
                 </div>
                 <div class="pt-2 text-[11px] text-slate-400 dark:text-zinc-600 font-normal border-t border-slate-200 dark:border-[#1e1e24]">
-                    &copy; 2026 Kaneberg Media.<br>Tous droits réservés.
+                    &copy; 2026 Kaneberg.<br>Tous droits réservés.
                 </div>
             </div>
 
@@ -275,7 +275,7 @@
 
                     <!-- Description du Teaser -->
                     <p class="text-sm sm:text-base text-slate-600 dark:text-zinc-300 font-medium leading-relaxed">
-                        Nos archivistes préparent un centre de ressources complet dédié à l'univers de <strong class="text-slate-900 dark:text-white font-black">Dune</strong> et de la science-fiction. Bientôt, vous aurez accès à un trésor de documents, de cartes interactives et de guides approfondis.
+                        Nos archivistes préparent un centre de ressources complet dédié à l'univers de <strong class="text-slate-900 dark:text-white font-black">Dune</strong>. Bientôt, vous aurez accès à une galerie de documents, de cartes interactives et de guides approfondis.
                     </p>
 
                 </div>
@@ -287,7 +287,7 @@
                     Soyez averti du lancement
                 </h3>
                 <p class="text-xs sm:text-sm text-slate-500 dark:text-zinc-400 max-w-md mx-auto leading-relaxed font-medium">
-                    Vous souhaitez participer à la rédaction des fiches ou être averti dès que la page Ressources sera en ligne ?
+                    Vous souhaitez participer à la rédaction ou être averti dès que la page Ressources sera en ligne ?
                 </p>
                 <div class="flex flex-col sm:flex-row justify-center items-center gap-3 pt-2">
                     <a href="contact.html?subject=Information%20Lancement%20Ressources" class="px-5 py-2.5 bg-slate-900 dark:bg-white text-white dark:text-black font-extrabold text-xs uppercase tracking-wider rounded-[8px] hover:bg-slate-800 dark:hover:bg-zinc-200 transition-colors shadow-sm border-0 w-full sm:w-auto">
@@ -387,26 +387,7 @@
 
         initTheme();
 
-        const fallbackArticles = [
-            {
-                id: "probleme-dune-awakening-2026",
-                title: "Le problème de DUNE Awakening en 2026 : Entre fausses promesses et rédemption",
-                category: "Actu",
-                readTime: "10 min"
-            },
-            {
-                id: "origine-epice",
-                title: "L'Épice Mélange : Analyse biologique et économique de la substance la plus rare",
-                category: "Lore",
-                readTime: "8 min"
-            },
-            {
-                id: "jihad-butlerien",
-                title: "Le Jihad Butlérien : Pourquoi l'IA et les machines pensantes ont été bannies",
-                category: "Science",
-                readTime: "12 min"
-            }
-        ];
+
 
         async function renderSidebarPicks() {
             const container = document.getElementById('sidebarSelectionPicks');
